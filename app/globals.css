@@ -1,26 +1,67 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --iwnt-navy: #0E1B2E;
+    --iwnt-navy-dark: #070F1C;
+    --iwnt-green: #16A34A;
+    --iwnt-green-bright: #22C55E;
+    --iwnt-blue: #2563EB;
+    --iwnt-blue-light: #3B82F6;
+    --iwnt-slate: #475569;
+    --iwnt-slate-light: #64748B;
+    --iwnt-bg: #FFFFFF;
+    --iwnt-bg-alt: #F8FAFC;
+  }
+
+  body {
+    background-color: var(--iwnt-bg);
+    color: var(--iwnt-navy);
+    font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom Image Blending & Masking Utilities */
+.hero-image-blend {
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.3) 15%, rgba(0, 0, 0, 1) 40%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.3) 15%, rgba(0, 0, 0, 1) 40%);
+}
+
+@media (max-width: 1024px) {
+  .hero-image-blend {
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 20%, rgba(0, 0, 0, 1) 50%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 20%, rgba(0, 0, 0, 1) 50%);
+  }
+}
+
+/* Keyframe animations for network nodes, connection paths & marquee */
+@keyframes nodePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+    box-shadow: 0 0 16px rgba(34, 197, 94, 0.8);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-node-pulse {
+  animation: nodePulse 3s ease-in-out infinite;
+}
+
+.animate-marquee {
+  animation: marquee 38s linear infinite;
 }

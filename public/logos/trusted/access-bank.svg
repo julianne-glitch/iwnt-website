@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" fill="currentColor">
+  <path d="M10 30L25 15H40L25 30L40 45H25L10 30Z" />
+  <path d="M28 30L43 15H58L43 30L58 45H43L28 30Z" opacity="0.8" />
+  <text x="68" y="38" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="24" letter-spacing="1">access bank</text>
+</svg>

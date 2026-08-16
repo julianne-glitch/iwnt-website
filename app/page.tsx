@@ -1,69 +1,92 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import Hero from "@/app/components/home/Hero";
+import TrustedCarousel from "@/app/components/home/TrustedCarousel";
+import EmployeeJourney from "@/app/components/solutions/EmployeeJourney";
+import GlobalExpansionJourney from "@/app/components/solutions/GlobalExpansionJourney";
+import PlatformSection from "@/app/components/home/PlatformSection";
+import CoverageSection from "@/app/components/home/CoverageSection";
+import ResourcesSection from "@/app/components/home/ResourcesSection";
+import ContactSection from "@/app/components/home/ContactSection";
+import { useLanguage } from "@/app/context/LanguageContext";
+
+export default function HomePage() {
+  const { t } = useLanguage();
+  const sol = t.solutionsPage;
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      {/* MAIN UNIFIED STORY SCROLL FLOW */}
+      <main className="w-full">
+        
+        {/* 2. HERO SECTION (#home) - 100% UNTOUCHED */}
+        <div id="home" className="scroll-mt-24">
+          <Hero />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* 3. TRUSTED BY CLIENTS & PARTNERS */}
+        <div className="py-10 bg-white border-b border-slate-100">
+          <TrustedCarousel />
         </div>
+
+        {/* 4. SOLUTIONS SECTION (#solutions) - UNIFIED CONTINUOUS FLOW */}
+        <section id="solutions" className="scroll-mt-24 py-14 sm:py-16 lg:py-20 bg-slate-50/60">
+          <div className="max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-10">
+            
+            {/* INTRO HEADER (SEAMLESSLY CONNECTED TO JOURNEY PANEL BELOW) */}
+            <div className="max-w-3xl mx-auto text-center mb-6 lg:mb-8">
+              {/* EYEBROW */}
+              <div className="inline-flex items-center gap-2 mb-3">
+                <span className="h-2 w-2 rounded-full bg-[#16A34A]" />
+                <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#16A34A]">
+                  {sol.eyebrow}
+                </span>
+              </div>
+
+              {/* MAIN HEADLINE */}
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#0D1B2E] mb-3.5">
+                {sol.headline}
+              </h2>
+
+              {/* SUPPORTING PARAGRAPH */}
+              <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-4">
+                {sol.subtitle}
+              </p>
+
+              {/* DEVELOPMENT-STATUS PILL */}
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#16A34A]/10 px-3.5 py-1 text-xs font-semibold text-[#16A34A]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#16A34A] animate-pulse" />
+                <span>{sol.status}</span>
+              </div>
+            </div>
+
+            {/* REUSED CENTERPIECE EMPLOYEE JOURNEY PANEL */}
+            <div className="mb-0">
+              <EmployeeJourney />
+            </div>
+
+            {/* GLOBAL EXPANSION JOURNEY (CONTINUATION) */}
+            <div className="mb-10 sm:mb-16">
+              <GlobalExpansionJourney />
+            </div>
+
+          </div>
+        </section>
+
+        {/* 5. PLATFORM SECTION (#platform) - LESS ADMINISTRATION. MORE CONTROL. */}
+        <PlatformSection />
+
+        {/* 6. OUR COVERAGE SECTION (#coverage) */}
+        <CoverageSection />
+
+        {/* 7. RESOURCES SECTION (#resources) */}
+        <ResourcesSection />
+
+
+        {/* 9. FINAL STRATEGIC CTA & CONTACT (#contact) */}
+        <ContactSection />
+
       </main>
-    </div>
+    </>
   );
 }
