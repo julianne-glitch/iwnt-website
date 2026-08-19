@@ -3,18 +3,25 @@ import prisma from '../lib/prisma'
 import { hash } from 'bcrypt-ts'
 
 async function main() {
-  const passwordHash = await hash('password123', 10)
+  const email = process.env.INITIAL_ADMIN_EMAIL;
+  const password = process.env.INITIAL_ADMIN_PASSWORD;
+
+  if (!email || !password) {
+    throw new Error('INITIAL_ADMIN_EMAIL and INITIAL_ADMIN_PASSWORD must be provided in the environment to seed the admin user.');
+  }
+
+  const passwordHash = await hash(password, 10);
   
   const admin = await prisma.adminUser.upsert({
-    where: { email: 'admin@iwnt.com' },
+    where: { email },
     update: {},
     create: {
-      email: 'admin@iwnt.com',
+      email,
       passwordHash,
     },
-  })
+  });
   
-  console.log({ admin })
+  console.log('Successfully seeded admin user:', admin.email);
 }
 
 main()

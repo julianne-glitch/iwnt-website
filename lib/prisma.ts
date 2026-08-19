@@ -2,28 +2,18 @@ import { PrismaClient } from '@prisma/client'
 import { Pool } from 'pg'
 import { PrismaPg } from '@prisma/adapter-pg'
 
-let connectionString = `${process.env.DATABASE_URL}`
-
-// If using prisma+postgres local dev URL, extract the actual postgres URL for the pg driver
-if (connectionString.startsWith('prisma+postgres://')) {
-  try {
-    const parsed = new URL(connectionString)
-    const apiKey = parsed.searchParams.get('api_key')
-    if (apiKey) {
-      const decoded = JSON.parse(Buffer.from(apiKey, 'base64').toString('utf-8'))
-      if (decoded.databaseUrl) {
-        connectionString = decoded.databaseUrl
-      }
-    }
-  } catch (e) {
-    console.error('Failed to parse prisma+postgres URL', e)
-  }
-}
+const connectionString = `${process.env.DATABASE_URL}`
 
 const prismaClientSingleton = () => {
-  const pool = new Pool({ connectionString })
-  const adapter = new PrismaPg(pool)
-  return new PrismaClient({ adapter })
+  if (connectionString.startsWith('prisma+postgres://')) {
+    // Prisma Postgres uses Accelerate via the URL, no driver adapter needed
+    return new PrismaClient({ accelerateUrl: connectionString })
+  } else {
+    // Standard direct postgres connection
+    const pool = new Pool({ connectionString })
+    const adapter = new PrismaPg(pool)
+    return new PrismaClient({ adapter })
+  }
 }
 
 declare const globalThis: {
