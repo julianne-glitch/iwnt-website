@@ -8,13 +8,13 @@ import NetworkConnections from "./NetworkConnections";
 import { useLanguage } from "@/app/context/LanguageContext";
 
 interface AfricaMapProps {
-  selectedMarketId: string;
+  activeCountryCode: string;
   onSelectMarket: (marketId: string) => void;
-  onSelectNonOperational?: (countryCode: string, countryName: string) => void;
+  onSelectNonOperational?: (countryCode: string) => void;
 }
 
 export default function AfricaMap({
-  selectedMarketId,
+  activeCountryCode,
   onSelectMarket,
   onSelectNonOperational,
 }: AfricaMapProps) {
@@ -22,16 +22,20 @@ export default function AfricaMap({
   const reduceMotion = useReducedMotion();
   const [hoveredCountryId, setHoveredCountryId] = useState<string | null>(null);
 
+  // Determine market ID for the active country (for NetworkConnections)
+  const activeMarket = OPERATIONAL_MARKETS.find((m) => m.code === activeCountryCode);
+  const selectedMarketId = activeMarket ? activeMarket.id : "";
+
   return (
     <div className="relative w-full h-full min-h-[480px] sm:min-h-[560px] lg:min-h-[620px] flex items-center justify-center select-none">
       
-      {/* SUBTLE BACKGROUND DOTTED NETWORK FIELD — VERY LOW OPACITY DEPTH TEXTURE */}
+      {/* SUBTLE BACKGROUND DOTTED NETWORK FIELD - VERY LOW OPACITY DEPTH TEXTURE */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.035] bg-[radial-gradient(#22C55E_0.8px,transparent_0.8px)] [background-size:20px_20px]" />
 
       {/* SVG AFRICA MAP */}
       <svg
         viewBox="0 0 1000 1000"
-        className="w-full h-full overflow-visible drop-shadow-[0_20px_50px_rgba(0,0,0,0.6)] scale-[1.15] origin-[50%_35%] md:scale-100 md:origin-center transition-transform duration-500"
+        className="w-full h-full overflow-visible drop-shadow-[0_20px_50px_rgba(0,0,0,0.6)] scale-[0.95] origin-[50%_35%] md:scale-[0.85] lg:scale-[0.75] md:origin-center transition-transform duration-500"
         aria-label="Interactive map of Africa showing IWNT operational markets"
       >
         <defs>
@@ -42,7 +46,7 @@ export default function AfricaMap({
           </filter>
         </defs>
 
-        {/* FAINT BACKGROUND NETWORK NODES — subtle depth behind continent */}
+        {/* FAINT BACKGROUND NETWORK NODES - subtle depth behind continent */}
         <g className="pointer-events-none" opacity="0.04">
           <circle cx="180" cy="200" r="2.5" fill="#16A34A" />
           <circle cx="420" cy="150" r="2" fill="#16A34A" />
@@ -55,11 +59,10 @@ export default function AfricaMap({
           <line x1="250" y1="600" x2="650" y2="700" stroke="#16A34A" strokeWidth="0.8" strokeDasharray="3 4" />
         </g>
 
-        {/* 1. ALL AFRICAN COUNTRY PATHS — ONE CONTINUOUS CONTINENT */}
         <g className="country-paths">
           {AFRICA_COUNTRY_PATHS.map((country) => {
             const isOperational = OPERATIONAL_MARKETS.some((m) => m.code === country.id);
-            const isSelected = OPERATIONAL_MARKETS.find((m) => m.id === selectedMarketId)?.code === country.id;
+            const isSelected = activeCountryCode === country.id;
             const isHovered = hoveredCountryId === country.id;
 
             return (
@@ -68,21 +71,21 @@ export default function AfricaMap({
                 d={country.d}
                 fill={
                   isSelected
-                    ? "#22C55E"
+                    ? "#FFFFFF"
                     : isOperational
-                    ? "#16A34A"
-                    : isHovered
                     ? "#E2E8F0"
+                    : isHovered
+                    ? "#F1F5F9"
                     : "#F8FAFC"
                 }
                 stroke={
                   isSelected
-                    ? "#4ADE80"
+                    ? "#16A34A"
                     : isOperational
-                    ? "#22C55E40"
+                    ? "#94A3B8"
                     : "#CBD5E1"
                 }
-                strokeWidth={isSelected ? 2 : isOperational ? 1.2 : 0.6}
+                strokeWidth={isSelected ? 3 : isOperational ? 1.2 : 0.6}
                 filter={isSelected ? "url(#greenGlow)" : undefined}
                 className="transition-colors duration-300 cursor-pointer"
                 onMouseEnter={() => setHoveredCountryId(country.id)}
@@ -92,7 +95,7 @@ export default function AfricaMap({
                   if (market) {
                     onSelectMarket(market.id);
                   } else if (onSelectNonOperational) {
-                    onSelectNonOperational(country.id, country.name);
+                    onSelectNonOperational(country.id);
                   }
                 }}
               />
@@ -100,15 +103,15 @@ export default function AfricaMap({
           })}
         </g>
 
-        {/* 2. LABELS — ONLY IWNT OPERATIONAL MARKETS AT REST */}
+        {/* 2. LABELS - ONLY IWNT OPERATIONAL MARKETS AT REST */}
         <g className="country-labels pointer-events-none">
           {AFRICA_COUNTRY_PATHS.map((c) => {
             if (!c.labelX || !c.labelY) return null;
             const isOperational = OPERATIONAL_MARKETS.some((m) => m.code === c.id);
-            const isSelected = OPERATIONAL_MARKETS.find((m) => m.id === selectedMarketId)?.code === c.id;
+            const isSelected = activeCountryCode === c.id;
 
             // Only show labels for IWNT markets permanently. Others show on hover.
-            if (!isOperational && hoveredCountryId !== c.id) return null;
+            if (!isOperational && hoveredCountryId !== c.id && !isSelected) return null;
 
             return (
               <text
@@ -118,7 +121,7 @@ export default function AfricaMap({
                 textAnchor="middle"
                 className={`transition-opacity duration-300 ${
                   isSelected
-                    ? "fill-white text-[11px] font-black drop-shadow-md opacity-100"
+                    ? "fill-[#16A34A] text-[11px] font-black drop-shadow-sm opacity-100"
                     : isOperational
                     ? "fill-emerald-100/90 text-[10px] font-extrabold opacity-0 md:opacity-100"
                     : "fill-slate-300/80 text-[9px] font-bold opacity-0 md:opacity-100"

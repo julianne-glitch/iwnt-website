@@ -23,7 +23,7 @@ export default function NetworkConnections({ selectedMarketId }: NetworkConnecti
         const from = getCoords(conn.from);
         const to = getCoords(conn.to);
 
-        // Create elegant curved arcs — offset perpendicular to the line
+        // Create elegant curved arcs - offset perpendicular to the line
         const dx = to.x - from.x;
         const dy = to.y - from.y;
         const dist = Math.sqrt(dx * dx + dy * dy);

@@ -55,13 +55,13 @@ export default function PlatformSection() {
       <div className="max-w-[1580px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* =========================================================================
-            PLATFORM BLOCK 1 — DESKTOP & TABLET VERSION (UNCHANGED, hidden md:block)
+            PLATFORM BLOCK 1 - DESKTOP & TABLET VERSION
         ========================================================================= */}
-        <div className="hidden md:block py-2 lg:py-3 mb-10 lg:mb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+        <div className="hidden md:block max-w-[1300px] mx-auto py-2 lg:py-3 mb-10 lg:mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
             
             {/* LEFT COPY BLOCK (25% Width) */}
-            <div className="lg:col-span-3 text-left space-y-3.5">
+            <div className="lg:col-span-3 text-left space-y-4">
               
               {/* INTELWNT GREEN BRAND EYEBROW */}
               <motion.div
@@ -81,11 +81,13 @@ export default function PlatformSection() {
                 initial={{ opacity: 0, y: 8 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-3xl sm:text-4xl lg:text-[38px] font-extrabold tracking-tight text-[#0D1B2E] leading-[1.08]"
+                className="text-3xl sm:text-4xl lg:text-[40px] font-extrabold tracking-tight text-[#0D1B2E] leading-[1.08]"
               >
                 {p.block1Headline1}
                 <br />
-                <span className="text-[#0D1B2E]">{p.block1Headline2}</span>
+                <span className="bg-gradient-to-r from-[#16A34A] to-emerald-400 bg-clip-text text-transparent drop-shadow-sm pb-1 block">
+                  {p.block1Headline2}
+                </span>
               </motion.h2>
 
               {/* BODY TEXT */}
@@ -157,8 +159,11 @@ export default function PlatformSection() {
               </div>
 
               {/* HIGH-FIDELITY IWNT WORKFORCE DASHBOARD MOCKUP */}
-              <div className="flex-1 rounded-2xl border border-slate-200/90 bg-white p-3.5 sm:p-4 shadow-[0_12px_36px_rgba(15,23,42,0.06)] overflow-hidden">
-                <div className="space-y-3.5 text-left">
+              <div className="flex-1 rounded-2xl border border-white/60 bg-white/90 backdrop-blur-xl p-3.5 sm:p-4 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] ring-1 ring-black/[0.03] overflow-hidden relative">
+                {/* Subtle top glare effect */}
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
+                
+                <div className="space-y-3.5 text-left relative z-10">
                   
                   {/* TOP HEADER BAR */}
                   <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
@@ -311,19 +316,19 @@ export default function PlatformSection() {
                           <div className="space-y-1.5 text-[9.5px]">
                             <div className="flex items-center gap-1.5 text-slate-700">
                               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
-                              <span className="truncate font-medium">Payroll completed — Cameroon</span>
+                              <span className="truncate font-medium">Payroll completed - Cameroon</span>
                             </div>
                             <div className="flex items-center gap-1.5 text-slate-700">
                               <span className="h-1.5 w-1.5 rounded-full bg-blue-500 shrink-0" />
-                              <span className="truncate font-medium">New hire onboarded — Senegal</span>
+                              <span className="truncate font-medium">New hire onboarded - Senegal</span>
                             </div>
                             <div className="flex items-center gap-1.5 text-slate-700">
                               <span className="h-1.5 w-1.5 rounded-full bg-amber-500 shrink-0" />
-                              <span className="truncate font-medium">Contract signed — Côte d&apos;Ivoire</span>
+                              <span className="truncate font-medium">Contract signed - Côte d&apos;Ivoire</span>
                             </div>
                             <div className="flex items-center gap-1.5 text-slate-700">
                               <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shrink-0" />
-                              <span className="truncate font-medium">Compliance update — Mali</span>
+                              <span className="truncate font-medium">Compliance update - Mali</span>
                             </div>
                           </div>
                         </div>
@@ -342,7 +347,7 @@ export default function PlatformSection() {
         </div>
 
         {/* =========================================================================
-            PLATFORM BLOCK 1 — DEDICATED MOBILE VERSION (block md:hidden)
+            PLATFORM BLOCK 1 - DEDICATED MOBILE VERSION (block md:hidden)
             Compact Animated Intake Queue + Dedicated Mobile Product-Preview Card
         ========================================================================= */}
         <div className="block md:hidden mb-12 space-y-6 text-left">
@@ -471,11 +476,11 @@ export default function PlatformSection() {
               <div className="text-[10px] font-bold text-[#0D1B2E]">Recent Activity</div>
               <div className="flex items-center gap-1.5 text-[9.5px] text-slate-700">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
-                <span className="truncate font-medium">Payroll completed — Cameroon</span>
+                <span className="truncate font-medium">Payroll completed - Cameroon</span>
               </div>
               <div className="flex items-center gap-1.5 text-[9.5px] text-slate-700">
                 <span className="h-1.5 w-1.5 rounded-full bg-blue-500 shrink-0" />
-                <span className="truncate font-medium">New hire onboarded — Senegal</span>
+                <span className="truncate font-medium">New hire onboarded - Senegal</span>
               </div>
             </div>
 
@@ -484,7 +489,7 @@ export default function PlatformSection() {
         </div>
 
         {/* =========================================================================
-            PLATFORM BLOCK 2 — DESKTOP VERSION (UNCHANGED, hidden md:block)
+            PLATFORM BLOCK 2 - DESKTOP VERSION (UNCHANGED, hidden md:block)
         ========================================================================= */}
         <div className="hidden md:block max-w-[1220px] mx-auto text-left pt-1 pb-3">
           
@@ -518,10 +523,10 @@ export default function PlatformSection() {
               
               {/* INCOMING CLIENT CHAT BUBBLE */}
               <motion.div
-                initial={{ opacity: 0, x: -14 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: 0.1 }}
+                initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
                 className="relative rounded-2xl rounded-tl-xs bg-white border border-slate-200/90 p-3.5 shadow-2xs max-w-[210px]"
               >
                 <svg className="absolute -left-2 top-3 w-2.5 h-3 text-white fill-current drop-shadow-2xs" viewBox="0 0 10 12">
@@ -533,22 +538,41 @@ export default function PlatformSection() {
                 </p>
               </motion.div>
 
-              {/* OUTGOING IWNT GREEN CHAT BUBBLE */}
-              <motion.div
-                initial={{ opacity: 0, x: 14 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: 0.3 }}
-                className="relative rounded-2xl rounded-tr-xs bg-[#16A34A] text-white p-3.5 shadow-xs max-w-[190px] ml-auto lg:ml-5"
-              >
-                <svg className="absolute -right-2 top-3 w-2.5 h-3 text-[#16A34A] fill-current" viewBox="0 0 10 12">
-                  <path d="M0 0 L10 6 L0 12 Z" />
-                </svg>
+              {/* OUTGOING IWNT GREEN CHAT BUBBLE & TYPING INDICATOR */}
+              <div className="relative flex justify-end w-full lg:ml-5">
+                {/* TYPING INDICATOR */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: [0, 1, 1, 0], scale: [0.8, 1, 1, 0.8] }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 1.8, delay: 0.6, times: [0, 0.1, 0.9, 1] }}
+                  className="absolute top-0 right-0 rounded-2xl rounded-tr-xs bg-white border border-slate-200/90 p-3.5 shadow-xs flex items-center justify-center gap-1.5 h-10 px-4"
+                >
+                  <motion.div animate={{ y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 0.6, ease: "easeInOut", delay: 0 }} className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
+                  <motion.div animate={{ y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 0.6, ease: "easeInOut", delay: 0.2 }} className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
+                  <motion.div animate={{ y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 0.6, ease: "easeInOut", delay: 0.4 }} className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
+                  <svg className="absolute -right-2 top-3 w-2.5 h-3 text-white fill-current drop-shadow-2xs" viewBox="0 0 10 12">
+                    <path d="M0 0 L10 6 L0 12 Z" />
+                  </svg>
+                </motion.div>
 
-                <p className="text-xs sm:text-[13px] font-bold leading-snug">
-                  {p.block2IwntMsg}
-                </p>
-              </motion.div>
+                {/* ACTUAL BUBBLE */}
+                <motion.div
+                  initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.4, delay: 2.3, ease: [0.23, 1, 0.32, 1] }}
+                  className="relative rounded-2xl rounded-tr-xs bg-[#16A34A] text-white p-3.5 shadow-xs max-w-[190px]"
+                >
+                  <svg className="absolute -right-2 top-3 w-2.5 h-3 text-[#16A34A] fill-current" viewBox="0 0 10 12">
+                    <path d="M0 0 L10 6 L0 12 Z" />
+                  </svg>
+
+                  <p className="text-xs sm:text-[13px] font-bold leading-snug">
+                    {p.block2IwntMsg}
+                  </p>
+                </motion.div>
+              </div>
 
             </div>
 
@@ -566,13 +590,17 @@ export default function PlatformSection() {
 
               {/* CONTINUOUS SVG ROUTING PATH FROM GREEN BUBBLE TIP TO EXPERT IMAGE */}
               <svg className="w-full h-full overflow-visible absolute inset-0" viewBox="0 0 350 220">
-                <path
+                <motion.path
                   d="M 0 110 L 350 110"
                   fill="none"
                   stroke="#16A34A"
                   strokeWidth="1.8"
                   strokeDasharray="4 4"
                   opacity="0.85"
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.5, delay: 2.45, ease: "easeInOut" }}
                 />
 
                 {/* LUMINOUS LIGHT PULSE TRAVELLING CONTINUOUSLY ALONG THE ENTIRE PATH */}
@@ -589,7 +617,7 @@ export default function PlatformSection() {
                       duration: 2.1,
                       repeat: 0,
                       ease: "easeInOut",
-                      delay: 0.45,
+                      delay: 2.45,
                     }}
                   />
                 )}
@@ -600,14 +628,15 @@ export default function PlatformSection() {
                 
                 {/* STAGE 1: REQUEST RECEIVED (DOCUMENT ICON) */}
                 <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: 0.6 }}
-                  className="flex flex-col items-center space-y-1.5 group"
+                  transition={{ type: "spring", stiffness: 200, damping: 15, delay: 2.6 }}
+                  className="flex flex-col items-center space-y-1.5 group relative"
                 >
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#16A34A] text-white ring-4 ring-emerald-100/90 shadow-2xs transition-all">
-                    <FileText className="w-3 h-3" />
+                  <div className="relative flex h-6 w-6 items-center justify-center rounded-full bg-[#16A34A] text-white ring-4 ring-emerald-100/90 shadow-2xs z-10">
+                    <motion.div animate={{ scale: [1, 2.5], opacity: [0.6, 0] }} transition={{ duration: 1.5, delay: 2.6, repeat: Infinity, repeatDelay: 1 }} className="absolute inset-0 rounded-full bg-[#16A34A]" />
+                    <FileText className="relative w-3 h-3 z-10" />
                   </div>
                   <div className="flex items-center gap-0.5 text-[10.5px] font-extrabold text-[#0D1B2E] leading-tight px-1">
                     <span>{p.block2Node1}</span>
@@ -617,14 +646,15 @@ export default function PlatformSection() {
 
                 {/* STAGE 2: CAMEROON TEAM MATCHED 🇨🇲 */}
                 <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: 1.1 }}
-                  className="flex flex-col items-center space-y-1.5 group"
+                  transition={{ type: "spring", stiffness: 200, damping: 15, delay: 3.1 }}
+                  className="flex flex-col items-center space-y-1.5 group relative"
                 >
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#16A34A] text-white ring-4 ring-emerald-100/90 shadow-2xs transition-all">
-                    <span className="text-[10px]">🇨🇲</span>
+                  <div className="relative flex h-6 w-6 items-center justify-center rounded-full bg-[#16A34A] text-white ring-4 ring-emerald-100/90 shadow-2xs z-10">
+                    <motion.div animate={{ scale: [1, 2.5], opacity: [0.6, 0] }} transition={{ duration: 1.5, delay: 3.1, repeat: Infinity, repeatDelay: 1 }} className="absolute inset-0 rounded-full bg-[#16A34A]" />
+                    <span className="relative text-[10px] z-10">🇨🇲</span>
                   </div>
                   <div className="flex items-center gap-0.5 text-[10.5px] font-extrabold text-[#0D1B2E] leading-tight px-1">
                     <span>{p.block2Node2}</span>
@@ -634,14 +664,15 @@ export default function PlatformSection() {
 
                 {/* STAGE 3: LOCAL EXPERT ASSIGNED (HEADSET ICON) */}
                 <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: 1.6 }}
-                  className="flex flex-col items-center space-y-1.5 group"
+                  transition={{ type: "spring", stiffness: 200, damping: 15, delay: 3.6 }}
+                  className="flex flex-col items-center space-y-1.5 group relative"
                 >
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#16A34A] text-white ring-4 ring-emerald-100/90 shadow-2xs transition-all">
-                    <Headphones className="w-3 h-3" />
+                  <div className="relative flex h-6 w-6 items-center justify-center rounded-full bg-[#16A34A] text-white ring-4 ring-emerald-100/90 shadow-2xs z-10">
+                    <motion.div animate={{ scale: [1, 2.5], opacity: [0.6, 0] }} transition={{ duration: 1.5, delay: 3.6, repeat: Infinity, repeatDelay: 1 }} className="absolute inset-0 rounded-full bg-[#16A34A]" />
+                    <Headphones className="relative w-3 h-3 z-10" />
                   </div>
                   <div className="flex items-center gap-0.5 text-[10.5px] font-extrabold text-[#0D1B2E] leading-tight px-1">
                     <span>{p.block2Node3}</span>
@@ -663,7 +694,7 @@ export default function PlatformSection() {
                   boxShadow: "0 0 20px rgba(22, 163, 74, 0.2)",
                 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 2.0 }}
+                transition={{ duration: 0.4, delay: 4.0 }}
                 className="relative h-[220px] sm:h-[250px] lg:h-[255px] w-full max-w-[460px] overflow-hidden rounded-xl border border-slate-200/90 shadow-xs bg-slate-100 ring-2 ring-emerald-500/40"
               >
                 <Image
@@ -679,7 +710,7 @@ export default function PlatformSection() {
                   initial={{ opacity: 0, y: 4 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 2.15 }}
+                  transition={{ delay: 4.15 }}
                   className="absolute top-2.5 right-2.5 rounded-md bg-[#0D1B2E]/85 backdrop-blur-xs px-2.5 py-1 text-[10px] font-extrabold text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5 shadow-2xs"
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -717,7 +748,7 @@ export default function PlatformSection() {
         </div>
 
         {/* =========================================================================
-            PLATFORM BLOCK 2 — DEDICATED MOBILE VERSION (block md:hidden)
+            PLATFORM BLOCK 2 - DEDICATED MOBILE VERSION (block md:hidden)
             QUESTION → IWNT RESPONSE → VERTICAL ROUTING TRACK → CINEMATIC EXPERT CARD
         ========================================================================= */}
         <div className="block md:hidden text-left space-y-6 overflow-hidden">
@@ -739,9 +770,10 @@ export default function PlatformSection() {
             <div className="space-y-3 z-10 relative">
               {/* INCOMING CLIENT CHAT BUBBLE */}
               <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
                 className="relative rounded-2xl rounded-tl-sm bg-white border border-slate-200/90 p-4 shadow-sm max-w-[85%] text-left"
               >
                 <p className="text-[13px] font-bold text-[#0D1B2E] leading-relaxed">
@@ -749,20 +781,36 @@ export default function PlatformSection() {
                 </p>
               </motion.div>
 
-              {/* OUTGOING IWNT GREEN CHAT BUBBLE */}
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0.3 }}
-                className="relative rounded-2xl rounded-tr-sm bg-[#16A34A] text-white p-4 shadow-md max-w-[88%] ml-auto text-left z-20"
-              >
-                <p className="text-[13px] font-bold leading-relaxed">
-                  {p.block2IwntMsg}
-                </p>
-                {/* Connection Line Anchor Point (Bottom Left of the green bubble) */}
-                <div className="absolute -bottom-1.5 left-6 w-3 h-3 rounded-full bg-[#16A34A] border-2 border-white shadow-sm z-30" />
-              </motion.div>
+              {/* OUTGOING IWNT GREEN CHAT BUBBLE & TYPING INDICATOR */}
+              <div className="relative flex justify-end w-full">
+                {/* TYPING INDICATOR */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: [0, 1, 1, 0], scale: [0.8, 1, 1, 0.8] }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 1.8, delay: 0.6, times: [0, 0.1, 0.9, 1] }}
+                  className="absolute top-0 right-0 rounded-2xl rounded-tr-sm bg-white border border-slate-200/90 p-4 shadow-sm flex items-center justify-center gap-1.5 h-12 px-5 z-20"
+                >
+                  <motion.div animate={{ y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 0.6, ease: "easeInOut", delay: 0 }} className="w-2 h-2 bg-slate-400 rounded-full" />
+                  <motion.div animate={{ y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 0.6, ease: "easeInOut", delay: 0.2 }} className="w-2 h-2 bg-slate-400 rounded-full" />
+                  <motion.div animate={{ y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 0.6, ease: "easeInOut", delay: 0.4 }} className="w-2 h-2 bg-slate-400 rounded-full" />
+                </motion.div>
+
+                {/* ACTUAL BUBBLE */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.4, delay: 2.3, ease: [0.23, 1, 0.32, 1] }}
+                  className="relative rounded-2xl rounded-tr-sm bg-[#16A34A] text-white p-4 shadow-md max-w-[88%] text-left z-20"
+                >
+                  <p className="text-[13px] font-bold leading-relaxed">
+                    {p.block2IwntMsg}
+                  </p>
+                  {/* Connection Line Anchor Point (Bottom Left of the green bubble) */}
+                  <div className="absolute -bottom-1.5 left-6 w-3 h-3 rounded-full bg-[#16A34A] border-2 border-white shadow-sm z-30" />
+                </motion.div>
+              </div>
             </div>
 
             {/* THE WORKFLOW STAGES (Positioned along the line) */}
@@ -777,21 +825,22 @@ export default function PlatformSection() {
                     initial={{ scaleY: 0, opacity: 0 }}
                     whileInView={{ scaleY: 1, opacity: 1 }}
                     viewport={{ once: true, margin: "-100px" }}
-                    transition={{ duration: 1.8, delay: 0.6, ease: "easeInOut" }}
+                    transition={{ duration: 1.8, delay: 2.6, ease: "easeInOut" }}
                   />
                 )}
               </div>
 
               {/* STAGE 1 */}
               <motion.div 
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: -20, scale: 0.9 }}
+                whileInView={{ opacity: 1, x: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0.9 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15, delay: 2.9 }}
                 className="relative flex items-center gap-4 pl-6 pr-2"
               >
-                <div className="w-7 h-7 shrink-0 rounded-full bg-white border-2 border-[#16A34A] flex items-center justify-center z-10 shadow-sm">
-                  <FileText className="w-3.5 h-3.5 text-[#16A34A]" />
+                <div className="relative w-7 h-7 shrink-0 rounded-full bg-[#16A34A] text-white border-2 border-[#16A34A] flex items-center justify-center z-10 shadow-sm">
+                  <motion.div animate={{ scale: [1, 2.5], opacity: [0.5, 0] }} transition={{ duration: 1.5, delay: 2.9, repeat: Infinity, repeatDelay: 1 }} className="absolute inset-0 rounded-full bg-[#16A34A]" />
+                  <FileText className="relative w-3.5 h-3.5 text-white z-10" />
                 </div>
                 <div className="bg-white rounded-xl border border-slate-200/80 px-3.5 py-2.5 shadow-sm flex-1">
                   <span className="text-[12px] font-extrabold text-[#0D1B2E]">
@@ -802,14 +851,15 @@ export default function PlatformSection() {
 
               {/* STAGE 2 */}
               <motion.div 
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: -20, scale: 0.9 }}
+                whileInView={{ opacity: 1, x: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 1.3 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15, delay: 3.3 }}
                 className="relative flex items-center gap-4 pl-6 pr-2"
               >
-                <div className="w-7 h-7 shrink-0 rounded-full bg-white border-2 border-[#16A34A] flex items-center justify-center z-10 shadow-sm">
-                  <span className="text-[12px] leading-none">🇨🇲</span>
+                <div className="relative w-7 h-7 shrink-0 rounded-full bg-[#16A34A] text-white border-2 border-[#16A34A] flex items-center justify-center z-10 shadow-sm">
+                  <motion.div animate={{ scale: [1, 2.5], opacity: [0.5, 0] }} transition={{ duration: 1.5, delay: 3.3, repeat: Infinity, repeatDelay: 1 }} className="absolute inset-0 rounded-full bg-[#16A34A]" />
+                  <span className="relative text-[12px] leading-none z-10">🇨🇲</span>
                 </div>
                 <div className="bg-white rounded-xl border border-slate-200/80 px-3.5 py-2.5 shadow-sm flex-1">
                   <span className="text-[12px] font-extrabold text-[#0D1B2E]">
@@ -820,14 +870,15 @@ export default function PlatformSection() {
 
               {/* STAGE 3 */}
               <motion.div 
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: -20, scale: 0.9 }}
+                whileInView={{ opacity: 1, x: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 1.7 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15, delay: 3.7 }}
                 className="relative flex items-center gap-4 pl-6 pr-2"
               >
-                <div className="w-7 h-7 shrink-0 rounded-full bg-white border-2 border-[#16A34A] flex items-center justify-center z-10 shadow-sm">
-                  <Headphones className="w-3.5 h-3.5 text-[#16A34A]" />
+                <div className="relative w-7 h-7 shrink-0 rounded-full bg-[#16A34A] text-white border-2 border-[#16A34A] flex items-center justify-center z-10 shadow-sm">
+                  <motion.div animate={{ scale: [1, 2.5], opacity: [0.5, 0] }} transition={{ duration: 1.5, delay: 3.7, repeat: Infinity, repeatDelay: 1 }} className="absolute inset-0 rounded-full bg-[#16A34A]" />
+                  <Headphones className="relative w-3.5 h-3.5 text-white z-10" />
                 </div>
                 <div className="bg-white rounded-xl border border-slate-200/80 px-3.5 py-2.5 shadow-sm flex-1">
                   <span className="text-[12px] font-extrabold text-[#0D1B2E]">
@@ -843,7 +894,7 @@ export default function PlatformSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: 2.1 }}
+              transition={{ delay: 4.1 }}
               className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-slate-200/90 shadow-lg bg-slate-100 ring-4 ring-emerald-50/50 mt-10 z-10"
             >
               <Image

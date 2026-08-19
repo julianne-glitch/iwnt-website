@@ -11,19 +11,17 @@ type TimeMap = Record<string, string>;
 
 interface MarketTimeCardProps {
   isMobileOnly?: boolean;
-  onActiveMarketsChange?: (marketIds: string[]) => void;
 }
 
 export default function MarketTimeCard({
   isMobileOnly = false,
-  onActiveMarketsChange,
 }: MarketTimeCardProps) {
   const { language } = useLanguage();
   const reduceMotion = useReducedMotion();
   const [times, setTimes] = useState<TimeMap>({});
 
-  // Indices across anchor slots (slot 0: Card A, slot 1: Card B, slot 2: Card C)
-  const [slotIndices, setSlotIndices] = useState<[number, number, number]>([0, 2, 1]);
+  // Indices across anchor slots (slot 0: Card A (Man), slot 1: Card B (Woman))
+  const [slotIndices, setSlotIndices] = useState<[number, number]>([0, 2]);
 
   const getFormattedTime = (timeZone: string, lang: Language) => {
     try {
@@ -67,12 +65,12 @@ export default function MarketTimeCard({
     // Rotation interval (rotates 1 slot at a time every 4.5s)
     const rotationInterval = window.setInterval(() => {
       setSlotIndices((current) => {
-        const next = [...current] as [number, number, number];
+        const next = [...current] as [number, number];
         const slotToUpdate = activeSlotToChange;
-        activeSlotToChange = (activeSlotToChange + 1) % 3;
+        activeSlotToChange = (activeSlotToChange + 1) % 2;
 
         let candidate = (next[slotToUpdate] + 1) % OPERATIONAL_MARKETS.length;
-        while (candidate === next[0] || candidate === next[1] || candidate === next[2]) {
+        while (candidate === next[0] || candidate === next[1]) {
           candidate = (candidate + 1) % OPERATIONAL_MARKETS.length;
         }
 
@@ -89,13 +87,8 @@ export default function MarketTimeCard({
 
   const market0 = OPERATIONAL_MARKETS[slotIndices[0]];
   const market1 = OPERATIONAL_MARKETS[slotIndices[1]];
-  const market2 = OPERATIONAL_MARKETS[slotIndices[2]];
 
-  useEffect(() => {
-    if (onActiveMarketsChange) {
-      onActiveMarketsChange(isMobileOnly ? [market0.id, market1.id] : [market0.id, market1.id, market2.id]);
-    }
-  }, [market0.id, market1.id, market2.id, isMobileOnly, onActiveMarketsChange]);
+  // Effect removed since onActiveMarketsChange is no longer needed
 
   // MOBILE VIEW: 2 CARDS ON 390px/412px/430px (min-[385px]:block), 1 CARD FALLBACK ON NARROW (<385px)
   if (isMobileOnly) {
@@ -104,6 +97,36 @@ export default function MarketTimeCard({
         aria-label="Operational market cards"
         className="pointer-events-none absolute inset-0 z-30 overflow-hidden"
       >
+        {/* SVG CONNECTION LINE BETWEEN MOBILE CARDS */}
+        <div className="absolute inset-0 -z-10 hidden min-[385px]:block overflow-hidden">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full opacity-60">
+            <motion.path
+              d="M 38 18 Q 50 42 66 65"
+              fill="none"
+              stroke="#18A94B"
+              strokeWidth="1.5"
+              vectorEffect="non-scaling-stroke"
+              strokeDasharray="5 5"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 1.2, ease: "easeInOut", delay: 0.5 }}
+            />
+          </svg>
+          {/* Pulses at the ends of the connection */}
+          <motion.div 
+            className="absolute left-[38%] top-[18%] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#18A94B]"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.4 }}
+          />
+          <motion.div 
+            className="absolute left-[66%] top-[65%] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#18A94B]"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 1.5 }}
+          />
+        </div>
+
         {/* CARD A: UPPER-LEFT OF AFRICA MAP (Visible on all mobile screens: 360px, 375px, 390px, 430px) */}
         <div className="absolute left-[18%] top-[8%] sm:left-[22%] sm:top-[10%]">
           <AnimatePresence mode="wait">
@@ -135,14 +158,14 @@ export default function MarketTimeCard({
     );
   }
 
-  // DESKTOP VIEW: 3 ANCHOR SLOTS (100% UNTOUCHED)
+  // DESKTOP VIEW: 2 CONNECTED ANCHOR SLOTS
   return (
     <div
       aria-label="Operational market cards"
       className="pointer-events-none absolute inset-0 z-30 overflow-hidden"
     >
-      {/* ANCHOR A */}
-      <div className="absolute left-[34%] top-[14%] sm:left-[36%] sm:top-[14%] lg:left-[38%] lg:top-[14%]">
+      {/* ANCHOR A (Man's Country - top left, connecting to his chat bubble) */}
+      <div className="absolute left-[8%] top-[14%] sm:left-[12%] sm:top-[16%] lg:left-[16%] lg:top-[18%] xl:left-[18%] xl:top-[20%]">
         <AnimatePresence mode="wait">
           <RefinedCard
             key={`anchorA-${market0.id}-${language}`}
@@ -154,26 +177,13 @@ export default function MarketTimeCard({
         </AnimatePresence>
       </div>
 
-      {/* ANCHOR B */}
-      <div className="absolute right-[6%] top-[18%] sm:right-[8%] sm:top-[18%] hidden sm:block">
+      {/* ANCHOR B (Woman's Country - near woman's ear/shoulder) */}
+      <div className="absolute right-[2%] top-[55%] sm:right-[2%] sm:top-[52%] hidden sm:block">
         <AnimatePresence mode="wait">
           <RefinedCard
             key={`anchorB-${market1.id}-${language}`}
             market={market1}
             time={times[market1.id] || getFormattedTime(market1.timeZone, language)}
-            language={language}
-            reduceMotion={Boolean(reduceMotion)}
-          />
-        </AnimatePresence>
-      </div>
-
-      {/* ANCHOR C */}
-      <div className="absolute bottom-[18%] right-[10%] hidden lg:block xl:right-[12%]">
-        <AnimatePresence mode="wait">
-          <RefinedCard
-            key={`anchorC-${market2.id}-${language}`}
-            market={market2}
-            time={times[market2.id] || getFormattedTime(market2.timeZone, language)}
             language={language}
             reduceMotion={Boolean(reduceMotion)}
           />

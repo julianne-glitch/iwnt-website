@@ -92,7 +92,7 @@ export default function Navbar() {
           >
             <Image
               src="/images/logo-new.png"
-              alt="IntelWNT — Workforce Network Technologies"
+              alt="IntelWNT - Workforce Network Technologies"
               width={220}
               height={48}
               className="h-8 sm:h-9 lg:h-10 w-auto object-contain transition-transform group-hover:scale-[1.01]"

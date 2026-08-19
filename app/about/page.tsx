@@ -91,7 +91,7 @@ export default function AboutPage() {
           
           <div className="relative w-full lg:w-[42%] min-h-[450px] shrink-0 bg-slate-50">
             <Image
-              src="/images/derick-nzo-fonderson-new.png"
+              src="/images/derick-nzo-fonderson-v2.jpg"
               alt={a.founder.name}
               fill
               className="object-cover object-top"

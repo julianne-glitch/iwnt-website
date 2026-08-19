@@ -145,7 +145,7 @@ export default function EmployeeJourney() {
         {/* BOTTOM CAPTION */}
         <div className="mt-5 border-t border-slate-100 pt-3 text-center">
           <p className="text-xs font-medium text-slate-500">
-            We tell the story of an employee from hire to pay — showing how everything works together.
+            We tell the story of an employee from hire to pay - showing how everything works together.
           </p>
         </div>
       </div>

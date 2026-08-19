@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { Users, Settings, ShieldCheck, Globe2 } from "lucide-react";
 import { OPERATIONAL_MARKETS } from "@/app/data/markets";
 import { useLanguage } from "@/app/context/LanguageContext";
+import { AFRICA_COUNTRY_PATHS } from "@/app/data/africaGeoData";
 import AfricaMap from "@/app/components/coverage/AfricaMap";
 import MarketCommandPanel from "@/app/components/coverage/MarketCommandPanel";
 import MobileMarketCard from "@/app/components/coverage/MobileMarketCard";
@@ -13,26 +14,28 @@ export default function CoverageSection() {
   const { t } = useLanguage();
   const c = t.coverageSection;
 
-  const [selectedMarketId, setSelectedMarketId] = useState<string>("cameroon");
+  const [activeCountryCode, setActiveCountryCode] = useState<string>("cm");
   const [autoTourActive, setAutoTourActive] = useState<boolean>(true);
   const [mobileFilter, setMobileFilter] = useState<"current" | "all">("current");
 
-  // Non-operational country state (for command panel)
-  const [nonOpCountry, setNonOpCountry] = useState<{ code: string; name: string } | null>(null);
+  // Derive selected market or non-operational country based on activeCountryCode
+  const activeMarket = OPERATIONAL_MARKETS.find((m) => m.code === activeCountryCode);
+  const selectedMarketId = activeMarket ? activeMarket.id : OPERATIONAL_MARKETS[0].id;
+  const activeCountryData = AFRICA_COUNTRY_PATHS.find(c => c.id === activeCountryCode);
+  const nonOpCountry = activeMarket ? null : { code: activeCountryCode, name: activeCountryData?.name || "" };
 
-  // Selected market object
   const selectedMarket =
     OPERATIONAL_MARKETS.find((m) => m.id === selectedMarketId) || OPERATIONAL_MARKETS[0];
 
-  // Automatic tour through operational markets (pauses permanently on user click)
+  // Automatic tour through ALL 54 countries
   useEffect(() => {
     if (!autoTourActive) return;
 
     const interval = setInterval(() => {
-      setSelectedMarketId((currentId) => {
-        const idx = OPERATIONAL_MARKETS.findIndex((m) => m.id === currentId);
-        const nextIdx = (idx + 1) % OPERATIONAL_MARKETS.length;
-        return OPERATIONAL_MARKETS[nextIdx].id;
+      setActiveCountryCode((currentCode) => {
+        const idx = AFRICA_COUNTRY_PATHS.findIndex((c) => c.id === currentCode);
+        const nextIdx = (idx + 1) % AFRICA_COUNTRY_PATHS.length;
+        return AFRICA_COUNTRY_PATHS[nextIdx].id;
       });
     }, 4500);
 
@@ -41,13 +44,13 @@ export default function CoverageSection() {
 
   const handleUserSelectMarket = (id: string) => {
     setAutoTourActive(false);
-    setNonOpCountry(null); // Clear non-operational state
-    setSelectedMarketId(id);
+    const market = OPERATIONAL_MARKETS.find((m) => m.id === id);
+    if (market) setActiveCountryCode(market.code);
   };
 
-  const handleNonOperationalClick = (countryCode: string, countryName: string) => {
+  const handleNonOperationalClick = (countryCode: string) => {
     setAutoTourActive(false);
-    setNonOpCountry({ code: countryCode, name: countryName });
+    setActiveCountryCode(countryCode);
   };
 
   const handleExplore = () => {
@@ -63,10 +66,10 @@ export default function CoverageSection() {
       {/* AMBIENT BACKGROUND GLOW */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] rounded-full bg-[#16A34A]/5 blur-[120px] pointer-events-none" />
 
-      <div className="max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* =========================================================================
-            DESKTOP COMPOSITION (hidden lg:grid) — 3 COLUMNS: ~27% | ~49% | ~24%
+            DESKTOP COMPOSITION (hidden lg:grid) - 3 COLUMNS: ~27% | ~49% | ~24%
         ========================================================================= */}
         <div className="hidden lg:grid grid-cols-12 gap-4 lg:gap-5 items-center">
           
@@ -202,14 +205,14 @@ export default function CoverageSection() {
           {/* CENTER COLUMN (~49% / ~6 cols): INTERACTIVE AFRICA SVG MAP */}
           <div className="col-span-6 flex items-center justify-center">
             <AfricaMap
-              selectedMarketId={selectedMarketId}
+              activeCountryCode={activeCountryCode}
               onSelectMarket={handleUserSelectMarket}
               onSelectNonOperational={handleNonOperationalClick}
             />
           </div>
 
           {/* RIGHT COLUMN (~24% / ~3 cols): FLOATING AFRICA COMMAND VIEW PANEL */}
-          <div className="col-span-3 flex items-center justify-center">
+          <div className="col-span-3 flex items-center justify-center mt-24 lg:mt-40">
             <MarketCommandPanel
               selectedMarket={selectedMarket}
               onSelectMarket={handleUserSelectMarket}
@@ -221,7 +224,7 @@ export default function CoverageSection() {
         </div>
 
         {/* =========================================================================
-            MOBILE COMPOSITION (block md:hidden) — DEDICATED RESPONSIVE MOBILE UX
+            MOBILE COMPOSITION (block md:hidden) - DEDICATED RESPONSIVE MOBILE UX
         ========================================================================= */}
         <div className="block md:hidden text-left mx-auto max-w-[430px] px-[2px]">
           
@@ -283,7 +286,7 @@ export default function CoverageSection() {
             <div className="w-full h-[480px] relative rounded-2xl border border-slate-800/90 shadow-lg overflow-hidden flex flex-col bg-[#070D19]">
               <div className="w-full h-[360px] mt-2 relative z-0">
                 <AfricaMap
-                  selectedMarketId={selectedMarketId}
+                  activeCountryCode={activeCountryCode}
                   onSelectMarket={handleUserSelectMarket}
                   onSelectNonOperational={handleNonOperationalClick}
                 />
@@ -406,7 +409,7 @@ export default function CoverageSection() {
             </div>
             <div className="w-full aspect-[1/0.9] relative bg-[#0B1424] rounded-2xl border border-slate-800/90 p-4 shadow-lg overflow-hidden flex items-center justify-center">
               <AfricaMap
-                selectedMarketId={selectedMarketId}
+                activeCountryCode={activeCountryCode}
                 onSelectMarket={handleUserSelectMarket}
                 onSelectNonOperational={handleNonOperationalClick}
               />

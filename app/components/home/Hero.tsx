@@ -5,18 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowRight, ChevronRight } from "lucide-react";
-import AfricaNetwork from "./AfricaNetwork";
+import HeroChatBubbles from "./HeroChatBubbles";
 import MarketTimeCard from "./MarketTimeCard";
 import HeroCapabilities from "./HeroCapabilities";
 import { useLanguage } from "@/app/context/LanguageContext";
 
 export default function Hero() {
   const { t } = useLanguage();
-  const [activeMarketIds, setActiveMarketIds] = useState<string[]>([
-    "cameroon",
-    "senegal",
-    "cote-divoire",
-  ]);
 
   return (
     <section className="relative overflow-hidden bg-white pt-18 sm:pt-20 lg:pt-0">
@@ -35,8 +30,10 @@ export default function Hero() {
               quality={95}
               draggable={false}
               sizes="100vw"
-              className="select-none object-cover object-center"
+              className="select-none object-cover object-center brightness-[1.03] contrast-[1.03] saturate-[1.05]"
             />
+            {/* PERFECT WHITE BLEND GRADIENT FOR TEXT AREA */}
+            <div className="absolute inset-y-0 left-0 w-[55%] bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
           </div>
 
           {/* LEFT CONTENT (Copy, Eyebrow, CTAs - 44% width) */}
@@ -123,11 +120,9 @@ export default function Hero() {
 
           {/* RIGHT-SIDE MOTION GRAPHICS ZONE */}
           <div className="absolute right-0 top-0 h-full w-[56%] z-20 pointer-events-none">
-            {/* AFRICA MAP NETWORK LAYER POSITIONED STRICTLY OVER THE AFRICA CONTINENT IN THE PHOTOGRAPH (100% CLEAR OF THE MAN'S FACE & BODY) */}
-            <div className="absolute left-[35%] top-[6%] w-[58%] h-[78%] pointer-events-none">
-              <AfricaNetwork activeMarketIds={activeMarketIds} />
-            </div>
-            <MarketTimeCard onActiveMarketsChange={setActiveMarketIds} />
+            {/* Network SVG removed because background image already has the network lines */}
+            <MarketTimeCard />
+            <HeroChatBubbles />
           </div>
         </div>
 
@@ -216,7 +211,7 @@ export default function Hero() {
               quality={95}
               draggable={false}
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="select-none object-cover object-[68%_35%] xs:object-[66%_35%] sm:object-[64%_35%]"
+              className="select-none object-cover object-[68%_35%] xs:object-[66%_35%] sm:object-[64%_35%] brightness-[1.03] contrast-[1.03] saturate-[1.05]"
             />
 
             {/* SOFT WHITE-TO-IMAGE TOP FADE GRADIENT OVERLAY */}
@@ -224,13 +219,8 @@ export default function Hero() {
 
             {/* SINGLE ACTIVE DELICATE ANNOTATION CARD & MAP MOTION OVERLAY */}
             <div className="absolute inset-0 z-20 pointer-events-none">
-              <div className="absolute left-[38%] top-[10%] w-[56%] h-[78%] pointer-events-none">
-                <AfricaNetwork activeMarketIds={activeMarketIds} isMobileOnly={true} />
-              </div>
-              <MarketTimeCard
-                isMobileOnly={true}
-                onActiveMarketsChange={setActiveMarketIds}
-              />
+              <MarketTimeCard isMobileOnly={true} />
+              <HeroChatBubbles />
             </div>
           </motion.div>
         </div>

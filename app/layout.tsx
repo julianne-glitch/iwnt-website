@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "IntelWNT — Workforce Network Technologies | Connecting Ambitions Across Africa",
+  title: "IntelWNT - Workforce Network Technologies | Connecting Ambitions Across Africa",
   description:
     "IWNT is building a connected workforce platform designed to help organisations hire, onboard, manage and pay teams across African markets.",
   icons: {
