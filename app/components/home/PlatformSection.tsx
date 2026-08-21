@@ -753,7 +753,7 @@ export default function PlatformSection() {
                 className="relative h-[220px] sm:h-[250px] lg:h-[255px] w-full max-w-[460px] overflow-hidden rounded-xl border border-slate-200/90 shadow-xs bg-slate-100 ring-2 ring-emerald-500/40"
               >
                 <Image
-                  src="/images/african-workforce-operations-candid.png"
+                  src="/images/african-workforce-operations-candid.webp"
                   alt="IWNT Operations Specialist assisting client"
                   fill
                   priority
@@ -989,7 +989,7 @@ export default function PlatformSection() {
               className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-slate-200/90 shadow-lg bg-slate-100 ring-4 ring-emerald-50/50 mt-10 z-10"
             >
               <Image
-                src="/images/african-workforce-operations-candid.png"
+                src="/images/african-workforce-operations-candid.webp"
                 alt="IWNT Operations Specialist assisting client"
                 fill
                 priority

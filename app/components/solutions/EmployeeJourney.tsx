@@ -53,7 +53,7 @@ export default function EmployeeJourney() {
           <div className="relative z-10 flex flex-col items-center text-center w-[135px] shrink-0">
             <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-white shadow-md ring-2 ring-[#16A34A]/40 bg-slate-100">
               <Image
-                src="/images/aissatou-diallo.png"
+                src="/images/aissatou-diallo.webp"
                 alt={persona.name}
                 fill
                 priority
@@ -114,7 +114,7 @@ export default function EmployeeJourney() {
           <div className="relative z-10 flex flex-col items-center text-center w-[145px] shrink-0">
             <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-white shadow-md ring-2 ring-[#16A34A]/40 bg-slate-100">
               <Image
-                src="/images/aissatou-diallo.png"
+                src="/images/aissatou-diallo.webp"
                 alt={persona.name}
                 fill
                 priority
@@ -160,7 +160,7 @@ export default function EmployeeJourney() {
         <div className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/80 p-3.5 mb-5">
           <div className="relative h-13 w-13 overflow-hidden rounded-full border-2 border-white shadow-xs shrink-0 ring-2 ring-[#16A34A]/30">
             <Image
-              src="/images/aissatou-diallo.png"
+              src="/images/aissatou-diallo.webp"
               alt={persona.name}
               fill
               className="object-cover object-center"
@@ -235,7 +235,7 @@ export default function EmployeeJourney() {
             <div className="rounded-xl border border-[#16A34A]/30 bg-[#16A34A]/5 p-3.5 flex items-center gap-3">
               <div className="relative h-10 w-10 overflow-hidden rounded-full border border-white shadow-2xs shrink-0">
                 <Image
-                  src="/images/aissatou-diallo.png"
+                  src="/images/aissatou-diallo.webp"
                   alt={persona.name}
                   fill
                   className="object-cover object-center"

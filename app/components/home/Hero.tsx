@@ -23,7 +23,7 @@ export default function Hero() {
           {/* STATIC HERO PHOTOGRAPH */}
           <div className="absolute inset-0 z-0">
             <Image
-              src="/images/iwnt-hero.png"
+              src="/images/iwnt-hero-new.jpg"
               alt="IntelWNT professionals connected across African markets"
               fill
               priority
@@ -204,7 +204,7 @@ export default function Hero() {
           >
             {/* STATIC PHOTOGRAPH (PRECISE CROP CENTERING MAN & WOMAN IN MOBILE VIEW) */}
             <Image
-              src="/images/iwnt-hero.png"
+              src="/images/iwnt-hero-new.jpg"
               alt="IntelWNT professionals connected across African markets"
               fill
               priority

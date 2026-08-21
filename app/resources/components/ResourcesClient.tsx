@@ -52,7 +52,7 @@ export default function ResourcesClient({ articles }: { articles: Article[] }) {
           <div className="lg:w-1/2 relative h-[300px] sm:h-[400px] w-full max-w-xl hidden lg:block">
             <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-lg border border-slate-200">
               <Image 
-                src="/images/african-workforce-operations-expert.png"
+                src="/images/african-workforce-operations-expert.webp"
                 alt="Workforce Knowledge"
                 fill
                 className="object-cover"
@@ -78,7 +78,7 @@ export default function ResourcesClient({ articles }: { articles: Article[] }) {
           <div className="w-full bg-white rounded-[2rem] border border-slate-200 overflow-hidden shadow-sm flex flex-col lg:flex-row hover:shadow-xl transition-all duration-300 group">
             <div className="lg:w-[45%] relative h-72 lg:h-auto min-h-[350px]">
               <Image 
-                src="/images/african-workforce-operations-candid.png" 
+                src="/images/african-workforce-operations-candid.webp" 
                 alt="Cameroon CNPS Guide" 
                 fill 
                 className="object-cover group-hover:scale-105 transition-transform duration-700"

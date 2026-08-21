@@ -29,7 +29,7 @@ export default function AboutPage() {
               <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white to-transparent z-10 lg:hidden" />
               
               <Image
-                src="/images/iwnt-hero.png"
+                src="/images/iwnt-hero-new.jpg"
                 alt="IWNT Network"
                 fill
                 priority

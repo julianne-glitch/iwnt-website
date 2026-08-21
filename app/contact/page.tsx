@@ -20,7 +20,7 @@ export default function ContactPage() {
         {/* Background Image Container */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/contact-hero.png"
+            src="/images/contact-hero.webp"
             alt="Dubai Skyline"
             fill
             sizes="100vw"

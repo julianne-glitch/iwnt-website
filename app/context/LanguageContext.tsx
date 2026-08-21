@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Language, TRANSLATIONS, TranslationSchema } from "@/app/data/translations";
 
 interface LanguageContextType {
@@ -15,6 +16,7 @@ const STORAGE_KEY = "iwnt_lang";
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguageState] = useState<Language>("en");
+  const router = useRouter();
 
   useEffect(() => {
     try {
@@ -41,6 +43,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // Ignore write errors
     }
+    router.refresh();
   };
 
   const t = TRANSLATIONS[language];
