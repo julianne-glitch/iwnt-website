@@ -24,7 +24,7 @@ export default function Footer() {
           <div className="flex flex-col space-y-5 lg:w-4/12">
             <Link href="/" className="inline-block shrink-0">
               <Image
-                src="/images/logo.svg"
+                src="/images/logo.png"
                 alt="IntelWNT Logo"
                 width={150}
                 height={35}

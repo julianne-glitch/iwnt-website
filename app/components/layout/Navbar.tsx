@@ -91,7 +91,7 @@ export default function Navbar() {
             className="flex items-center group shrink-0"
           >
             <Image
-              src="/images/logo.svg"
+              src="/images/logo.png"
               alt="IntelWNT - Workforce Network Technologies"
               width={220}
               height={48}
