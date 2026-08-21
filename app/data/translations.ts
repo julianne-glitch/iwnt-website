@@ -77,8 +77,12 @@ export interface TranslationSchema {
     block2Headline: string;
     block2Subtitle: string;
     block2Body: string;
-    block2ClientMsg: string;
-    block2IwntMsg: string;
+    block2Scenarios: Array<{
+      clientMsg: string;
+      iwntMsg: string;
+      node2Text: string;
+      flag: string;
+    }>;
     block2Callout1Title: string;
     block2Callout1Sub: string;
     block2Callout2Title: string;
@@ -90,16 +94,38 @@ export interface TranslationSchema {
     block2RailStep2: string;
     block2RailStep3: string;
     block2Node1: string;
-    block2Node2: string;
     block2Node3: string;
     block2Connected: string;
     block2TaglineMain: string;
     block2TaglineSub: string;
     mobileIntakeProcessing: string;
-    mobileDashboardEmployees: string;
     mobileDashboardCountries: string;
     mobileDashboardPayroll: string;
     mobileDashboardCompliance: string;
+    mockupRegion: string;
+    mockupLiveWorkspace: string;
+    mockupDashboard: string;
+    mockupEmployees: string;
+    mockupPayroll: string;
+    mockupCompliance: string;
+    mockupSettings: string;
+    mockupTotalEmployees: string;
+    mockupActiveCountries: string;
+    mockupPayrollProcessed: string;
+    mockupComplianceRate: string;
+    mockupWorkforceByCountry: string;
+    mockupViewAll: string;
+    mockupRecentActivity: string;
+    mockupActivity1: string;
+    mockupActivity2: string;
+    mockupActivity3: string;
+    mockupActivity4: string;
+    mockupDoc1: string;
+    mockupDoc2: string;
+    mockupDoc3: string;
+    mockupDoc4: string;
+    mockupDoc5: string;
+    mockupDoc6: string;
   };
   coverageSection: {
     eyebrow: string;
@@ -116,6 +142,7 @@ export interface TranslationSchema {
     card3Sub: string;
     card4Title: string;
     card4Sub: string;
+    closingLine: string;
     bottomGlobalTitle: string;
     bottomGlobalSub: string;
     legendIwnt: string;
@@ -335,6 +362,17 @@ export interface TranslationSchema {
       label2: string;
       val3: string;
       label3: string;
+    };
+    credibility: {
+      eyebrow: string;
+      headlineLine1: string;
+      headlineLine2: string;
+      body: string;
+      card1Title: string;
+      card1Body: string;
+      card2Title: string;
+      card2Body: string;
+      closingLine: string;
     };
     vision: {
       eyebrow: string;
@@ -556,8 +594,56 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       block2Subtitle: "Human + technology connection",
       block2Body:
         "The platform is being designed to simplify workforce operations, while local experts remain available to support organisations when real-world situations need human judgement.",
-      block2ClientMsg: "Can we onboard 24 employees in Cameroon next month?",
-      block2IwntMsg: "We've got you. Our team is on it.",
+      block2Scenarios: [
+        {
+          clientMsg: "Can we onboard 24 employees in Cameroon next month?",
+          iwntMsg: "We've got you. Our team is on it.",
+          node2Text: "Cameroon team matched 🇨🇲",
+          flag: "🇨🇲"
+        },
+        {
+          clientMsg: "Can you run payroll for our Côte d'Ivoire team?",
+          iwntMsg: "Yes, compliant payroll is ready to process.",
+          node2Text: "Côte d'Ivoire team matched 🇨🇮",
+          flag: "🇨🇮"
+        },
+        {
+          clientMsg: "Can we hire 12 employees in Senegal?",
+          iwntMsg: "Absolutely. Contracts are being prepared.",
+          node2Text: "Senegal team matched 🇸🇳",
+          flag: "🇸🇳"
+        },
+        {
+          clientMsg: "Can you support compliance for our DRC workforce?",
+          iwntMsg: "Our experts are reviewing the requirements.",
+          node2Text: "DRC team matched 🇨🇩",
+          flag: "🇨🇩"
+        },
+        {
+          clientMsg: "We need to expand operations into Ghana.",
+          iwntMsg: "Local entities and onboarding flows initialized.",
+          node2Text: "Ghana team matched 🇬🇭",
+          flag: "🇬🇭"
+        },
+        {
+          clientMsg: "How quickly can we start employee management in Kenya?",
+          iwntMsg: "Everything is set up. We can begin today.",
+          node2Text: "Kenya team matched 🇰🇪",
+          flag: "🇰🇪"
+        },
+        {
+          clientMsg: "Can you handle our new team's onboarding in Rwanda?",
+          iwntMsg: "Yes, the onboarding flow is active.",
+          node2Text: "Rwanda team matched 🇷🇼",
+          flag: "🇷🇼"
+        },
+        {
+          clientMsg: "We need market expansion support in Nigeria.",
+          iwntMsg: "Local specialists are assigned to your account.",
+          node2Text: "Nigeria team matched 🇳🇬",
+          flag: "🇳🇬"
+        }
+      ],
       block2Callout1Title: "Real people.",
       block2Callout1Sub: "Local experts.",
       block2Callout2Title: "Technology that's powerful.",
@@ -569,7 +655,6 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       block2RailStep2: "Local expertise",
       block2RailStep3: "Work gets done",
       block2Node1: "Request received",
-      block2Node2: "Cameroon team matched 🇨🇲",
       block2Node3: "Local expert assigned",
       block2Connected: "● Connected",
       block2TaglineMain: "Technology handles the routing. People handle the work.",
@@ -579,28 +664,53 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       mobileDashboardCountries: "Active Countries",
       mobileDashboardPayroll: "Payroll Processed",
       mobileDashboardCompliance: "Compliance",
+      mockupRegion: "REGION: WEST & CENTRAL AFRICA",
+      mockupLiveWorkspace: "Live Workspace",
+      mockupDashboard: "Dashboard",
+      mockupEmployees: "Employees",
+      mockupPayroll: "Payroll",
+      mockupCompliance: "Compliance",
+      mockupSettings: "Settings",
+      mockupTotalEmployees: "Total Employees",
+      mockupActiveCountries: "Active Countries",
+      mockupPayrollProcessed: "Payroll Processed",
+      mockupComplianceRate: "Compliance Rate",
+      mockupWorkforceByCountry: "Workforce by Country",
+      mockupViewAll: "View all",
+      mockupRecentActivity: "Recent Activity",
+      mockupActivity1: "Payroll completed - Cameroon",
+      mockupActivity2: "New hire onboarded - Senegal",
+      mockupActivity3: "Contract signed - Côte d'Ivoire",
+      mockupActivity4: "Compliance update - Mali",
+      mockupDoc1: "Payroll_Final_V7.xlsx",
+      mockupDoc2: "Employee Contract.pdf",
+      mockupDoc3: "Compliance Checklist.d...",
+      mockupDoc4: "Onboarding List.xlsx",
+      mockupDoc5: "Client Request.msg",
+      mockupDoc6: "WhatsApp Message",
     },
     coverageSection: {
-      eyebrow: "LOCAL EXPERTISE. GLOBAL REACH.",
-      headlinePart1: "AFRICA,",
-      headlinePart2: "CONNECTED.",
-      headlinePart3: "Globally enabled.",
-      subtitle: "Local expertise. Global reach.",
+      eyebrow: "LOCAL EXPERTISE · GLOBAL REACH.",
+      headlinePart1: "BUILT IN DUBAI.",
+      headlinePart2: "CONNECTED TO AFRICA.",
+      headlinePart3: "",
+      subtitle: "African expertise. Global foundation.",
       description:
-        "IWNT brings together technology, local expertise and international coordination to help organisations hire, manage and support their people across Africa and beyond.",
-      card1Title: "Local expertise",
-      card1Sub: "People on the ground who understand local realities.",
-      card2Title: "Workforce operations",
-      card2Sub: "Connected support across the employee lifecycle.",
+        "IWNT is registered in DIFC and connected to the Ignyte ecosystem—giving us a global innovation base for workforce solutions built for African and emerging-market teams.",
+      card1Title: "DIFC",
+      card1Sub: "Registration & innovation base",
+      card2Title: "IGNYTE",
+      card2Sub: "Global innovation ecosystem",
       card3Title: "Compliance support",
       card3Sub: "Local knowledge aligned with international standards.",
       card4Title: "Connected technology",
       card4Sub: "One platform. Better visibility. Smarter coordination.",
+      closingLine: "DUBAI FOUNDATION · AFRICAN EXPERTISE · INTERNATIONAL REACH",
       bottomGlobalTitle: "AFRICA AT THE CORE. CONNECTED BEYOND.",
       bottomGlobalSub: "Supporting organisations across African and international markets.",
       legendIwnt: "IWNT presence",
       legendAfrican: "African market",
-      cmdTitle: "AFRICA COMMAND VIEW",
+      cmdTitle: "IWNT MARKET VIEW",
       cmdLiveNetwork: "Live network",
       cmdOperationalPresence: "Operational presence",
       cmdCapabilitiesTitle: "MARKET CAPABILITIES",
@@ -837,6 +947,17 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         val3: "1",
         label3: "Connected vision",
       },
+      credibility: {
+        eyebrow: "DIFC REGISTERED · AFRICA-FOCUSED · GLOBAL BY DESIGN",
+        headlineLine1: "Built in Dubai.",
+        headlineLine2: "Connected to Africa.",
+        body: "IWNT is registered in DIFC and connected to the Ignyte ecosystem—giving us a global innovation base for workforce solutions built for African and emerging-market teams.",
+        card1Title: "DIFC Registration",
+        card1Body: "Dubai-based innovation and business foundation.",
+        card2Title: "Ignyte Ecosystem",
+        card2Body: "Connected to a global innovation community.",
+        closingLine: "Dubai foundation. African expertise. International reach.",
+      },
       vision: {
         eyebrow: "EXPERIENCE MEETS TECHNOLOGY",
         headlineLine1: "Built on the ground.",
@@ -1063,9 +1184,56 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       block2Subtitle: "Connexion entre l'humain et la technologie",
       block2Body:
         "La plateforme est conçue pour simplifier les opérations RH, tout en permettant à des experts locaux d'intervenir lorsque les situations réelles nécessitent une expertise humaine.",
-      block2ClientMsg:
-        "Pouvons-nous intégrer 24 collaborateurs au Cameroun le mois prochain ?",
-      block2IwntMsg: "Nous nous en occupons. Notre équipe est mobilisée.",
+      block2Scenarios: [
+        {
+          clientMsg: "Pouvons-nous intégrer 24 collaborateurs au Cameroun le mois prochain ?",
+          iwntMsg: "Nous nous en occupons. Notre équipe est mobilisée.",
+          node2Text: "Équipe Cameroun identifiée 🇨🇲",
+          flag: "🇨🇲"
+        },
+        {
+          clientMsg: "Pouvez-vous gérer la paie de notre équipe en Côte d'Ivoire ?",
+          iwntMsg: "Oui, la paie conforme est prête à être traitée.",
+          node2Text: "Équipe Côte d'Ivoire identifiée 🇨🇮",
+          flag: "🇨🇮"
+        },
+        {
+          clientMsg: "Pouvons-nous recruter 12 collaborateurs au Sénégal ?",
+          iwntMsg: "Absolument. Les contrats sont en cours de préparation.",
+          node2Text: "Équipe Sénégal identifiée 🇸🇳",
+          flag: "🇸🇳"
+        },
+        {
+          clientMsg: "Pouvez-vous assurer la conformité de nos effectifs en RDC ?",
+          iwntMsg: "Nos experts examinent les exigences.",
+          node2Text: "Équipe RDC identifiée 🇨🇩",
+          flag: "🇨🇩"
+        },
+        {
+          clientMsg: "Nous devons étendre nos opérations au Ghana.",
+          iwntMsg: "Entités locales et flux d'intégration initialisés.",
+          node2Text: "Équipe Ghana identifiée 🇬🇭",
+          flag: "🇬🇭"
+        },
+        {
+          clientMsg: "À quelle vitesse pouvons-nous commencer la gestion des employés au Kenya ?",
+          iwntMsg: "Tout est en place. Nous pouvons commencer dès aujourd'hui.",
+          node2Text: "Équipe Kenya identifiée 🇰🇪",
+          flag: "🇰🇪"
+        },
+        {
+          clientMsg: "Pouvez-vous gérer l'intégration de notre nouvelle équipe au Rwanda ?",
+          iwntMsg: "Oui, le flux d'intégration est actif.",
+          node2Text: "Équipe Rwanda identifiée 🇷🇼",
+          flag: "🇷🇼"
+        },
+        {
+          clientMsg: "Nous avons besoin d'un soutien pour notre expansion au Nigeria.",
+          iwntMsg: "Des spécialistes locaux sont affectés à votre compte.",
+          node2Text: "Équipe Nigeria identifiée 🇳🇬",
+          flag: "🇳🇬"
+        }
+      ],
       block2Callout1Title: "De vraies personnes.",
       block2Callout1Sub: "Des experts locaux.",
       block2Callout2Title: "Une technologie puissante.",
@@ -1077,7 +1245,6 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       block2RailStep2: "Expertise locale",
       block2RailStep3: "Travail accompli",
       block2Node1: "Demande reçue",
-      block2Node2: "Équipe Cameroun identifiée 🇨🇲",
       block2Node3: "Expert local attribué",
       block2Connected: "● Connecté",
       block2TaglineMain: "La technologie orchestre. Nos experts agissent.",
@@ -1087,28 +1254,53 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       mobileDashboardCountries: "Pays actifs",
       mobileDashboardPayroll: "Paie traitée",
       mobileDashboardCompliance: "Conformité",
+      mockupRegion: "RÉGION : AFRIQUE DE L'OUEST ET CENTRALE",
+      mockupLiveWorkspace: "Espace Actif",
+      mockupDashboard: "Tableau de bord",
+      mockupEmployees: "Employés",
+      mockupPayroll: "Paie",
+      mockupCompliance: "Conformité",
+      mockupSettings: "Paramètres",
+      mockupTotalEmployees: "Total Employés",
+      mockupActiveCountries: "Pays Actifs",
+      mockupPayrollProcessed: "Paie Traitée",
+      mockupComplianceRate: "Taux Conformité",
+      mockupWorkforceByCountry: "Effectif par Pays",
+      mockupViewAll: "Voir tout",
+      mockupRecentActivity: "Activité Récente",
+      mockupActivity1: "Paie terminée - Cameroun",
+      mockupActivity2: "Nouvel employé - Sénégal",
+      mockupActivity3: "Contrat signé - Côte d'Ivoire",
+      mockupActivity4: "Mise à jour conformité - Mali",
+      mockupDoc1: "Paie_Finale_V7.xlsx",
+      mockupDoc2: "Contrat_Employe.pdf",
+      mockupDoc3: "Liste_Conformite.d...",
+      mockupDoc4: "Liste_Integration.xlsx",
+      mockupDoc5: "Demande_Client.msg",
+      mockupDoc6: "Message WhatsApp",
     },
     coverageSection: {
-      eyebrow: "EXPERTISE LOCALE. PORTÉE INTERNATIONALE.",
-      headlinePart1: "L'AFRIQUE,",
-      headlinePart2: "CONNECTÉE.",
-      headlinePart3: "Connectée au monde.",
-      subtitle: "Expertise locale. Portée internationale.",
+      eyebrow: "EXPERTISE LOCALE · PORTÉE MONDIALE.",
+      headlinePart1: "CONSTRUIT À DUBAÏ.",
+      headlinePart2: "CONNECTÉ À L'AFRIQUE.",
+      headlinePart3: "",
+      subtitle: "Expertise africaine. Fondation mondiale.",
       description:
-        "IWNT réunit technologie, expertise locale et coordination internationale pour aider les organisations à recruter, gérer et accompagner leurs équipes en Afrique et au-delà.",
-      card1Title: "Expertise locale",
-      card1Sub: "Des équipes sur le terrain qui comprennent les réalités locales.",
-      card2Title: "Opérations RH",
-      card2Sub: "Accompagnement connecté tout au long du cycle de vie de l'employé.",
+        "IWNT est enregistrée au DIFC et connectée à l'écosystème Ignyte—nous offrant une base d'innovation mondiale pour des solutions RH conçues pour les équipes africaines et des marchés émergents.",
+      card1Title: "DIFC",
+      card1Sub: "Enregistrement & base d'innovation",
+      card2Title: "IGNYTE",
+      card2Sub: "Écosystème mondial d'innovation",
       card3Title: "Support conformité",
       card3Sub: "Expertise locale alignée sur les standards internationaux.",
       card4Title: "Technologie connectée",
       card4Sub: "Une plateforme. Meilleure visibilité. Coordination optimisée.",
+      closingLine: "FONDATION À DUBAÏ · EXPERTISE AFRICAINE · PORTÉE INTERNATIONALE",
       bottomGlobalTitle: "L’AFRIQUE AU CŒUR. CONNECTÉE AU-DELÀ.",
       bottomGlobalSub: "Au service des organisations sur les marchés africains et internationaux.",
       legendIwnt: "Présence IWNT",
       legendAfrican: "Marché africain",
-      cmdTitle: "VUE DE COMMANDEMENT AFRIQUE",
+      cmdTitle: "VUE DU MARCHÉ IWNT",
       cmdLiveNetwork: "Réseau en direct",
       cmdOperationalPresence: "Présence opérationnelle",
       cmdCapabilitiesTitle: "CAPACITÉS DU MARCHÉ",
@@ -1344,6 +1536,17 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         label2: "Marchés africains",
         val3: "1",
         label3: "Vision connectée",
+      },
+      credibility: {
+        eyebrow: "ENREGISTRÉ AU DIFC · TOURNÉ VERS L'AFRIQUE · PORTÉE MONDIALE",
+        headlineLine1: "Construit à Dubaï.",
+        headlineLine2: "Connecté à l'Afrique.",
+        body: "IWNT est enregistré au DIFC et connecté à l'écosystème Ignyte, nous offrant une base d'innovation mondiale pour des solutions RH conçues pour l'Afrique et les marchés émergents.",
+        card1Title: "Enregistrement DIFC",
+        card1Body: "Une base solide pour l'innovation et les affaires à Dubaï.",
+        card2Title: "Écosystème Ignyte",
+        card2Body: "Connecté à une communauté mondiale d'innovation.",
+        closingLine: "Fondation à Dubaï. Expertise africaine. Portée internationale.",
       },
       vision: {
         eyebrow: "L’EXPÉRIENCE RENCONTRE LA TECHNOLOGIE",

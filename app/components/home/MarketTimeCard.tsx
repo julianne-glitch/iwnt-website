@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { OPERATIONAL_MARKETS, MarketNode } from "@/app/data/markets";
+import { OPERATIONAL_MARKETS } from "@/app/data/markets";
 import { useLanguage } from "@/app/context/LanguageContext";
 import { Language } from "@/app/data/translations";
 
@@ -13,15 +13,49 @@ interface MarketTimeCardProps {
   isMobileOnly?: boolean;
 }
 
+export type DisplayMarket = {
+  id: string;
+  city: string;
+  country: Record<Language, string>;
+  timeZone: string;
+  flagSvg: string;
+};
+
+// Rotating sequence of International -> African connections
+const CONNECTIONS: { origin: DisplayMarket; destinationIndex: number }[] = [
+  {
+    origin: { id: "london", city: "London", country: { en: "United Kingdom", fr: "Royaume-Uni" }, timeZone: "Europe/London", flagSvg: "https://flagcdn.com/gb.svg" },
+    destinationIndex: 0 // Cameroon
+  },
+  {
+    origin: { id: "paris", city: "Paris", country: { en: "France", fr: "France" }, timeZone: "Europe/Paris", flagSvg: "https://flagcdn.com/fr.svg" },
+    destinationIndex: 2 // Cote d'Ivoire
+  },
+  {
+    origin: { id: "dubai", city: "Dubai", country: { en: "UAE", fr: "Émirats Arabes Unis" }, timeZone: "Asia/Dubai", flagSvg: "https://flagcdn.com/ae.svg" },
+    destinationIndex: 1 // Senegal
+  },
+  {
+    origin: { id: "newyork", city: "New York", country: { en: "USA", fr: "États-Unis" }, timeZone: "America/New_York", flagSvg: "https://flagcdn.com/us.svg" },
+    destinationIndex: 3 // DRC
+  },
+  {
+    origin: { id: "brussels", city: "Brussels", country: { en: "Belgium", fr: "Belgique" }, timeZone: "Europe/Brussels", flagSvg: "https://flagcdn.com/be.svg" },
+    destinationIndex: 4 // Mali
+  },
+  {
+    origin: { id: "toronto", city: "Toronto", country: { en: "Canada", fr: "Canada" }, timeZone: "America/Toronto", flagSvg: "https://flagcdn.com/ca.svg" },
+    destinationIndex: 2 // Cote d'Ivoire
+  }
+];
+
 export default function MarketTimeCard({
   isMobileOnly = false,
 }: MarketTimeCardProps) {
   const { language } = useLanguage();
   const reduceMotion = useReducedMotion();
   const [times, setTimes] = useState<TimeMap>({});
-
-  // Indices across anchor slots (slot 0: Card A (Man), slot 1: Card B (Woman))
-  const [slotIndices, setSlotIndices] = useState<[number, number]>([0, 2]);
+  const [connectionIndex, setConnectionIndex] = useState(0);
 
   const getFormattedTime = (timeZone: string, lang: Language) => {
     try {
@@ -50,6 +84,9 @@ export default function MarketTimeCard({
       OPERATIONAL_MARKETS.forEach((market) => {
         nextTimes[market.id] = getFormattedTime(market.timeZone, language);
       });
+      CONNECTIONS.forEach((c) => {
+        nextTimes[c.origin.id] = getFormattedTime(c.origin.timeZone, language);
+      });
       setTimes(nextTimes);
     };
 
@@ -60,24 +97,9 @@ export default function MarketTimeCard({
       return () => window.clearInterval(clockInterval);
     }
 
-    let activeSlotToChange = 0;
-
-    // Rotation interval (rotates 1 slot at a time every 4.5s)
     const rotationInterval = window.setInterval(() => {
-      setSlotIndices((current) => {
-        const next = [...current] as [number, number];
-        const slotToUpdate = activeSlotToChange;
-        activeSlotToChange = (activeSlotToChange + 1) % 2;
-
-        let candidate = (next[slotToUpdate] + 1) % OPERATIONAL_MARKETS.length;
-        while (candidate === next[0] || candidate === next[1]) {
-          candidate = (candidate + 1) % OPERATIONAL_MARKETS.length;
-        }
-
-        next[slotToUpdate] = candidate;
-        return next;
-      });
-    }, 4500);
+      setConnectionIndex((current) => (current + 1) % CONNECTIONS.length);
+    }, 4000); // 4 seconds to allow for full sequence
 
     return () => {
       window.clearInterval(clockInterval);
@@ -85,12 +107,20 @@ export default function MarketTimeCard({
     };
   }, [reduceMotion, language]);
 
-  const market0 = OPERATIONAL_MARKETS[slotIndices[0]];
-  const market1 = OPERATIONAL_MARKETS[slotIndices[1]];
+  const activeConnection = CONNECTIONS[connectionIndex];
+  const originMarket = activeConnection.origin;
+  
+  // Safely get the destination market
+  const destIndex = activeConnection.destinationIndex % OPERATIONAL_MARKETS.length;
+  const rawDestMarket = OPERATIONAL_MARKETS[destIndex];
+  const destinationMarket: DisplayMarket = {
+    id: rawDestMarket.id,
+    city: rawDestMarket.city,
+    country: rawDestMarket.country,
+    timeZone: rawDestMarket.timeZone,
+    flagSvg: rawDestMarket.flagSvg
+  };
 
-  // Effect removed since onActiveMarketsChange is no longer needed
-
-  // MOBILE VIEW: 2 CARDS ON 390px/412px/430px (min-[385px]:block), 1 CARD FALLBACK ON NARROW (<385px)
   if (isMobileOnly) {
     return (
       <div
@@ -101,6 +131,7 @@ export default function MarketTimeCard({
         <div className="absolute inset-0 -z-10 hidden min-[385px]:block overflow-hidden">
           <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full opacity-60">
             <motion.path
+              key={`mob-path-${connectionIndex}`}
               d="M 38 18 Q 50 42 66 65"
               fill="none"
               stroke="#18A94B"
@@ -109,48 +140,51 @@ export default function MarketTimeCard({
               strokeDasharray="5 5"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 1.2, ease: "easeInOut", delay: 0.5 }}
+              transition={{ duration: 1.0, ease: "easeInOut", delay: 0.4 }}
             />
           </svg>
-          {/* Pulses at the ends of the connection */}
           <motion.div 
+            key={`mob-pulse1-${connectionIndex}`}
             className="absolute left-[38%] top-[18%] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#18A94B]"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.4 }}
           />
           <motion.div 
+            key={`mob-pulse2-${connectionIndex}`}
             className="absolute left-[66%] top-[65%] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#18A94B]"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ delay: 1.5 }}
+            transition={{ delay: 1.4 }}
           />
         </div>
 
-        {/* CARD A: UPPER-LEFT OF AFRICA MAP (Visible on all mobile screens: 360px, 375px, 390px, 430px) */}
+        {/* CARD A: UPPER-LEFT */}
         <div className="absolute left-[18%] top-[8%] sm:left-[22%] sm:top-[10%]">
           <AnimatePresence mode="wait">
             <RefinedCard
-              key={`mobile-slotA-${market0.id}-${language}`}
-              market={market0}
-              time={times[market0.id] || getFormattedTime(market0.timeZone, language)}
+              key={`mobile-slotA-${originMarket.id}-${language}`}
+              market={originMarket}
+              time={times[originMarket.id] || getFormattedTime(originMarket.timeZone, language)}
               language={language}
               reduceMotion={Boolean(reduceMotion)}
               isMobile={true}
+              animationDelay={0}
             />
           </AnimatePresence>
         </div>
 
-        {/* CARD B: MID-RIGHT OF AFRICA MAP ABOVE LAPTOP & CLEAR OF FACES (Visible on 390px, 412px & 430px viewports >= 385px; hidden on narrow <385px) */}
+        {/* CARD B: MID-RIGHT */}
         <div className="absolute right-[4%] bottom-[24%] min-[385px]:block hidden">
           <AnimatePresence mode="wait">
             <RefinedCard
-              key={`mobile-slotB-${market1.id}-${language}`}
-              market={market1}
-              time={times[market1.id] || getFormattedTime(market1.timeZone, language)}
+              key={`mobile-slotB-${destinationMarket.id}-${language}`}
+              market={destinationMarket}
+              time={times[destinationMarket.id] || getFormattedTime(destinationMarket.timeZone, language)}
               language={language}
               reduceMotion={Boolean(reduceMotion)}
               isMobile={true}
+              animationDelay={1.4}
             />
           </AnimatePresence>
         </div>
@@ -158,50 +192,96 @@ export default function MarketTimeCard({
     );
   }
 
-  // DESKTOP VIEW: 2 CONNECTED ANCHOR SLOTS
   return (
     <div
       aria-label="Operational market cards"
       className="pointer-events-none absolute inset-0 z-30 overflow-hidden"
     >
-      {/* ANCHOR A (Man's Country - top left, connecting to his chat bubble) */}
+      {/* DESKTOP SVG NETWORK WITH TIMED ANIMATION */}
+      <svg
+        className="absolute inset-0 h-full w-full pointer-events-none hidden sm:block"
+        style={{ zIndex: 1 }}
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
+            <stop offset="100%" stopColor="#18A94B" stopOpacity="1" />
+          </linearGradient>
+          <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="0.5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <marker id="arr-g" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#18A94B" />
+          </marker>
+        </defs>
+
+        <motion.path
+          key={`desktop-path-${connectionIndex}`}
+          d="M 39 23 C 58 23, 58 58, 76 58"
+          fill="none"
+          stroke="url(#cg)"
+          strokeWidth="0.4"
+          strokeDasharray="0.8 1.2"
+          filter="url(#glow)"
+          markerEnd="url(#arr-g)"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 0.9 }}
+          transition={{ duration: 1.0, ease: "easeInOut", delay: 0.4 }}
+        />
+
+        {/* Traveling pulse using animateMotion */}
+        <motion.circle key={`desktop-dot-${connectionIndex}`} r="0.9" fill="#ffffff" filter="url(#glow)">
+          <animateMotion dur="1.2s" begin="0.4s" repeatCount="1" fill="freeze" path="M 39 23 C 58 23, 58 58, 76 58" />
+        </motion.circle>
+      </svg>
+
+      {/* ANCHOR A */}
       <div className="absolute left-[8%] top-[14%] sm:left-[12%] sm:top-[16%] lg:left-[16%] lg:top-[18%] xl:left-[18%] xl:top-[20%]">
         <AnimatePresence mode="wait">
           <RefinedCard
-            key={`anchorA-${market0.id}-${language}`}
-            market={market0}
-            time={times[market0.id] || getFormattedTime(market0.timeZone, language)}
+            key={`anchorA-${originMarket.id}-${language}`}
+            market={originMarket}
+            time={times[originMarket.id] || getFormattedTime(originMarket.timeZone, language)}
             language={language}
             reduceMotion={Boolean(reduceMotion)}
+            animationDelay={0}
           />
         </AnimatePresence>
       </div>
 
-      {/* ANCHOR B (Woman's Country - near woman's ear/shoulder) */}
+      {/* ANCHOR B */}
       <div className="absolute right-[2%] top-[55%] sm:right-[2%] sm:top-[52%] hidden sm:block">
-        <AnimatePresence mode="wait">
-          <RefinedCard
-            key={`anchorB-${market1.id}-${language}`}
-            market={market1}
-            time={times[market1.id] || getFormattedTime(market1.timeZone, language)}
-            language={language}
-            reduceMotion={Boolean(reduceMotion)}
-          />
-        </AnimatePresence>
+          <AnimatePresence mode="wait">
+            <RefinedCard
+              key={`anchorB-${destinationMarket.id}-${language}`}
+              market={destinationMarket}
+              time={times[destinationMarket.id] || getFormattedTime(destinationMarket.timeZone, language)}
+              language={language}
+              reduceMotion={Boolean(reduceMotion)}
+              animationDelay={1.4}
+            />
+          </AnimatePresence>
       </div>
     </div>
   );
 }
 
 interface RefinedCardProps {
-  market: MarketNode;
+  market: DisplayMarket;
   time: string;
   language: Language;
   reduceMotion: boolean;
   isMobile?: boolean;
+  animationDelay?: number;
 }
 
-function RefinedCard({ market, time, language, reduceMotion, isMobile = false }: RefinedCardProps) {
+function RefinedCard({ market, time, language, reduceMotion, isMobile = false, animationDelay = 0 }: RefinedCardProps) {
   const countryName = market.country[language] || market.country.en;
 
   return (
@@ -223,6 +303,7 @@ function RefinedCard({ market, time, language, reduceMotion, isMobile = false }:
       }
       transition={{
         duration: reduceMotion ? 0 : 0.45,
+        delay: animationDelay,
         ease: [0.16, 1, 0.3, 1],
       }}
       className={
@@ -275,4 +356,4 @@ function RefinedCard({ market, time, language, reduceMotion, isMobile = false }:
       </div>
     </motion.div>
   );
-}
+}

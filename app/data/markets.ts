@@ -262,3 +262,35 @@ export const MARKET_CONNECTIONS = [
   { from: "td", to: "cm" },
   { from: "cm", to: "cd" },
 ];
+
+// Curated geographic sequence across Africa for map auto-rotation
+export const AFRICA_TOUR_SEQUENCE = [
+  "cm", // Cameroon
+  "ng", // Nigeria
+  "bj", // Benin
+  "gh", // Ghana
+  "ci", // Côte d'Ivoire
+  "sn", // Senegal
+  "ml", // Mali
+  "bf", // Burkina Faso
+  "ne", // Niger
+  "td", // Chad
+  "sd", // Sudan
+  "eg", // Egypt
+  "ma", // Morocco
+  "dz", // Algeria
+  "et", // Ethiopia
+  "ke", // Kenya
+  "ug", // Uganda
+  "rw", // Rwanda
+  "tz", // Tanzania
+  "zm", // Zambia
+  "zw", // Zimbabwe
+  "mz", // Mozambique
+  "mg", // Madagascar
+  "za", // South Africa
+  "ao", // Angola
+  "cd", // DRC
+  "cg", // Congo
+  "ga", // Gabon
+];

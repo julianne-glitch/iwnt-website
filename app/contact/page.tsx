@@ -25,12 +25,12 @@ export default function ContactPage() {
             fill
             sizes="100vw"
             quality={90}
-            className="object-cover object-center opacity-60"
+            className="object-cover object-center opacity-90"
             priority
           />
           {/* Enhanced Gradient Overlay for readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2E] via-[#0D1B2E]/90 to-[#0D1B2E]/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2E] via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2E]/95 via-[#0D1B2E]/70 to-[#0D1B2E]/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2E] via-transparent to-transparent opacity-80" />
         </div>
 
         {/* Content Container */}

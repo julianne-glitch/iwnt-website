@@ -21,29 +21,11 @@ export default function GlobalExpansionJourney() {
   ];
 
   return (
-    <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 overflow-hidden pt-0 pb-10">
+    <section className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 overflow-hidden pt-12 pb-16">
       
-      {/* 1. THE STORYTELLING TRANSITION FROM THE EMPLOYEE JOURNEY */}
-      <div className="flex flex-col items-center justify-center mb-8 relative">
-        <div className="absolute top-0 w-0.5 h-10 bg-gradient-to-b from-[#16A34A] to-transparent" />
-        
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          className="mt-14 text-center space-y-1"
-        >
-          <p className="text-sm sm:text-base font-bold text-[#16A34A]">
-            {exp.transitionLine1}
-          </p>
-          <p className="text-sm sm:text-base font-bold text-[#0D1B2E]">
-            {exp.transitionLine2}
-          </p>
-        </motion.div>
-      </div>
 
-      {/* 2. SECTION HEADER */}
-      <div className="relative z-10 mb-10 sm:mb-16">
+      {/* 1. SECTION HEADER */}
+      <div className="relative z-10 mb-10 sm:mb-14">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -61,7 +43,7 @@ export default function GlobalExpansionJourney() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#0D1B2E] mb-4 max-w-lg"
+          className="text-2xl sm:text-3xl lg:text-[32px] font-extrabold tracking-tight text-[#0D1B2E] mb-3 max-w-lg leading-[1.15]"
         >
           {exp.headline}
         </motion.h2>
@@ -71,7 +53,7 @@ export default function GlobalExpansionJourney() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="text-base sm:text-lg text-slate-600 max-w-xl"
+          className="text-sm sm:text-base text-slate-600 max-w-xl"
         >
           {exp.subtitle}
         </motion.p>

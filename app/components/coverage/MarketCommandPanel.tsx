@@ -40,7 +40,7 @@ export default function MarketCommandPanel({
         id: nonOpCountry.code,
         code: nonOpCountry.code,
         country: { en: nonOpCountry.name, fr: nonOpCountry.name },
-        cities: c.cmdNonOpStatus || "Network Expansion",
+        cities: "",
         flag: "🌍",
         pulse: { hiring: 1, onboarding: 1, payroll: 1, compliance: 1 },
         insight: { 
@@ -59,8 +59,8 @@ export default function MarketCommandPanel({
   return (
     <motion.div
       key={activeCountry.id}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className="w-full rounded-2xl border border-slate-800/90 bg-[#0B1424]/95 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-md text-left space-y-3 text-white"
     >
@@ -83,9 +83,11 @@ export default function MarketCommandPanel({
           <h3 className="text-lg font-extrabold text-white tracking-tight truncate">
             {countryName}
           </h3>
-          <p className="text-[11px] font-semibold text-slate-400 truncate">
-            {activeCountry.cities}
-          </p>
+          {activeCountry.cities && (
+            <p className="text-[11px] font-semibold text-slate-400 truncate">
+              {activeCountry.cities}
+            </p>
+          )}
         </div>
       </div>
 
@@ -106,26 +108,26 @@ export default function MarketCommandPanel({
         <div className="space-y-1 text-[11px] font-semibold text-slate-200">
           <div className="flex items-center justify-between">
             <span className={!isOp ? "text-slate-500" : ""}>{c.cmdCapLocalExpertise}</span>
-            <div className={`flex h-3.5 w-3.5 items-center justify-center rounded-full ${isOp ? 'bg-[#16A34A] text-white' : 'bg-slate-800 text-slate-600'}`}>
-              <Check className="w-2 h-2 stroke-[3]" />
+            <div className={`flex h-3.5 w-3.5 items-center justify-center rounded-full ${isOp ? 'bg-[#16A34A] text-white' : ''}`}>
+              {isOp && <Check className="w-2 h-2 stroke-[3]" />}
             </div>
           </div>
           <div className="flex items-center justify-between">
             <span className={!isOp ? "text-slate-500" : ""}>{c.cmdCapWorkforceOps}</span>
-            <div className={`flex h-3.5 w-3.5 items-center justify-center rounded-full ${isOp ? 'bg-[#16A34A] text-white' : 'bg-slate-800 text-slate-600'}`}>
-              <Check className="w-2 h-2 stroke-[3]" />
+            <div className={`flex h-3.5 w-3.5 items-center justify-center rounded-full ${isOp ? 'bg-[#16A34A] text-white' : ''}`}>
+              {isOp && <Check className="w-2 h-2 stroke-[3]" />}
             </div>
           </div>
           <div className="flex items-center justify-between">
             <span className={!isOp ? "text-slate-500" : ""}>{c.cmdCapComplianceSupport}</span>
-            <div className={`flex h-3.5 w-3.5 items-center justify-center rounded-full ${isOp ? 'bg-[#16A34A] text-white' : 'bg-slate-800 text-slate-600'}`}>
-              <Check className="w-2 h-2 stroke-[3]" />
+            <div className={`flex h-3.5 w-3.5 items-center justify-center rounded-full ${isOp ? 'bg-[#16A34A] text-white' : ''}`}>
+              {isOp && <Check className="w-2 h-2 stroke-[3]" />}
             </div>
           </div>
           <div className="flex items-center justify-between">
             <span className={!isOp ? "text-slate-500" : ""}>{c.cmdCapRegionalCoord}</span>
-            <div className={`flex h-3.5 w-3.5 items-center justify-center rounded-full ${isOp ? 'bg-[#16A34A] text-white' : 'bg-slate-800 text-slate-600'}`}>
-              <Check className="w-2 h-2 stroke-[3]" />
+            <div className={`flex h-3.5 w-3.5 items-center justify-center rounded-full ${isOp ? 'bg-[#16A34A] text-white' : ''}`}>
+              {isOp && <Check className="w-2 h-2 stroke-[3]" />}
             </div>
           </div>
         </div>

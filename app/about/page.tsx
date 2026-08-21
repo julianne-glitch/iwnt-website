@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { Calendar, Globe2, Network, ArrowDown } from "lucide-react";
 import { useLanguage } from "@/app/context/LanguageContext";
 import AfricaNetwork from "@/app/components/home/AfricaNetwork";
+import CredibilitySection from "@/app/components/about/CredibilitySection";
 
 export default function AboutPage() {
   const { t } = useLanguage();
@@ -144,9 +145,22 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* FINAL VISION SECTION */}
-        <section className="relative w-full rounded-[24px] bg-[#071120] overflow-hidden flex flex-col lg:flex-row items-center min-h-[380px] shadow-2xl shadow-slate-900/10">
-          <div className="relative z-20 w-full lg:w-[50%] p-10 lg:p-14">
+        {/* UNIFIED PREMIUM BOTTOM BLOCK: Credibility + Final Vision */}
+        <section className="relative w-full rounded-[24px] bg-gradient-to-b from-[#070D19] to-[#040914] overflow-hidden shadow-2xl shadow-slate-900/10 border border-slate-800/60 mb-20 flex flex-col">
+          
+          {/* Unified Background Ambience */}
+          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-[0.02]" />
+            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-emerald-500/10 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3" />
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3" />
+          </div>
+
+          {/* TOP HALF: CREDIBILITY */}
+          <CredibilitySection />
+
+          {/* BOTTOM HALF: FINAL VISION */}
+          <div className="relative w-full flex flex-col lg:flex-row items-center min-h-[380px] z-10 pb-8 lg:pb-0">
+            <div className="relative z-20 w-full lg:w-[50%] px-8 pb-8 pt-0 sm:px-12 sm:pb-12 sm:pt-4 lg:p-16">
             <h3 className="text-[9px] font-extrabold uppercase tracking-widest text-[#16A34A] mb-4">
               {a.vision.eyebrow}
             </h3>
@@ -160,7 +174,8 @@ export default function AboutPage() {
           </div>
 
           <div className="relative w-full lg:w-[60%] h-[320px] lg:h-[450px] lg:absolute lg:right-[-8%] lg:top-[5%] opacity-90 pointer-events-none">
-             <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#071120] via-[#071120]/80 to-transparent z-20" />
+             <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#040914] via-[#040914]/80 to-transparent z-20" />
+             <div className="absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-[#040914] to-transparent z-20" />
              <AfricaNetwork activeMarketIds={["cameroon", "senegal", "mali", "cote-divoire", "chad", "drc"]} />
           </div>
 
@@ -168,6 +183,7 @@ export default function AboutPage() {
             <button className="w-11 h-11 rounded-full bg-slate-200/90 hover:bg-white flex items-center justify-center shadow-lg transition-colors group">
               <ArrowDown className="w-5 h-5 text-[#0D1B2E] group-hover:translate-y-px transition-transform" />
             </button>
+          </div>
           </div>
         </section>
 
