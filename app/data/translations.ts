@@ -99,6 +99,7 @@ export interface TranslationSchema {
     block2TaglineMain: string;
     block2TaglineSub: string;
     mobileIntakeProcessing: string;
+    mobileDashboardEmployees: string;
     mobileDashboardCountries: string;
     mobileDashboardPayroll: string;
     mobileDashboardCompliance: string;
