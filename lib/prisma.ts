@@ -2,9 +2,10 @@ import { PrismaClient } from '@prisma/client'
 import { Pool } from 'pg'
 import { PrismaPg } from '@prisma/adapter-pg'
 
-const connectionString = `${process.env.DATABASE_URL}`
-
 const prismaClientSingleton = () => {
+  const connectionString = process.env.DATABASE_URL || ''
+  console.log("PRISMA INITIALIZING WITH URL STARTING WITH:", connectionString.substring(0, 20))
+  
   if (connectionString.startsWith('prisma+postgres://')) {
     // Prisma Postgres uses Accelerate via the URL, no driver adapter needed
     return new PrismaClient({ accelerateUrl: connectionString })
