@@ -2,20 +2,24 @@ import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 import { format } from "date-fns";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import LanguageWrapper from "./components/LanguageWrapper";
 
-export default async function ArticlePage({
-  params,
-}: {
-  params: { slug: string };
+export default async function ArticlePage(props: {
+  params: Promise<{ slug: string }>;
 }) {
-  const article = await prisma.article.findUnique({
-    where: { slug: params.slug },
-  });
+  const params = await props.params;
+  let article = null;
+  try {
+    article = await prisma.article.findUnique({
+      where: { slug: params.slug },
+    });
+  } catch (error) {
+    console.error("Database connection error on article page:", error);
+  }
 
   if (!article || !article.published) {
     notFound();

@@ -3,189 +3,295 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { OPERATIONAL_MARKETS } from "@/app/data/markets";
 import { useLanguage } from "@/app/context/LanguageContext";
 import { Language } from "@/app/data/translations";
 
-type TimeMap = Record<string, string>;
-
-interface MarketTimeCardProps {
-  isMobileOnly?: boolean;
-}
-
-export type DisplayMarket = {
+export interface MarketLocation {
   id: string;
   city: string;
   country: Record<Language, string>;
   timeZone: string;
   flagSvg: string;
-};
+  nodeId?: string;
+}
 
-// Rotating sequence of International -> African connections
-const CONNECTIONS: { origin: DisplayMarket; destinationIndex: number }[] = [
+export interface ConnectionPair {
+  id: string;
+  origin: MarketLocation;
+  destination: MarketLocation;
+}
+
+export const CROSS_BORDER_PAIRS: ConnectionPair[] = [
   {
-    origin: { id: "london", city: "London", country: { en: "United Kingdom", fr: "Royaume-Uni" }, timeZone: "Europe/London", flagSvg: "https://flagcdn.com/gb.svg" },
-    destinationIndex: 0 // Cameroon
+    id: "paris-douala",
+    origin: {
+      id: "paris",
+      city: "Paris",
+      country: { en: "France", fr: "France" },
+      timeZone: "Europe/Paris",
+      flagSvg: "https://flagcdn.com/fr.svg",
+    },
+    destination: {
+      id: "cameroon",
+      city: "Douala",
+      country: { en: "Cameroon", fr: "Cameroun" },
+      timeZone: "Africa/Douala",
+      flagSvg: "/flags/cm.svg",
+      nodeId: "cameroon",
+    },
   },
   {
-    origin: { id: "paris", city: "Paris", country: { en: "France", fr: "France" }, timeZone: "Europe/Paris", flagSvg: "https://flagcdn.com/fr.svg" },
-    destinationIndex: 2 // Cote d'Ivoire
+    id: "london-abidjan",
+    origin: {
+      id: "london",
+      city: "London",
+      country: { en: "UK", fr: "Royaume-Uni" },
+      timeZone: "Europe/London",
+      flagSvg: "https://flagcdn.com/gb.svg",
+    },
+    destination: {
+      id: "cote-divoire",
+      city: "Abidjan",
+      country: { en: "Côte d'Ivoire", fr: "Côte d'Ivoire" },
+      timeZone: "Africa/Abidjan",
+      flagSvg: "/flags/ci.svg",
+      nodeId: "cote-divoire",
+    },
   },
   {
-    origin: { id: "dubai", city: "Dubai", country: { en: "UAE", fr: "Émirats Arabes Unis" }, timeZone: "Asia/Dubai", flagSvg: "https://flagcdn.com/ae.svg" },
-    destinationIndex: 1 // Senegal
+    id: "newyork-dakar",
+    origin: {
+      id: "newyork",
+      city: "New York",
+      country: { en: "USA", fr: "États-Unis" },
+      timeZone: "America/New_York",
+      flagSvg: "https://flagcdn.com/us.svg",
+    },
+    destination: {
+      id: "senegal",
+      city: "Dakar",
+      country: { en: "Senegal", fr: "Sénégal" },
+      timeZone: "Africa/Dakar",
+      flagSvg: "/flags/sn.svg",
+      nodeId: "senegal",
+    },
   },
   {
-    origin: { id: "newyork", city: "New York", country: { en: "USA", fr: "États-Unis" }, timeZone: "America/New_York", flagSvg: "https://flagcdn.com/us.svg" },
-    destinationIndex: 3 // DRC
+    id: "berlin-kinshasa",
+    origin: {
+      id: "berlin",
+      city: "Berlin",
+      country: { en: "Germany", fr: "Allemagne" },
+      timeZone: "Europe/Berlin",
+      flagSvg: "https://flagcdn.com/de.svg",
+    },
+    destination: {
+      id: "drc",
+      city: "Kinshasa",
+      country: { en: "DR Congo", fr: "RDC" },
+      timeZone: "Africa/Kinshasa",
+      flagSvg: "/flags/cd.svg",
+      nodeId: "drc",
+    },
   },
   {
-    origin: { id: "brussels", city: "Brussels", country: { en: "Belgium", fr: "Belgique" }, timeZone: "Europe/Brussels", flagSvg: "https://flagcdn.com/be.svg" },
-    destinationIndex: 4 // Mali
+    id: "dubai-accra",
+    origin: {
+      id: "dubai",
+      city: "Dubai",
+      country: { en: "UAE", fr: "Émirats Arabes Unis" },
+      timeZone: "Asia/Dubai",
+      flagSvg: "https://flagcdn.com/ae.svg",
+    },
+    destination: {
+      id: "ghana",
+      city: "Accra",
+      country: { en: "Ghana", fr: "Ghana" },
+      timeZone: "Africa/Accra",
+      flagSvg: "/flags/gh.svg",
+      nodeId: "ghana",
+    },
   },
   {
-    origin: { id: "toronto", city: "Toronto", country: { en: "Canada", fr: "Canada" }, timeZone: "America/Toronto", flagSvg: "https://flagcdn.com/ca.svg" },
-    destinationIndex: 2 // Cote d'Ivoire
-  }
+    id: "toronto-bamako",
+    origin: {
+      id: "toronto",
+      city: "Toronto",
+      country: { en: "Canada", fr: "Canada" },
+      timeZone: "America/Toronto",
+      flagSvg: "https://flagcdn.com/ca.svg",
+    },
+    destination: {
+      id: "mali",
+      city: "Bamako",
+      country: { en: "Mali", fr: "Mali" },
+      timeZone: "Africa/Bamako",
+      flagSvg: "/flags/ml.svg",
+      nodeId: "mali",
+    },
+  },
 ];
 
+interface MarketTimeCardProps {
+  currentPairIndex: number;
+  isMobileOnly?: boolean;
+}
+
 export default function MarketTimeCard({
+  currentPairIndex,
   isMobileOnly = false,
 }: MarketTimeCardProps) {
   const { language } = useLanguage();
   const reduceMotion = useReducedMotion();
-  const [times, setTimes] = useState<TimeMap>({});
-  const [connectionIndex, setConnectionIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
+  const [times, setTimes] = useState<Record<string, string>>({});
+  const [signalToggle, setSignalToggle] = useState(false);
+
+  const activePair = CROSS_BORDER_PAIRS[currentPairIndex % CROSS_BORDER_PAIRS.length];
 
   const getFormattedTime = (timeZone: string, lang: Language) => {
     try {
-      if (lang === "fr") {
-        return new Intl.DateTimeFormat("fr-FR", {
-          timeZone,
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        }).format(new Date());
-      }
-      return new Intl.DateTimeFormat("en-US", {
+      const formatter = new Intl.DateTimeFormat(lang === "fr" ? "fr-FR" : "en-US", {
         timeZone,
         hour: "2-digit",
         minute: "2-digit",
-        hour12: true,
-      }).format(new Date());
+        hour12: lang !== "fr",
+      });
+      return formatter.format(new Date());
     } catch {
-      return lang === "fr" ? "09:15" : "09:15 AM";
+      return lang === "fr" ? "10:19" : "10:19 AM";
     }
   };
 
   useEffect(() => {
+    setMounted(true);
     const updateTimes = () => {
-      const nextTimes: TimeMap = {};
-      OPERATIONAL_MARKETS.forEach((market) => {
-        nextTimes[market.id] = getFormattedTime(market.timeZone, language);
+      const newTimes: Record<string, string> = {};
+      CROSS_BORDER_PAIRS.forEach((pair) => {
+        newTimes[pair.origin.id] = getFormattedTime(pair.origin.timeZone, language);
+        newTimes[pair.destination.id] = getFormattedTime(pair.destination.timeZone, language);
       });
-      CONNECTIONS.forEach((c) => {
-        nextTimes[c.origin.id] = getFormattedTime(c.origin.timeZone, language);
-      });
-      setTimes(nextTimes);
+      setTimes(newTimes);
     };
 
     updateTimes();
-    const clockInterval = window.setInterval(updateTimes, 15000);
+    const interval = setInterval(updateTimes, 10000);
+    return () => clearInterval(interval);
+  }, [language]);
 
-    if (reduceMotion) {
-      return () => window.clearInterval(clockInterval);
-    }
+  // Toggle micro-signal midway through the pair duration
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSignalToggle((prev) => !prev);
+    }, 3800);
+    return () => clearTimeout(timer);
+  }, [currentPairIndex]);
 
-    const rotationInterval = window.setInterval(() => {
-      setConnectionIndex((current) => (current + 1) % CONNECTIONS.length);
-    }, 4000); // 4 seconds to allow for full sequence
+  const originTime = mounted
+    ? times[activePair.origin.id] || getFormattedTime(activePair.origin.timeZone, language)
+    : "10:19 AM";
 
-    return () => {
-      window.clearInterval(clockInterval);
-      window.clearInterval(rotationInterval);
-    };
-  }, [reduceMotion, language]);
+  const destTime = mounted
+    ? times[activePair.destination.id] || getFormattedTime(activePair.destination.timeZone, language)
+    : "10:19 AM";
 
-  const activeConnection = CONNECTIONS[connectionIndex];
-  const originMarket = activeConnection.origin;
-  
-  // Safely get the destination market
-  const destIndex = activeConnection.destinationIndex % OPERATIONAL_MARKETS.length;
-  const rawDestMarket = OPERATIONAL_MARKETS[destIndex];
-  const destinationMarket: DisplayMarket = {
-    id: rawDestMarket.id,
-    city: rawDestMarket.city,
-    country: rawDestMarket.country,
-    timeZone: rawDestMarket.timeZone,
-    flagSvg: rawDestMarket.flagSvg
+  const labels = {
+    employer: language === "fr" ? "EMPLOYEUR INTERNATIONAL" : "GLOBAL EMPLOYER",
+    workforce: language === "fr" ? "EFFECTIFS AFRIQUE" : "AFRICAN WORKFORCE",
+    sigOnboarding: language === "fr" ? "✓ Intégration locale prête" : "✓ Local onboarding ready",
+    sigPayroll: language === "fr" ? "✓ Paie coordonnée" : "✓ Payroll coordinated",
   };
 
   if (isMobileOnly) {
     return (
-      <div
-        aria-label="Operational market cards"
-        className="pointer-events-none absolute inset-0 z-30 overflow-hidden"
-      >
-        {/* SVG CONNECTION LINE BETWEEN MOBILE CARDS */}
-        <div className="absolute inset-0 -z-10 hidden min-[385px]:block overflow-hidden">
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full opacity-60">
-            <motion.path
-              key={`mob-path-${connectionIndex}`}
-              d="M 38 18 Q 50 42 66 65"
-              fill="none"
-              stroke="#18A94B"
-              strokeWidth="1.5"
-              vectorEffect="non-scaling-stroke"
-              strokeDasharray="5 5"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 1.0, ease: "easeInOut", delay: 0.4 }}
-            />
-          </svg>
-          <motion.div 
-            key={`mob-pulse1-${connectionIndex}`}
-            className="absolute left-[38%] top-[18%] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#18A94B]"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.4 }}
-          />
-          <motion.div 
-            key={`mob-pulse2-${connectionIndex}`}
-            className="absolute left-[66%] top-[65%] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#18A94B]"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 1.4 }}
-          />
+      <div className="relative w-full px-2 py-2 flex flex-col items-center gap-2.5 pointer-events-none">
+        {/* INTERNATIONAL CARD */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`mob-orig-${activePair.id}`}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.4 }}
+            className="w-auto flex items-center gap-2 rounded-xl border border-slate-700/60 bg-[#0B1528]/90 px-3 py-1.5 shadow-md backdrop-blur-md pointer-events-auto"
+          >
+            <div className="relative h-3.5 w-5 overflow-hidden rounded-[2px] border border-slate-600/80 shrink-0">
+              <Image
+                src={activePair.origin.flagSvg}
+                alt={`${activePair.origin.city} flag`}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[8px] font-bold tracking-wider text-slate-400 uppercase">
+                {labels.employer}
+              </span>
+              <span className="text-[11px] font-bold text-white leading-tight">
+                {activePair.origin.city}, {activePair.origin.country[language]}
+              </span>
+            </div>
+            <span suppressHydrationWarning className="ml-2 font-mono text-[10px] font-semibold text-[#38BDF8]">
+              {originTime}
+            </span>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* CONNECTED BADGE */}
+        <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#0B1528]/95 border border-emerald-500/40 shadow-xs">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#22C55E] animate-pulse" />
+          <span className="text-[9px] font-extrabold tracking-wider text-emerald-400 uppercase">
+            IWNT NETWORK CONNECTED
+          </span>
         </div>
 
-        {/* CARD A: UPPER-LEFT */}
-        <div className="absolute left-[18%] top-[8%] sm:left-[22%] sm:top-[10%]">
-          <AnimatePresence mode="wait">
-            <RefinedCard
-              key={`mobile-slotA-${originMarket.id}-${language}`}
-              market={originMarket}
-              time={times[originMarket.id] || getFormattedTime(originMarket.timeZone, language)}
-              language={language}
-              reduceMotion={Boolean(reduceMotion)}
-              isMobile={true}
-              animationDelay={0}
-            />
-          </AnimatePresence>
-        </div>
+        {/* AFRICAN CARD */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`mob-dest-${activePair.id}`}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="w-auto flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-[#0B1528]/90 px-3 py-1.5 shadow-md backdrop-blur-md pointer-events-auto"
+          >
+            <div className="relative h-3.5 w-5 overflow-hidden rounded-[2px] border border-slate-600/80 shrink-0">
+              <Image
+                src={activePair.destination.flagSvg}
+                alt={`${activePair.destination.city} flag`}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[8px] font-bold tracking-wider text-emerald-400 uppercase">
+                {labels.workforce}
+              </span>
+              <span className="text-[11px] font-bold text-white leading-tight">
+                {activePair.destination.city}, {activePair.destination.country[language]}
+              </span>
+            </div>
+            <span suppressHydrationWarning className="ml-2 font-mono text-[10px] font-semibold text-[#22C55E]">
+              {destTime}
+            </span>
+          </motion.div>
+        </AnimatePresence>
 
-        {/* CARD B: MID-RIGHT */}
-        <div className="absolute right-[4%] bottom-[24%] min-[385px]:block hidden">
+        {/* SINGLE CONTEXTUAL MICRO SIGNAL CARD */}
+        <div className="mt-1">
           <AnimatePresence mode="wait">
-            <RefinedCard
-              key={`mobile-slotB-${destinationMarket.id}-${language}`}
-              market={destinationMarket}
-              time={times[destinationMarket.id] || getFormattedTime(destinationMarket.timeZone, language)}
-              language={language}
-              reduceMotion={Boolean(reduceMotion)}
-              isMobile={true}
-              animationDelay={1.4}
-            />
+            <motion.div
+              key={`mob-sig-${activePair.id}-${signalToggle}`}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.35 }}
+              className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-[#0B1528]/90 px-2.5 py-1 text-[10px] font-semibold text-emerald-400 shadow-sm backdrop-blur-md"
+            >
+              <span>{signalToggle ? labels.sigPayroll : labels.sigOnboarding}</span>
+            </motion.div>
           </AnimatePresence>
         </div>
       </div>
@@ -193,167 +299,121 @@ export default function MarketTimeCard({
   }
 
   return (
-    <div
-      aria-label="Operational market cards"
-      className="pointer-events-none absolute inset-0 z-30 overflow-hidden"
-    >
-      {/* DESKTOP SVG NETWORK WITH TIMED ANIMATION */}
-      <svg
-        className="absolute inset-0 h-full w-full pointer-events-none hidden sm:block"
-        style={{ zIndex: 1 }}
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
-            <stop offset="100%" stopColor="#18A94B" stopOpacity="1" />
-          </linearGradient>
-          <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="0.5" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-          <marker id="arr-g" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill="#18A94B" />
-          </marker>
-        </defs>
-
-        <motion.path
-          key={`desktop-path-${connectionIndex}`}
-          d="M 39 23 C 58 23, 58 58, 76 58"
-          fill="none"
-          stroke="url(#cg)"
-          strokeWidth="0.4"
-          strokeDasharray="0.8 1.2"
-          filter="url(#glow)"
-          markerEnd="url(#arr-g)"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.9 }}
-          transition={{ duration: 1.0, ease: "easeInOut", delay: 0.4 }}
-        />
-
-        {/* Traveling pulse using animateMotion */}
-        <motion.circle key={`desktop-dot-${connectionIndex}`} r="0.9" fill="#ffffff" filter="url(#glow)">
-          <animateMotion dur="1.2s" begin="0.4s" repeatCount="1" fill="freeze" path="M 39 23 C 58 23, 58 58, 76 58" />
-        </motion.circle>
-      </svg>
-
-      {/* ANCHOR A */}
-      <div className="absolute left-[8%] top-[14%] sm:left-[12%] sm:top-[16%] lg:left-[16%] lg:top-[18%] xl:left-[18%] xl:top-[20%]">
+    <div className="absolute inset-0 pointer-events-none z-30">
+      {/* CARD A — INTERNATIONAL EMPLOYER (UPPER-LEFT, BREATHING ROOM BELOW NAVBAR) */}
+      <div className="absolute left-[3%] xl:left-[5%] top-[12%] xl:top-[14%] z-40">
         <AnimatePresence mode="wait">
-          <RefinedCard
-            key={`anchorA-${originMarket.id}-${language}`}
-            market={originMarket}
-            time={times[originMarket.id] || getFormattedTime(originMarket.timeZone, language)}
-            language={language}
-            reduceMotion={Boolean(reduceMotion)}
-            animationDelay={0}
-          />
+          <motion.div
+            key={`card-origin-${activePair.id}`}
+            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 8, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.97 }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
+            className="pointer-events-auto flex items-center gap-3.5 rounded-2xl border border-slate-700/60 bg-[#0B1528]/85 px-4 py-3 shadow-[0_12px_32px_rgba(0,0,0,0.35)] backdrop-blur-md"
+          >
+            <div className="relative h-4.5 w-6.5 overflow-hidden rounded-[3px] border border-slate-600/80 shrink-0 shadow-xs">
+              <Image
+                src={activePair.origin.flagSvg}
+                alt={`${activePair.origin.city} flag`}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            </div>
+
+            <div className="flex flex-col justify-center">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[9px] font-extrabold tracking-widest text-slate-400 uppercase">
+                  {labels.employer}
+                </span>
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-500 shrink-0" />
+              </div>
+              <span className="text-[13px] font-extrabold text-white leading-tight">
+                {activePair.origin.city}, {activePair.origin.country[language]}
+              </span>
+            </div>
+
+            <div className="ml-2 pl-3.5 border-l border-slate-700/70 flex flex-col justify-center">
+              <span className="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">LOCAL TIME</span>
+              <span suppressHydrationWarning className="font-mono text-[11.5px] font-bold text-[#38BDF8]">
+                {originTime}
+              </span>
+            </div>
+          </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* ANCHOR B */}
-      <div className="absolute right-[2%] top-[55%] sm:right-[2%] sm:top-[52%] hidden sm:block">
-          <AnimatePresence mode="wait">
-            <RefinedCard
-              key={`anchorB-${destinationMarket.id}-${language}`}
-              market={destinationMarket}
-              time={times[destinationMarket.id] || getFormattedTime(destinationMarket.timeZone, language)}
-              language={language}
-              reduceMotion={Boolean(reduceMotion)}
-              animationDelay={1.4}
-            />
-          </AnimatePresence>
+      {/* CARD B — AFRICAN WORKFORCE (UPPER-RIGHT, BREATHING ROOM BELOW NAVBAR) */}
+      <div className="absolute right-[3%] xl:right-[5%] top-[12%] xl:top-[14%] z-40">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`card-dest-${activePair.id}`}
+            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 8, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.97 }}
+            transition={{ duration: 0.45, delay: 0.25, ease: "easeOut" }}
+            className="pointer-events-auto flex items-center gap-3.5 rounded-2xl border border-emerald-500/40 bg-[#0B1528]/85 px-4 py-3 shadow-[0_12px_32px_rgba(24,169,75,0.18)] backdrop-blur-md"
+          >
+            <div className="relative h-4.5 w-6.5 overflow-hidden rounded-[3px] border border-slate-600/80 shrink-0 shadow-xs">
+              <Image
+                src={activePair.destination.flagSvg}
+                alt={`${activePair.destination.city} flag`}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            </div>
+
+            <div className="flex flex-col justify-center">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[9px] font-extrabold tracking-widest text-emerald-400 uppercase">
+                  {labels.workforce}
+                </span>
+                <span className="h-1.5 w-1.5 rounded-full bg-[#22C55E] shrink-0 animate-pulse" />
+              </div>
+              <span className="text-[13px] font-extrabold text-white leading-tight">
+                {activePair.destination.city}, {activePair.destination.country[language]}
+              </span>
+            </div>
+
+            <div className="ml-2 pl-3.5 border-l border-emerald-500/30 flex flex-col justify-center">
+              <span className="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">LOCAL TIME</span>
+              <span suppressHydrationWarning className="font-mono text-[11.5px] font-bold text-[#22C55E]">
+                {destTime}
+              </span>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* CENTRAL IWNT NETWORK BADGE */}
+      <div className="absolute left-[58%] -translate-x-1/2 top-[7%] z-40">
+        <div className="flex items-center gap-2 rounded-full border border-slate-700/70 bg-[#0B1528]/90 px-4 py-1.5 shadow-md backdrop-blur-md">
+          <span className="h-2 w-2 rounded-full bg-[#22C55E] shadow-[0_0_10px_#22C55E]" />
+          <span className="text-[10px] font-extrabold tracking-wider text-white uppercase">
+            IWNT NETWORK <span className="text-[#22C55E]">● CONNECTED</span>
+          </span>
+        </div>
+      </div>
+
+      {/* SINGLE CONTEXTUAL MICRO-CARD (FLOATING NEAR AFRICAN DESTINATION SIDE) */}
+      <div className="absolute right-[4%] xl:right-[6%] top-[30%] xl:top-[32%] z-40">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`sig-card-${activePair.id}-${signalToggle}`}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.4 }}
+            className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-[#0B1528]/85 px-3.5 py-1.5 text-[11.5px] font-semibold text-white shadow-md backdrop-blur-md"
+          >
+            <span className="text-[#22C55E] font-bold">✓</span>
+            <span className="text-emerald-300 font-medium">
+              {signalToggle ? labels.sigPayroll : labels.sigOnboarding}
+            </span>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
 }
-
-interface RefinedCardProps {
-  market: DisplayMarket;
-  time: string;
-  language: Language;
-  reduceMotion: boolean;
-  isMobile?: boolean;
-  animationDelay?: number;
-}
-
-function RefinedCard({ market, time, language, reduceMotion, isMobile = false, animationDelay = 0 }: RefinedCardProps) {
-  const countryName = market.country[language] || market.country.en;
-
-  return (
-    <motion.div
-      initial={
-        reduceMotion
-          ? { opacity: 1 }
-          : { opacity: 0, y: 5, scale: 0.97 }
-      }
-      animate={{
-        opacity: 1,
-        y: 0,
-        scale: 1,
-      }}
-      exit={
-        reduceMotion
-          ? { opacity: 0 }
-          : { opacity: 0, y: -3, scale: 0.98 }
-      }
-      transition={{
-        duration: reduceMotion ? 0 : 0.45,
-        delay: animationDelay,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      className={
-        isMobile
-          ? "pointer-events-auto flex min-h-[32px] w-max max-w-[145px] items-center gap-1.5 rounded-[6px] border border-white/80 bg-white/90 px-2 py-0.5 shadow-[0_2px_8px_rgba(15,23,42,0.06)] backdrop-blur-md"
-          : "pointer-events-auto flex min-h-[42px] w-max max-w-[220px] items-center gap-2.5 rounded-[10px] border border-white/70 bg-white/90 px-3 py-2 shadow-[0_4px_16px_rgba(15,23,42,0.08)] backdrop-blur-md hover:shadow-[0_6px_20px_rgba(15,23,42,0.12)] transition-shadow"
-      }
-    >
-      {/* REAL CRISP VECTOR SVG FLAG */}
-      <div
-        className={
-          isMobile
-            ? "relative h-[9px] w-[13px] shrink-0 overflow-hidden rounded-[1.5px] border border-slate-200/60"
-            : "relative h-[12px] w-[16px] shrink-0 overflow-hidden rounded-[2px] border border-slate-200/60"
-        }
-      >
-        <Image
-          src={market.flagSvg}
-          alt={`${countryName} flag`}
-          fill
-          className="object-cover"
-          unoptimized
-        />
-      </div>
-
-      {/* FULL LOCALIZED LOCATION NAME & LIVE LOCAL TIME */}
-      <div className="flex flex-col min-w-0 flex-1 justify-center leading-tight">
-        <div className="flex items-center gap-1">
-          <span
-            className={
-              isMobile
-                ? "whitespace-nowrap text-[8.5px] font-semibold text-[#0D1B2E]"
-                : "whitespace-nowrap text-[10.5px] font-semibold text-[#0D1B2E]"
-            }
-          >
-            {market.city}, {countryName}
-          </span>
-          <span className="h-1.5 w-1.5 rounded-full bg-[#18A94B] shrink-0" />
-        </div>
-        <span
-          suppressHydrationWarning
-          className={
-            isMobile
-              ? "mt-0.5 font-mono text-[7.5px] font-medium text-[#64748B] tabular-nums"
-              : "mt-0.5 font-mono text-[9px] font-medium text-[#64748B] tabular-nums"
-          }
-        >
-          {time}
-        </span>
-      </div>
-    </motion.div>
-  );
-}

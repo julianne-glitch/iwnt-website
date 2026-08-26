@@ -19,6 +19,9 @@ export default function TrustedCarousel() {
         <h3 className="text-[10.5px] sm:text-xs font-bold uppercase tracking-[0.2em] text-slate-400/90">
           {t.trustedHeading}
         </h3>
+        <p className="mt-2 text-[13.5px] sm:text-sm text-slate-400/80 max-w-2xl mx-auto font-medium">
+          {t.trustedSubheading}
+        </p>
       </div>
 
       {/* COMPACT CONTINUOUS MARQUEE RAIL / HORIZONTAL TRACK */}

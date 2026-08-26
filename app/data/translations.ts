@@ -17,12 +17,15 @@ export interface TranslationSchema {
     headlineLine1: string;
     headlineLine2: string;
     headlineLine2Emphasis: string;
+    subheadline: string;
     body: string;
+    tagline: string;
     status: string;
     primaryCta: string;
     secondaryCta: string;
   };
   trustedHeading: string;
+  trustedSubheading: string;
   capabilities: Array<{
     title: string;
     description: string;
@@ -453,16 +456,19 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       languageLabel: "Language",
     },
     hero: {
-      eyebrow: "BUILDING AFRICA'S WORKFORCE INFRASTRUCTURE",
-      headlineLine1: "Connecting ambitions.",
-      headlineLine2: "Building",
-      headlineLine2Emphasis: "what's next for Africa.",
-      body: "IWNT is building a connected workforce platform designed to help organisations hire, onboard, manage and pay teams across African markets - combining technology with deep local expertise.",
+      eyebrow: "EMPLOYER OF RECORD & WORKFORCE MANAGEMENT · ACROSS AFRICA",
+      headlineLine1: "Hire, pay, and manage teams",
+      headlineLine2: "anywhere in ",
+      headlineLine2Emphasis: "Africa.",
+      subheadline: "Without setting up a local entity.",
+      body: "IWNT is your Employer of Record and workforce platform — we hire, onboard, manage and pay your team across African markets, combining connected technology with deep local expertise.",
+      tagline: "Connecting ambitions. Building what's next for Africa.",
       status: "PLATFORM IN DEVELOPMENT · EARLY PARTNERS WELCOME",
       primaryCta: "Partner With Us",
       secondaryCta: "Explore Our Vision",
     },
     trustedHeading: "TRUSTED BY CLIENTS & STRATEGIC PARTNERS",
+    trustedSubheading: "Organisations already relying on IWNT's workforce operations and expertise, as we build the next generation of the platform.",
     capabilities: [
       {
         title: "Local expertise",
@@ -588,7 +594,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       block1Headline1: "Less administration.",
       block1Headline2: "More control.",
       block1Body:
-        "We're building the IWNT platform to bring workforce processes, documents and operational data into one connected environment - giving organisations greater visibility across their African operations.",
+        "IWNT provides Employer of Record (EOR), payroll, and workforce management services across eight African markets — covering hiring, onboarding, ongoing HR management, payroll, and compliance from one connected platform.",
       block1Status: "PLATFORM PREVIEW · IN DEVELOPMENT",
       block2Eyebrow: "POWERFUL TECHNOLOGY. HUMAN SUPPORT.",
       block2Headline: "Technology with people behind it.",
@@ -788,7 +794,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       locations: "Headquartered in Dubai • Operating across Africa",
     },
     footer: {
-      description: "IWNT is building connected workforce infrastructure to help organisations hire, manage and support teams across African markets and beyond.",
+      description: "IWNT is the technology platform of Intel HRC, built to bring Employer of Record and workforce management infrastructure to organisations across Africa and beyond.",
       explore: "Explore",
       company: "Company",
       stayConnected: "Stay connected",
@@ -931,7 +937,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         headlineLine1: "Built from experience,",
         headlineLine2: "Building",
         headlineLine2Emphasis: "what's next.",
-        body: "IWNT is building connected workforce infrastructure for organisations managing teams across African markets - combining technology with real operational experience.",
+        body: "IWNT is the technology platform built by Intel HRC to bring years of on-the-ground HR and workforce operations experience into a single connected system. Where Intel HRC has spent that time hiring, paying and supporting teams across African markets in person, IWNT is how that expertise becomes a platform — giving organisations the same local depth, backed by connected technology, wherever they're growing next.\n\nWe're headquartered in Dubai and operating across eight African markets today, with a team that combines local legal entities, on-the-ground talent, and enterprise-grade compliance standards. The platform is still being built in the open — early partners are helping shape it alongside us.",
         status: "● PLATFORM IN DEVELOPMENT",
       },
       founder: {
@@ -1036,16 +1042,19 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       languageLabel: "Langue",
     },
     hero: {
-      eyebrow: "NOUS CONSTRUISONS L'INFRASTRUCTURE RH DE L'AFRIQUE",
-      headlineLine1: "Connecter les ambitions.",
-      headlineLine2: "Construire",
-      headlineLine2Emphasis: "l'avenir de l'Afrique.",
-      body: "IWNT développe une plateforme RH connectée conçue pour aider les organisations à recruter, intégrer, gérer et rémunérer leurs équipes sur les marchés africains - en associant technologie et expertise locale approfondie.",
+      eyebrow: "EMPLOYER OF RECORD (EOR) & GESTION DES EFFECTIFS · À TRAVERS L'AFRIQUE",
+      headlineLine1: "Recrutez, rémunérez et gérez vos équipes",
+      headlineLine2: "partout ",
+      headlineLine2Emphasis: "en Afrique.",
+      subheadline: "Sans créer d'entité locale.",
+      body: "IWNT est votre partenaire Employer of Record (EOR) et votre plateforme de gestion des effectifs — nous recrutons, intégrons, gérons et rémunérons vos équipes sur les marchés africains, en combinant une technologie connectée à une expertise locale approfondie.",
+      tagline: "Connecter les ambitions. Construire l'avenir de l'Afrique.",
       status: "PLATEFORME EN DÉVELOPPEMENT · PARTENAIRES PIONNIERS BIENVENUS",
       primaryCta: "Devenir partenaire",
       secondaryCta: "Découvrir notre vision",
     },
-    trustedHeading: "ILS NOUS FONT CONFIANCE",
+    trustedHeading: "ILS NOUS FONT CONFIANCE : CLIENTS & PARTENAIRES STRATÉGIQUES",
+    trustedSubheading: "Des organisations s'appuient déjà sur l'expertise et les opérations de gestion des effectifs d'IWNT, tandis que nous construisons la prochaine génération de notre plateforme.",
     capabilities: [
       {
         title: "Expertise locale",
@@ -1178,7 +1187,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       block1Headline1: "Moins d'administration.",
       block1Headline2: "Plus de contrôle.",
       block1Body:
-        "Nous développons la plateforme IWNT pour réunir les processus RH, les documents et les données opérationnelles dans un environnement connecté - afin d'offrir aux organisations une meilleure visibilité sur leurs opérations en Afrique.",
+        "IWNT fournit des services d'Employer of Record (EOR), de paie et de gestion des effectifs sur huit marchés africains — couvrant le recrutement, l'intégration, la gestion RH continue, la paie et la conformité depuis une plateforme connectée unique.",
       block1Status: "APERÇU DE LA PLATEFORME · EN DÉVELOPPEMENT",
       block2Eyebrow: "UNE TECHNOLOGIE PUISSANTE. UN ACCOMPAGNEMENT HUMAIN.",
       block2Headline: "La technologie, avec l'humain derrière.",
@@ -1378,7 +1387,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       locations: "Siège social à Dubaï • Présent en Afrique",
     },
     footer: {
-      description: "IWNT développe une infrastructure RH connectée pour aider les organisations à recruter, gérer et accompagner leurs équipes sur les marchés africains et au-delà.",
+      description: "IWNT est la plateforme technologique d'Intel HRC, conçue pour fournir aux organisations une infrastructure d'Employer of Record (EOR) et de gestion des effectifs à travers l'Afrique et au-delà.",
       explore: "Explorer",
       company: "Entreprise",
       stayConnected: "Restez connecté",
@@ -1521,7 +1530,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         headlineLine1: "Forts de notre expérience,",
         headlineLine2: "Nous construisons",
         headlineLine2Emphasis: "l’avenir.",
-        body: "IWNT développe une infrastructure RH connectée pour les organisations qui gèrent des équipes sur les marchés africains - en associant technologie et véritable expérience opérationnelle.",
+        body: "IWNT est la plateforme technologique créée par Intel HRC pour réunir des années d'expérience de terrain en ressources humaines et en gestion des effectifs au sein d'un système connecté unique. Fort de son expérience dans le recrutement, la rémunération et l'accompagnement d'équipes sur les marchés africains, Intel HRC apporte à IWNT cette expertise opérationnelle — permettant aux organisations de bénéficier de la même connaissance locale, soutenue par une technologie connectée, partout où elles souhaitent se développer.\n\nBasés à Dubaï et présents aujourd'hui sur huit marchés africains, nous réunissons des entités juridiques locales, des talents sur le terrain et des standards de conformité de niveau entreprise. La plateforme continue d'évoluer de manière collaborative — nos premiers partenaires contribuent activement à façonner son développement.",
         status: "● PLATEFORME EN DÉVELOPPEMENT",
       },
       founder: {

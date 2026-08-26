@@ -6,44 +6,64 @@ import { OPERATIONAL_MARKETS } from "@/app/data/markets";
 import { AFRICA_COUNTRY_PATHS } from "@/app/data/africaGeoData";
 
 interface AfricaNetworkProps {
+  activeNodeId?: string;
   activeMarketIds?: string[];
   isMobileOnly?: boolean;
 }
 
-// Preset natural geographic arc routes between markets
-const NETWORK_ARCS: Array<{ from: string; to: string; curveOffset: number }> = [
-  { from: "senegal", to: "mali", curveOffset: -4 },
-  { from: "mali", to: "burkina-faso", curveOffset: -3 },
-  { from: "mali", to: "niger", curveOffset: -5 },
-  { from: "burkina-faso", to: "cote-divoire", curveOffset: 4 },
-  { from: "cote-divoire", to: "cameroon", curveOffset: 6 },
-  { from: "niger", to: "chad", curveOffset: -4 },
+// Preset natural geographic arc routes between internal operational markets
+const INTERNAL_NETWORK_ARCS: Array<{ from: string; to: string; curveOffset: number }> = [
+  { from: "senegal", to: "mali", curveOffset: -3 },
+  { from: "mali", to: "burkina-faso", curveOffset: -2 },
+  { from: "mali", to: "niger", curveOffset: -4 },
+  { from: "burkina-faso", to: "cote-divoire", curveOffset: 3 },
+  { from: "cote-divoire", to: "cameroon", curveOffset: 5 },
+  { from: "niger", to: "chad", curveOffset: -3 },
   { from: "chad", to: "cameroon", curveOffset: 3 },
-  { from: "cameroon", to: "drc", curveOffset: -4 },
-  { from: "chad", to: "drc", curveOffset: 5 },
-  { from: "senegal", to: "cote-divoire", curveOffset: -6 },
+  { from: "cameroon", to: "drc", curveOffset: -3 },
+  { from: "senegal", to: "cote-divoire", curveOffset: -5 },
 ];
 
 export default function AfricaNetwork({
-  activeMarketIds = [],
+  activeNodeId,
+  activeMarketIds,
   isMobileOnly = false,
 }: AfricaNetworkProps) {
+  const targetNodeId = activeNodeId || activeMarketIds?.[0] || "cameroon";
   const reduceMotion = useReducedMotion();
-  const [pulseMap, setPulseMap] = useState<Record<string, number>>({});
+  const [pulseCount, setPulseCount] = useState(0);
 
   useEffect(() => {
-    activeMarketIds.forEach((id) => {
-      setPulseMap((prev) => ({
-        ...prev,
-        [id]: (prev[id] || 0) + 1,
-      }));
-    });
-  }, [activeMarketIds]);
+    setPulseCount((prev) => prev + 1);
+  }, [targetNodeId]);
+
+  const activeMarket = OPERATIONAL_MARKETS.find((m) => m.id === targetNodeId) || OPERATIONAL_MARKETS[0];
+
+  // SVG ViewBox: 0 0 100 100
+  // Map is scaled ~25% smaller and positioned in center-right between the two people.
+  // Origin (Left side, International Card A position): x=14, y=20
+  // Central IWNT Core Hub: x=58, y=42
+  // Destination Node (Map coordinates mapped into adjusted viewBox space):
+  // Africa Map scale: 0.075 (reduced from 0.1 for 25% smaller map)
+  // Africa Map translate: (28, 12)
+  const mapScale = 0.075;
+  const mapOffsetX = 28;
+  const mapOffsetY = 12;
+
+  const nodeX = mapOffsetX + activeMarket.x * mapScale * 10;
+  const nodeY = mapOffsetY + activeMarket.y * mapScale * 10;
+
+  // Destination Card B position (Right side): x=82, y=20
+  const cardBX = 82;
+  const cardBY = 20;
+
+  // Complete continuous route: International Card A (14, 20) -> IWNT Hub (58, 42) -> Node (nodeX, nodeY) -> African Card B (82, 20)
+  const routePathD = `M 14 20 C 30 20, 45 42, 58 42 C 64 42, ${nodeX - 4} ${nodeY - 4}, ${nodeX} ${nodeY} C ${nodeX + 4} ${nodeY + 4}, 76 20, ${cardBX} ${cardBY}`;
 
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-20 h-full w-full"
+      className="pointer-events-none absolute inset-0 z-10 h-full w-full overflow-hidden"
     >
       <svg
         viewBox="0 0 100 100"
@@ -51,152 +71,161 @@ export default function AfricaNetwork({
         className="h-full w-full overflow-visible"
       >
         <defs>
-          {/* Vibrant Green Active Gradient */}
-          <linearGradient id="vibrantGreenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#4ADE80" stopOpacity="0.95" />
-            <stop offset="50%" stopColor="#22C55E" stopOpacity="1" />
-            <stop offset="100%" stopColor="#16A34A" stopOpacity="0.9" />
+          {/* Luminous Route Gradient: Soft Cyan -> Royal Blue -> IWNT Vibrant Green */}
+          <linearGradient id="routeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#60A5FA" stopOpacity="0.95" />
+            <stop offset="35%" stopColor="#38BDF8" stopOpacity="0.9" />
+            <stop offset="65%" stopColor="#22C55E" stopOpacity="0.95" />
+            <stop offset="100%" stopColor="#18A94B" stopOpacity="1" />
           </linearGradient>
 
-          {/* Intense Neon Green Glow Filter */}
-          <filter id="neonGreenGlow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="1.2" result="blur1" />
-            <feGaussianBlur stdDeviation="2.4" result="blur2" />
+          {/* Intense Glow Filter for Connection Route & Active Node */}
+          <filter id="routeGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="0.7" result="blur" />
             <feMerge>
-              <feMergeNode in="blur2" />
-              <feMergeNode in="blur1" />
+              <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
         </defs>
 
-        {/* 0. FAINT DOTTED AFRICA SILHOUETTE */}
-        <g transform="scale(0.1)" opacity="0.15">
+        {/* LAYER 1: REDUCED (25% SMALLER) ELEGANT AFRICA SVG MAP */}
+        <g transform={`translate(${mapOffsetX}, ${mapOffsetY}) scale(${mapScale})`} opacity="0.45">
           {AFRICA_COUNTRY_PATHS.map((country) => (
             <path
               key={country.id}
               d={country.d}
-              fill="none"
-              stroke="#AAB8C7"
-              strokeWidth="2.5"
-              strokeDasharray="4 6"
+              fill="rgba(15, 23, 42, 0.7)"
+              stroke="#2563EB"
+              strokeWidth="1.2"
+              strokeOpacity="0.5"
               strokeLinecap="round"
+              strokeLinejoin="round"
             />
           ))}
         </g>
 
-        {/* 1. RESTING NETWORK ARCS (SWEEPING GREEN/BLUE ARCS) */}
-        {NETWORK_ARCS.map((arc, idx) => {
-          const source = OPERATIONAL_MARKETS.find((m) => m.id === arc.from);
-          const target = OPERATIONAL_MARKETS.find((m) => m.id === arc.to);
-          if (!source || !target) return null;
+        {/* LAYER 2: INTERNAL AFRICAN MESH (RESTING ARCS) */}
+        {!isMobileOnly &&
+          INTERNAL_NETWORK_ARCS.map((arc, idx) => {
+            const source = OPERATIONAL_MARKETS.find((m) => m.id === arc.from);
+            const target = OPERATIONAL_MARKETS.find((m) => m.id === arc.to);
+            if (!source || !target) return null;
 
-          const isSourceActive = activeMarketIds.includes(source.id);
-          const isTargetActive = activeMarketIds.includes(target.id);
-          const isActiveArc = isSourceActive || isTargetActive;
-          const isBothActive = isSourceActive && isTargetActive;
+            const sx = mapOffsetX + source.x * mapScale * 10;
+            const sy = mapOffsetY + source.y * mapScale * 10;
+            const tx = mapOffsetX + target.x * mapScale * 10;
+            const ty = mapOffsetY + target.y * mapScale * 10;
 
-          // Compute midpoint with sweeping arc curve
-          const midX = (source.x + target.x) / 2 + (arc.curveOffset || 0);
-          const midY = (source.y + target.y) / 2 - Math.abs(arc.curveOffset || 3);
-          const pathD = `M ${source.x} ${source.y} Q ${midX} ${midY} ${target.x} ${target.y}`;
-          const arcKey = `arc-${arc.from}-${arc.to}-${idx}`;
+            const midX = (sx + tx) / 2 + arc.curveOffset;
+            const midY = (sy + ty) / 2 - Math.abs(arc.curveOffset);
+            const d = `M ${sx} ${sy} Q ${midX} ${midY} ${tx} ${ty}`;
 
-          return (
-            <g key={arcKey}>
-              {/* Background Resting Path */}
+            const isTargetNode = activeMarket.id === source.id || activeMarket.id === target.id;
+
+            return (
               <path
-                d={pathD}
+                key={`int-arc-${idx}`}
+                d={d}
                 fill="none"
-                stroke={isActiveArc ? "#22C55E" : "rgba(34, 197, 94, 0.25)"}
-                strokeWidth={isBothActive ? (isMobileOnly ? "0.45" : "0.6") : (isMobileOnly ? "0.22" : "0.3")}
-                strokeOpacity={isBothActive ? 0.95 : isActiveArc ? 0.55 : 0.25}
-                filter={isBothActive ? "url(#neonGreenGlow)" : undefined}
+                stroke={isTargetNode ? "#22C55E" : "#1E3A5F"}
+                strokeWidth={isTargetNode ? "0.35" : "0.2"}
+                strokeOpacity={isTargetNode ? 0.6 : 0.25}
+                strokeDasharray={isTargetNode ? undefined : "1 1.5"}
                 vectorEffect="non-scaling-stroke"
               />
+            );
+          })}
 
-              {/* Active Animated Glowing Path Overlay */}
-              {isBothActive && (
-                <motion.path
-                  d={pathD}
-                  fill="none"
-                  stroke="url(#vibrantGreenGrad)"
-                  strokeWidth={isMobileOnly ? "0.55" : "0.75"}
-                  strokeLinecap="round"
-                  filter="url(#neonGreenGlow)"
-                  vectorEffect="non-scaling-stroke"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
-                  transition={{ duration: reduceMotion ? 0 : 0.9, ease: "easeInOut" }}
-                />
-              )}
+        {/* LAYER 3: DYNAMIC VISIBLE CROSS-BORDER CONNECTION ROUTE (1.5-2px STROKE) */}
+        <g>
+          {/* Faint Background Glowing Track */}
+          <path
+            d={routePathD}
+            fill="none"
+            stroke="rgba(56, 189, 248, 0.25)"
+            strokeWidth="0.6"
+            vectorEffect="non-scaling-stroke"
+          />
 
-              {/* Luminous Light Signal Dot Travelling Along Arc */}
-              {isBothActive && !reduceMotion && (
-                <circle
-                  r={isMobileOnly ? "1.1" : "1.5"}
-                  fill="#FFFFFF"
-                  stroke="#22C55E"
-                  strokeWidth="0.4"
-                  filter="url(#neonGreenGlow)"
-                >
-                  <animateMotion
-                    dur="2.0s"
-                    repeatCount="indefinite"
-                    path={pathD}
-                    keyTimes="0; 1"
-                    keySplines="0.4 0 0.2 1"
-                    calcMode="spline"
-                  />
-                </circle>
-              )}
-            </g>
-          );
-        })}
+          {/* Main Animated Luminous Bezier Path */}
+          <motion.path
+            key={`route-${activeMarket.id}-${pulseCount}`}
+            d={routePathD}
+            fill="none"
+            stroke="url(#routeGrad)"
+            strokeWidth={isMobileOnly ? "0.6" : "0.9"}
+            strokeLinecap="round"
+            filter="url(#routeGlow)"
+            vectorEffect="non-scaling-stroke"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: reduceMotion ? 0 : 1.1, ease: "easeInOut" }}
+          />
 
-        {/* 2. OPERATIONAL MARKET NODES (BRIGHT NEON GREEN DOTS WITH PULSE RINGS) */}
+          {/* SINGLE TRAVELLING LIGHT SIGNAL PARTICLE (INTL CARD -> IWNT -> AFRICA -> AFRICAN CARD) */}
+          {!reduceMotion && (
+            <circle r={isMobileOnly ? "1.1" : "1.5"} fill="#FFFFFF" filter="url(#routeGlow)">
+              <animateMotion
+                key={`signal-${activeMarket.id}-${pulseCount}`}
+                dur="2.4s"
+                repeatCount="indefinite"
+                path={routePathD}
+                keyTimes="0; 1"
+                keySplines="0.4 0 0.2 1"
+                calcMode="spline"
+              />
+            </circle>
+          )}
+        </g>
+
+        {/* LAYER 4: CENTRAL IWNT CORE INFRASTRUCTURE NODE */}
+        <g transform="translate(58, 42)">
+          <circle r="1.8" fill="#0B1528" stroke="#38BDF8" strokeWidth="0.5" filter="url(#routeGlow)" />
+          <circle r="0.8" fill="#18A94B" />
+        </g>
+
+        {/* LAYER 5: OPERATIONAL AFRICAN MARKET NODES */}
         {OPERATIONAL_MARKETS.map((market) => {
-          const isActive = activeMarketIds.includes(market.id);
-
-          // On mobile, prioritize active nodes for clarity
-          if (isMobileOnly && !isActive) return null;
+          const isActive = market.id === activeMarket.id;
+          const mx = mapOffsetX + market.x * mapScale * 10;
+          const my = mapOffsetY + market.y * mapScale * 10;
 
           return (
-            <g key={market.id} transform={`translate(${market.x}, ${market.y})`}>
-              {/* Expanding Pulse Ring */}
+            <g key={`node-${market.id}`} transform={`translate(${mx}, ${my})`}>
+              {/* Soft Pulsing Aura Ring for Active Destination Node */}
               {isActive && !reduceMotion && (
                 <motion.circle
-                  key={`pulse-${market.id}-${pulseMap[market.id] || 0}`}
+                  key={`pulse-ring-${market.id}-${pulseCount}`}
                   r="2.2"
                   fill="none"
                   stroke="#22C55E"
-                  strokeWidth="0.4"
-                  filter="url(#neonGreenGlow)"
-                  vectorEffect="non-scaling-stroke"
+                  strokeWidth="0.5"
+                  filter="url(#routeGlow)"
                   initial={{ scale: 0.4, opacity: 0.9 }}
-                  animate={{ scale: 2.2, opacity: 0 }}
-                  transition={{ duration: 1.4, ease: "easeOut" }}
+                  animate={{ scale: 2.5, opacity: 0 }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
                 />
               )}
 
-              {/* Outer Glowing Green Aura */}
+              {/* Glowing Outer Node Circle */}
               <circle
-                r={isActive ? "1.6" : "1.0"}
-                fill="#22C55E"
-                opacity={isActive ? 0.95 : 0.4}
-                filter={isActive ? "url(#neonGreenGlow)" : undefined}
+                r={isActive ? "1.6" : "0.9"}
+                fill={isActive ? "#22C55E" : "#1E293B"}
+                opacity={isActive ? 1 : 0.5}
+                filter={isActive ? "url(#routeGlow)" : undefined}
               />
 
-              {/* Core Solid Green Dot */}
+              {/* Core Solid Node Point */}
               <circle
-                r={isActive ? "1.1" : "0.7"}
-                fill={isActive ? "#16A34A" : "#22C55E"}
-                stroke="#FFFFFF"
-                strokeWidth={isActive ? "0.35" : "0.2"}
+                r={isActive ? "1.1" : "0.6"}
+                fill={isActive ? "#FFFFFF" : "#38BDF8"}
+                stroke={isActive ? "#16A34A" : "#1E3A5F"}
+                strokeWidth="0.3"
               />
 
-              {/* Bright White Center Point */}
-              {isActive && <circle r="0.4" fill="#FFFFFF" />}
+              {/* Active Inner Green Indicator */}
+              {isActive && <circle r="0.4" fill="#16A34A" />}
             </g>
           );
         })}
