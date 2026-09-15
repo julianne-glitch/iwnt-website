@@ -1,6 +1,12 @@
 import { ReactNode } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { auth, signOut } from "@/auth";
+
+export const metadata: Metadata = {
+  title: "Admin",
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminLayout({
   children,

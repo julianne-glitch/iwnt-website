@@ -6,6 +6,7 @@ import { Calendar, Globe2, Network, ArrowDown, ShieldCheck, Cpu, Layers } from "
 import { useLanguage } from "@/app/context/LanguageContext";
 import AfricaNetwork from "@/app/components/home/AfricaNetwork";
 import CredibilitySection from "@/app/components/about/CredibilitySection";
+import Breadcrumbs from "@/app/components/seo/Breadcrumbs";
 
 export default function AboutPage() {
   const { t } = useLanguage();
@@ -16,6 +17,12 @@ export default function AboutPage() {
   return (
     <main className="w-full pt-32 lg:pt-36 pb-20 bg-white min-h-screen">
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+        <Breadcrumbs
+          items={[
+            { name: "Home", href: "/" },
+            { name: "About", href: "/about" },
+          ]}
+        />
         
         {/* TOP HERO / OPENING STORY SECTION */}
         <section className="relative w-full rounded-[28px] bg-gradient-to-r from-white via-white via-42% via-[#0F172A]/90 via-55% to-[#070E1B] border border-slate-200/80 overflow-hidden flex flex-col lg:flex-row min-h-[580px] lg:h-[780px] shadow-sm">

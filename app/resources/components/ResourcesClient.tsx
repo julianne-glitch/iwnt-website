@@ -10,6 +10,7 @@ import {
   LayoutGrid, Clock, BookOpen, CheckCircle, Target, RefreshCw
 } from "lucide-react";
 import { Article } from "@prisma/client";
+import Breadcrumbs from "@/app/components/seo/Breadcrumbs";
 
 export default function ResourcesClient({ articles }: { articles: Article[] }) {
   const { language, t } = useLanguage();
@@ -18,6 +19,13 @@ export default function ResourcesClient({ articles }: { articles: Article[] }) {
   return (
     <main className="min-h-screen pt-24 pb-16 bg-white selection:bg-[#16A34A] selection:text-white font-sans">
       <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+        <Breadcrumbs
+          className="mb-8"
+          items={[
+            { name: "Home", href: "/" },
+            { name: "Resources", href: "/resources" },
+          ]}
+        />
         
         {/* HERO SECTION */}
         <section className="flex flex-col lg:flex-row items-center justify-between gap-12 py-12 lg:py-20 border-b border-slate-100 mb-12">
@@ -53,7 +61,7 @@ export default function ResourcesClient({ articles }: { articles: Article[] }) {
             <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-lg border border-slate-200">
               <Image 
                 src="/images/african-workforce-operations-expert.webp"
-                alt="Workforce Knowledge"
+                alt="African workforce operations specialist supporting employers"
                 fill
                 className="object-cover"
                 priority
@@ -79,7 +87,7 @@ export default function ResourcesClient({ articles }: { articles: Article[] }) {
             <div className="lg:w-[45%] relative h-72 lg:h-auto min-h-[350px]">
               <Image 
                 src="/images/african-workforce-operations-candid.webp" 
-                alt="Cameroon CNPS Guide" 
+                alt="Guide to Cameroon CNPS social security compliance for employers" 
                 fill 
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
               />

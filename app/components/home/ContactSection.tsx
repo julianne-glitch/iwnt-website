@@ -46,7 +46,7 @@ export default function ContactSection() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 relative z-10">
             <Link
-              href="/contact?intent=partnership"
+              href="/contact?intent=pilot"
               className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl text-base font-semibold text-white bg-[#16A34A] hover:bg-[#15803D] shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 group w-full sm:w-auto"
             >
               <span>{c.ctaButton}</span>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import { useLanguage } from "@/app/context/LanguageContext";
@@ -8,18 +9,44 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { submitContactEnquiry } from "@/app/actions/contact";
 import { contactSchema, type ContactFormData } from "@/lib/schemas";
+import Link from "next/link";
+
+type ContactIntent = "pilot" | "waitlist" | null;
+
+function resolveIntent(raw: string | null): ContactIntent {
+  if (raw === "pilot" || raw === "waitlist") return raw;
+  if (raw === "partnership") return "pilot";
+  return null;
+}
 
 export default function ContactForm() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const formT = t.contactPage.form;
+  const searchParams = useSearchParams();
+  const intent = useMemo(
+    () => resolveIntent(searchParams.get("intent")),
+    [searchParams]
+  );
 
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const defaultMessage =
+    intent === "pilot"
+      ? language === "fr"
+        ? "Je souhaite demander un pilote IWNT pour notre organisation."
+        : "I would like to request an IWNT pilot for our organisation."
+      : intent === "waitlist"
+        ? language === "fr"
+          ? "Je souhaite rejoindre la liste d'attente pour la plateforme IWNT."
+          : "I would like to join the waitlist for the IWNT platform."
+        : "";
 
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -28,11 +55,18 @@ export default function ContactForm() {
       workEmail: "",
       company: "",
       countryRegion: "",
-      helpTopic: "",
-      message: "",
+      helpTopic: intent ?? "",
+      message: defaultMessage,
       consent: false,
     },
   });
+
+  // Keep topic + starter message in sync when landing with ?intent=
+  useEffect(() => {
+    if (!intent) return;
+    setValue("helpTopic", intent, { shouldValidate: true });
+    setValue("message", defaultMessage, { shouldDirty: false });
+  }, [intent, defaultMessage, setValue]);
 
   const consentChecked = watch("consent");
 
@@ -49,6 +83,17 @@ export default function ContactForm() {
       setErrorMessage(result.error || formT.error);
     }
   };
+
+  const intentBanner =
+    intent === "pilot"
+      ? language === "fr"
+        ? "Demande de pilote"
+        : "Pilot request"
+      : intent === "waitlist"
+        ? language === "fr"
+          ? "Inscription liste d'attente"
+          : "Waitlist signup"
+        : null;
 
   if (status === "success") {
     return (
@@ -70,6 +115,12 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {intentBanner && (
+        <div className="rounded-xl border border-[#16A34A]/25 bg-[#16A34A]/5 px-4 py-3 text-sm font-semibold text-[#0D1B2E]">
+          <span className="text-[#16A34A]">●</span> {intentBanner}
+        </div>
+      )}
+
       {status === "error" && (
         <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl flex items-start gap-3 text-sm">
           <AlertCircle className="w-5 h-5 shrink-0" />
@@ -78,7 +129,6 @@ export default function ContactForm() {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {/* Full Name */}
         <div className="space-y-1.5">
           <label htmlFor="fullName" className="block text-sm font-medium text-[#0E1B2E]">
             {formT.fullName}
@@ -101,7 +151,6 @@ export default function ContactForm() {
           </AnimatePresence>
         </div>
 
-        {/* Work Email */}
         <div className="space-y-1.5">
           <label htmlFor="workEmail" className="block text-sm font-medium text-[#0E1B2E]">
             {formT.workEmail}
@@ -124,7 +173,6 @@ export default function ContactForm() {
           </AnimatePresence>
         </div>
 
-        {/* Company */}
         <div className="space-y-1.5">
           <label htmlFor="company" className="block text-sm font-medium text-[#0E1B2E]">
             {formT.company}
@@ -137,7 +185,6 @@ export default function ContactForm() {
           />
         </div>
 
-        {/* Country / Region */}
         <div className="space-y-1.5">
           <label htmlFor="countryRegion" className="block text-sm font-medium text-[#0E1B2E]">
             {formT.countryRegion}
@@ -161,7 +208,6 @@ export default function ContactForm() {
         </div>
       </div>
 
-      {/* Help Topic */}
       <div className="space-y-1.5">
         <label htmlFor="helpTopic" className="block text-sm font-medium text-[#0E1B2E]">
           {formT.helpTopic}
@@ -176,6 +222,8 @@ export default function ContactForm() {
             aria-invalid={!!errors.helpTopic}
           >
             <option value="" disabled></option>
+            <option value="pilot">{formT.topics.pilot}</option>
+            <option value="waitlist">{formT.topics.waitlist}</option>
             <option value="workforce">{formT.topics.workforce}</option>
             <option value="hiring">{formT.topics.hiring}</option>
             <option value="payroll">{formT.topics.payroll}</option>
@@ -201,16 +249,15 @@ export default function ContactForm() {
         </AnimatePresence>
       </div>
 
-      {/* Message */}
       <div className="space-y-1.5">
         <label htmlFor="message" className="block text-sm font-medium text-[#0E1B2E]">
           {formT.message}
         </label>
         <textarea
           id="message"
-          rows={4}
+          rows={5}
           {...register("message")}
-          className={`w-full px-4 py-3 rounded-xl border resize-none ${
+          className={`w-full px-4 py-3 rounded-xl border resize-y min-h-[140px] ${
             errors.message ? "border-red-300 focus:border-red-500 focus:ring-red-200" : "border-slate-200 focus:border-[#16A34A] focus:ring-[#16A34A]/20"
           } outline-none transition-all shadow-xs`}
           aria-invalid={!!errors.message}
@@ -224,18 +271,19 @@ export default function ContactForm() {
         </AnimatePresence>
       </div>
 
-      {/* Consent */}
       <div className="flex items-start gap-3">
-        <div className="flex items-center h-6">
-          <input
-            id="consent"
-            type="checkbox"
-            {...register("consent")}
-            className="w-4 h-4 rounded border-slate-300 text-[#16A34A] focus:ring-[#16A34A]"
-          />
-        </div>
-        <label htmlFor="consent" className="text-sm text-[#475569] leading-relaxed select-none">
-          {formT.consent}
+        <input
+          id="consent"
+          type="checkbox"
+          {...register("consent")}
+          className="mt-1 h-4 w-4 rounded border-slate-300 text-[#16A34A] focus:ring-[#16A34A]"
+        />
+        <label htmlFor="consent" className="text-sm text-slate-600 leading-relaxed">
+          {formT.consent}{" "}
+          <Link href="/privacy" className="font-semibold text-[#0D1B2E] underline-offset-2 hover:text-[#16A34A] hover:underline">
+            {t.footer.privacyPolicy}
+          </Link>
+          .
         </label>
       </div>
       <AnimatePresence>
@@ -246,7 +294,6 @@ export default function ContactForm() {
         )}
       </AnimatePresence>
 
-      {/* Submit Button */}
       <button
         type="submit"
         disabled={status === "submitting" || !consentChecked}

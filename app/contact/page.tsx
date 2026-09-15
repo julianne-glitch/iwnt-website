@@ -1,9 +1,11 @@
 "use client";
 
+import { Suspense } from "react";
 import Image from "next/image";
-import { Mail, MapPin, Building, ShieldCheck, Globe, Users } from "lucide-react";
+import { Mail, Building, ShieldCheck, Globe, Users } from "lucide-react";
 import ContactForm from "@/app/components/contact/ContactForm";
 import { useLanguage } from "@/app/context/LanguageContext";
+import Breadcrumbs from "@/app/components/seo/Breadcrumbs";
 
 export default function ContactPage() {
   const { t } = useLanguage();
@@ -21,7 +23,7 @@ export default function ContactPage() {
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/contact-hero.webp"
-            alt="Dubai Skyline"
+            alt="Dubai DIFC skyline near IWNT headquarters"
             fill
             sizes="100vw"
             quality={90}
@@ -35,6 +37,13 @@ export default function ContactPage() {
 
         {/* Content Container */}
         <div className="relative z-10 max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-10">
+          <Breadcrumbs
+            className="mb-8 [&_span]:text-slate-300 [&_a]:text-slate-300 [&_a:hover]:text-[#4ADE80] [&_[aria-current=page]]:text-white"
+            items={[
+              { name: "Home", href: "/" },
+              { name: "Contact", href: "/contact" },
+            ]}
+          />
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-6 sm:mb-8">
               <span className="w-2 h-2 rounded-full bg-[#16A34A] animate-pulse" />
@@ -69,7 +78,13 @@ export default function ContactPage() {
             {/* Form Column */}
             <div className="lg:col-span-7 xl:col-span-8">
               <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 p-6 sm:p-8 lg:p-12 border border-slate-100">
-                <ContactForm />
+                <Suspense
+                  fallback={
+                    <div className="min-h-[400px] animate-pulse rounded-xl bg-slate-100" aria-hidden />
+                  }
+                >
+                  <ContactForm />
+                </Suspense>
               </div>
             </div>
 

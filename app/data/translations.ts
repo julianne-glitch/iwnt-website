@@ -50,6 +50,20 @@ export interface TranslationSchema {
     }>;
     exploreHeading: string;
     solutionPills: string[];
+    workflow: {
+      eyebrow: string;
+      headline: string;
+      body: string;
+      steps: Array<{ title: string; body: string }>;
+    };
+    architecture: {
+      eyebrow: string;
+      headline: string;
+      body: string;
+      points: string[];
+    };
+    ctaPrimary: string;
+    ctaSecondary: string;
   };
   globalExpansion: {
     eyebrow: string;
@@ -353,6 +367,12 @@ export interface TranslationSchema {
       body: string;
       status: string;
     };
+    identity: {
+      legalName: string;
+      founded: string;
+      hq: string;
+      stage: string;
+    };
     founder: {
       label: string;
       name: string;
@@ -366,6 +386,17 @@ export interface TranslationSchema {
       label2: string;
       val3: string;
       label3: string;
+    };
+    traction: {
+      eyebrow: string;
+      headline: string;
+      items: Array<{ title: string; body: string }>;
+    };
+    architecture: {
+      eyebrow: string;
+      headline: string;
+      body: string;
+      points: string[];
     };
     credibility: {
       eyebrow: string;
@@ -386,6 +417,25 @@ export interface TranslationSchema {
       body: string;
     };
     cta: string;
+  };
+  legal: {
+    privacy: {
+      title: string;
+      updated: string;
+      intro: string;
+      sections: Array<{ heading: string; body: string }>;
+    };
+    terms: {
+      title: string;
+      updated: string;
+      intro: string;
+      sections: Array<{ heading: string; body: string }>;
+    };
+  };
+  cookie: {
+    message: string;
+    accept: string;
+    learnMore: string;
   };
   contactPage: {
     hero: {
@@ -415,6 +465,8 @@ export interface TranslationSchema {
       error: string;
       consent: string;
       topics: {
+        pilot: string;
+        waitlist: string;
         workforce: string;
         hiring: string;
         payroll: string;
@@ -452,7 +504,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       resources: "Resources",
       about: "About Us",
       contact: "Contact Us",
-      cta: "Partner With Us",
+      cta: "Request a pilot",
       languageLabel: "Language",
     },
     hero: {
@@ -464,11 +516,12 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       body: "IWNT is your Employer of Record and workforce platform — we hire, onboard, manage and pay your team across African markets, combining connected technology with deep local expertise.",
       tagline: "Connecting ambitions. Building what's next for Africa.",
       status: "PLATFORM IN DEVELOPMENT · EARLY PARTNERS WELCOME",
-      primaryCta: "Partner With Us",
-      secondaryCta: "Explore Our Vision",
+      primaryCta: "Request a pilot",
+      secondaryCta: "Join the waitlist",
     },
     trustedHeading: "TRUSTED BY CLIENTS & STRATEGIC PARTNERS",
-    trustedSubheading: "Organisations already relying on IWNT's workforce operations and expertise, as we build the next generation of the platform.",
+    trustedSubheading:
+      "Organisations already relying on IWNT's workforce operations and expertise, as we build the next generation of the platform.",
     capabilities: [
       {
         title: "Local expertise",
@@ -535,6 +588,50 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       ],
       exploreHeading: "Explore how each solution works.",
       solutionPills: ["Hire", "Onboard", "Manage", "Pay", "Comply", "Insight"],
+      workflow: {
+        eyebrow: "END-TO-END WORKFLOW",
+        headline: "How the platform is designed to work.",
+        body: "IWNT connects employer onboarding, worker records, compliance workflows, payroll coordination, reporting, and country coverage into one operating layer. Parent-group operations in African markets supply local delivery; IWNT builds the software.",
+        steps: [
+          {
+            title: "Employer onboarding",
+            body: "Capture organisation details, markets of interest, and hiring intent so teams start in one workspace.",
+          },
+          {
+            title: "Worker records",
+            body: "Store contracts, identity documents, and employment files for each market in a structured employee profile.",
+          },
+          {
+            title: "Compliance workflows",
+            body: "Guide local checks, social-security steps, and country requirements with market-specific knowledge.",
+          },
+          {
+            title: "Payroll coordination",
+            body: "Support payroll preparation, approvals, and payment-related coordination with local operating partners.",
+          },
+          {
+            title: "Reporting & access",
+            body: "Give role-based visibility into headcount, onboarding status, and compliance progress across markets.",
+          },
+          {
+            title: "Country coverage",
+            body: "Extend the same journey across markets where the IntelHRC group already operates, starting with Africa.",
+          },
+        ],
+      },
+      architecture: {
+        eyebrow: "TECHNICAL DIRECTION",
+        headline: "Built for secure, multi-country workforce data.",
+        body: "AWS and modern cloud services will support the application layer as the product scales. The planned architecture focuses on secure storage, workflow automation, APIs, and reporting—not claims of finished production workloads.",
+        points: [
+          "Secure multi-country workforce data management",
+          "Scalable APIs and workflow automation",
+          "Document storage with controlled access",
+          "Analytics and role-based permissions",
+        ],
+      },
+      ctaPrimary: "Request a pilot",
+      ctaSecondary: "Join the waitlist",
     },
     globalExpansion: {
       eyebrow: "YOUR EXPANSION STORY",
@@ -789,7 +886,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       headline: "Ready to scale your workforce across Africa?",
       subtitle:
         "Partner with IWNT to simplify hiring, onboarding, payroll, and compliance in African growth markets.",
-      ctaButton: "Partner With Us",
+      ctaButton: "Request a pilot",
       status: "CONNECTED PLATFORM IN DEVELOPMENT · EARLY PARTNERS WELCOME",
       locations: "Headquartered in Dubai • Operating across Africa",
     },
@@ -913,8 +1010,8 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
           overviewBody: "The Caisse Nationale de Prévoyance Sociale (CNPS) is Cameroon's national social security fund. Registration and continuous compliance with the CNPS is a fundamental requirement for any entity employing staff in Cameroon.",
           whatIsCnpsTitle: "What is CNPS?",
           whatIsCnpsBody: "CNPS manages the social security system in Cameroon, covering family allowances, occupational risk (accidents at work and occupational diseases), and old-age, invalidity, and survivors' pensions.",
-          statutoryTitle: "Placeholder: Statutory Data",
-          statutoryBody: "[Current statutory information such as contribution rates, exact salary ceilings, and penalty structures to be verified before publication.]",
+          statutoryTitle: "Contribution rates and ceilings",
+          statutoryBody: "CNPS contribution rates, salary ceilings, and penalty amounts are set by Cameroonian social security regulations and finance laws. Always confirm the rates and caps in force for the current fiscal year with CNPS or qualified local counsel before filing.",
           employerRespTitle: "Employer responsibilities",
           employerRespIntro: "As an employer in Cameroon, you are legally obligated to:",
           employerRespList1: "Register your company with the CNPS immediately upon hiring your first employee.",
@@ -937,22 +1034,61 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         headlineLine1: "Built from experience,",
         headlineLine2: "Building",
         headlineLine2Emphasis: "what's next.",
-        body: "IWNT is the technology platform built by Intel HRC to bring years of on-the-ground HR and workforce operations experience into a single connected system. Where Intel HRC has spent that time hiring, paying and supporting teams across African markets in person, IWNT is how that expertise becomes a platform — giving organisations the same local depth, backed by connected technology, wherever they're growing next.\n\nWe're headquartered in Dubai and operating across eight African markets today, with a team that combines local legal entities, on-the-ground talent, and enterprise-grade compliance standards. The platform is still being built in the open — early partners are helping shape it alongside us.",
-        status: "● PLATFORM IN DEVELOPMENT",
+        body: "Intel Workforce Network Technologies Ltd is the technology company behind IWNT. Founded in 2026 in DIFC, Dubai, we are building a workforce-operations platform for African markets—pre-seed, with partners invited.",
+        status: "● PRE-SEED · FOUNDED 2026 · DIFC, DUBAI",
+      },
+      identity: {
+        legalName: "Intel Workforce Network Technologies Ltd",
+        founded: "Founded 2026",
+        hq: "DIFC Innovation One, Dubai, UAE",
+        stage: "Pre-seed · Partners invited",
       },
       founder: {
         label: "FOUNDER & CEO",
-        name: "Derick Nzo Fonderson",
+        name: "Derick Fonderson",
         role: "Founder & Chief Executive Officer",
-        body: "Leading IWNT's vision to turn years of workforce experience into connected technology for the future of work.",
+        body: "Derick Fonderson leads IWNT’s mission to turn years of African workforce operations experience into connected software for organisations hiring and managing teams across the continent.",
       },
       metrics: {
-        val1: "10+",
-        label1: "Years of group experience",
+        val1: "2026",
+        label1: "Founded in DIFC",
         val2: "8",
-        label2: "African markets",
-        val3: "1",
-        label3: "Connected vision",
+        label2: "Group markets (IntelHRC)",
+        val3: "Pre-seed",
+        label3: "Stage · partners invited",
+      },
+      traction: {
+        eyebrow: "EVIDENCE OF TRACTION",
+        headline: "What is live today.",
+        items: [
+          {
+            title: "Product in development",
+            body: "First platform release underway for hire, onboard, manage, and pay workflows.",
+          },
+          {
+            title: "African operating footprint",
+            body: "Parent group IntelHRC holds operating presence across eight African markets; IWNT builds the software layer.",
+          },
+          {
+            title: "Market knowledge",
+            body: "Published country resources such as Cameroon CNPS guidance for employers.",
+          },
+          {
+            title: "Partner invitations open",
+            body: "Dubai and international organisations can request a pilot or join the waitlist.",
+          },
+        ],
+      },
+      architecture: {
+        eyebrow: "CLOUD & SECURITY DIRECTION",
+        headline: "How we plan to scale on cloud infrastructure.",
+        body: "As the product matures, cloud infrastructure (including AWS) will support secure application hosting, data storage, workflow automation, APIs, and reporting across markets. We do not overstate live workloads that are not yet in production.",
+        points: [
+          "Secure multi-country workforce data management",
+          "Scalable APIs and workflow automation",
+          "Document storage and role-based access",
+          "Analytics and operational reporting",
+        ],
       },
       credibility: {
         eyebrow: "DIFC REGISTERED · AFRICA-FOCUSED · GLOBAL BY DESIGN",
@@ -972,7 +1108,96 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         headlineLine2Emphasis: "scale.",
         body: "IWNT brings together the workforce experience behind IntelHRC and Intel Outsourcing Services with a new technology platform designed to help organisations operate more effectively across African markets.",
       },
-      cta: "Talk To Us Today",
+      cta: "Request a pilot",
+    },
+    legal: {
+      privacy: {
+        title: "Privacy Policy",
+        updated: "Last updated: 15 September 2026",
+        intro: "This Privacy Policy explains how Intel Workforce Network Technologies Ltd (“IWNT”, “we”, “us”) collects and uses information when you visit iwnt.ae or contact us.",
+        sections: [
+          {
+            heading: "Who we are",
+            body: "Intel Workforce Network Technologies Ltd is a DIFC-registered company based at Innovation One, DIFC, Dubai, UAE. Contact: info@iwnt.ae.",
+          },
+          {
+            heading: "Information we collect",
+            body: "When you submit a contact or waitlist form, we collect the details you provide (such as name, work email, organisation, country of interest, and message). We may also collect basic technical data such as browser type and pages visited for security and site performance.",
+          },
+          {
+            heading: "How we use information",
+            body: "We use enquiry data to respond to your request, assess partnership or pilot interest, and improve our website and services. We do not sell personal information.",
+          },
+          {
+            heading: "Legal basis and retention",
+            body: "We process enquiry data based on your consent and our legitimate interest in responding to business communications. We retain enquiries only as long as needed for those purposes or as required by law.",
+          },
+          {
+            heading: "Sharing",
+            body: "We may share information with service providers who help us operate email, hosting, or CRM tools, under appropriate confidentiality obligations. We may disclose information if required by law.",
+          },
+          {
+            heading: "Cookies",
+            body: "We use essential cookies required for the site to function (for example language preference and cookie-consent status). We do not currently run third-party advertising cookies. If we add analytics later, we will update this policy and the cookie notice.",
+          },
+          {
+            heading: "Your rights",
+            body: "Depending on applicable law, you may request access, correction, or deletion of your personal information by emailing info@iwnt.ae.",
+          },
+          {
+            heading: "Contact",
+            body: "Privacy questions: info@iwnt.ae. Intel Workforce Network Technologies Ltd, DIFC Innovation One, Dubai, UAE.",
+          },
+        ],
+      },
+      terms: {
+        title: "Terms of Use",
+        updated: "Last updated: 15 September 2026",
+        intro: "These Terms of Use govern your access to the IWNT website at iwnt.ae operated by Intel Workforce Network Technologies Ltd.",
+        sections: [
+          {
+            heading: "Acceptance",
+            body: "By using this website, you agree to these Terms. If you do not agree, please do not use the site.",
+          },
+          {
+            heading: "About the site",
+            body: "This website describes IWNT’s products and services under development. Content is informational and does not constitute a binding offer, legal advice, or a guarantee of feature availability.",
+          },
+          {
+            heading: "No professional advice",
+            body: "Resources such as country guides are general information only. Employment, payroll, and social-security rules change. Verify requirements with competent advisors or authorities before acting.",
+          },
+          {
+            heading: "Intellectual property",
+            body: "Website content, branding, and materials are owned by IWNT or its licensors. You may not copy or redistribute them without prior written permission.",
+          },
+          {
+            heading: "Acceptable use",
+            body: "You agree not to misuse the site, attempt unauthorised access, scrape content at scale, or submit false or harmful information through forms.",
+          },
+          {
+            heading: "Disclaimer",
+            body: "The site is provided “as is”. To the fullest extent permitted by law, IWNT disclaims warranties regarding uninterrupted availability, accuracy of forward-looking product descriptions, or fitness for a particular purpose.",
+          },
+          {
+            heading: "Limitation of liability",
+            body: "To the fullest extent permitted by law, IWNT is not liable for indirect or consequential loss arising from use of the website or reliance on its content.",
+          },
+          {
+            heading: "Governing law",
+            body: "These Terms are governed by the laws of the Dubai International Financial Centre (DIFC), without prejudice to mandatory consumer protections that may apply.",
+          },
+          {
+            heading: "Contact",
+            body: "Questions about these Terms: info@iwnt.ae.",
+          },
+        ],
+      },
+    },
+    cookie: {
+      message: "We use essential cookies to run iwnt.ae (language and consent preferences). See our Privacy Policy for details.",
+      accept: "Accept",
+      learnMore: "Privacy Policy",
     },
     contactPage: {
       hero: {
@@ -1000,8 +1225,10 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
           body: "Our team will review it and get back to you.",
         },
         error: "Something went wrong. Please try again or email us directly at info@iwnt.ae.",
-        consent: "I agree to the processing of my information in accordance with the Privacy Policy.",
+        consent: "I agree to the processing of my information in accordance with the",
         topics: {
+          pilot: "Request a pilot",
+          waitlist: "Join the waitlist",
           workforce: "Workforce & Expansion",
           hiring: "Hiring",
           payroll: "Payroll",
@@ -1038,7 +1265,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       resources: "Ressources",
       about: "À propos",
       contact: "Contactez-nous",
-      cta: "Devenir partenaire",
+      cta: "Demander un pilote",
       languageLabel: "Langue",
     },
     hero: {
@@ -1050,11 +1277,12 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       body: "IWNT est votre partenaire Employer of Record (EOR) et votre plateforme de gestion des effectifs — nous recrutons, intégrons, gérons et rémunérons vos équipes sur les marchés africains, en combinant une technologie connectée à une expertise locale approfondie.",
       tagline: "Connecter les ambitions. Construire l'avenir de l'Afrique.",
       status: "PLATEFORME EN DÉVELOPPEMENT · PARTENAIRES PIONNIERS BIENVENUS",
-      primaryCta: "Devenir partenaire",
-      secondaryCta: "Découvrir notre vision",
+      primaryCta: "Demander un pilote",
+      secondaryCta: "Rejoindre la liste d'attente",
     },
-    trustedHeading: "ILS NOUS FONT CONFIANCE : CLIENTS & PARTENAIRES STRATÉGIQUES",
-    trustedSubheading: "Des organisations s'appuient déjà sur l'expertise et les opérations de gestion des effectifs d'IWNT, tandis que nous construisons la prochaine génération de notre plateforme.",
+    trustedHeading: "ILS NOUS FONT CONFIANCE",
+    trustedSubheading:
+      "Des organisations s'appuient déjà sur l'expertise et les opérations de gestion des effectifs d'IWNT, tandis que nous construisons la prochaine génération de notre plateforme.",
     capabilities: [
       {
         title: "Expertise locale",
@@ -1128,6 +1356,50 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         "Conformité",
         "Pilotage",
       ],
+      workflow: {
+        eyebrow: "PARCOURS DE BOUT EN BOUT",
+        headline: "Comment la plateforme est conçue.",
+        body: "IWNT relie l’onboarding employeur, les dossiers collaborateurs, les workflows de conformité, la coordination de la paie, le reporting et la couverture pays. Les opérations du groupe parent sur les marchés africains assurent la livraison locale ; IWNT construit le logiciel.",
+        steps: [
+          {
+            title: "Onboarding employeur",
+            body: "Capturer les détails de l’organisation, les marchés ciblés et l’intention d’embauche dans un seul espace de travail.",
+          },
+          {
+            title: "Dossiers collaborateurs",
+            body: "Conserver contrats, pièces d’identité et dossiers d’emploi pour chaque marché dans un profil structuré.",
+          },
+          {
+            title: "Workflows de conformité",
+            body: "Guider les contrôles locaux, les étapes de sécurité sociale et les exigences pays avec une connaissance marché.",
+          },
+          {
+            title: "Coordination de la paie",
+            body: "Soutenir la préparation de la paie, les validations et la coordination des paiements avec les partenaires opérationnels locaux.",
+          },
+          {
+            title: "Reporting et accès",
+            body: "Offrir une visibilité par rôle sur les effectifs, l’intégration et la conformité multi-marchés.",
+          },
+          {
+            title: "Couverture pays",
+            body: "Étendre le même parcours aux marchés où le groupe IntelHRC opère déjà, en commençant par l’Afrique.",
+          },
+        ],
+      },
+      architecture: {
+        eyebrow: "ORIENTATION TECHNIQUE",
+        headline: "Conçue pour des données RH multi-pays sécurisées.",
+        body: "AWS et des services cloud modernes soutiendront la couche applicative à mesure que le produit grandit. L’architecture prévue met l’accent sur le stockage sécurisé, l’automatisation des workflows, les API et le reporting—sans prétendre à des charges de production déjà terminées.",
+        points: [
+          "Gestion sécurisée des données RH multi-pays",
+          "API évolutives et automatisation des workflows",
+          "Stockage documentaire à accès contrôlé",
+          "Analytique et permissions par rôle",
+        ],
+      },
+      ctaPrimary: "Demander un pilote",
+      ctaSecondary: "Rejoindre la liste d'attente",
     },
     globalExpansion: {
       eyebrow: "VOTRE PARCOURS D'EXPANSION",
@@ -1382,7 +1654,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       headline: "Prêt à développer vos équipes en Afrique ?",
       subtitle:
         "Devenez partenaire d'IWNT pour simplifier le recrutement, l'intégration, la paie et la conformité sur les marchés africains.",
-      ctaButton: "Devenir partenaire",
+      ctaButton: "Demander un pilote",
       status: "PLATEFORME CONNECTÉE EN DÉVELOPPEMENT · PARTENAIRES PIONNIERS BIENVENUS",
       locations: "Siège social à Dubaï • Présent en Afrique",
     },
@@ -1506,8 +1778,8 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
           overviewBody: "La Caisse Nationale de Prévoyance Sociale (CNPS) est le fonds national de sécurité sociale du Cameroun. L'immatriculation et la conformité continue avec la CNPS sont des exigences fondamentales pour toute entité employant du personnel au Cameroun.",
           whatIsCnpsTitle: "Qu'est-ce que la CNPS ?",
           whatIsCnpsBody: "La CNPS gère le système de sécurité sociale au Cameroun, couvrant les allocations familiales, les risques professionnels (accidents du travail et maladies professionnelles) ainsi que les pensions de vieillesse, d'invalidité et de survivants.",
-          statutoryTitle: "Espace réservé : Données statutaires",
-          statutoryBody: "[Les informations statutaires actuelles telles que les taux de cotisation, les plafonds salariaux exacts et les structures de pénalités doivent être vérifiées avant publication.]",
+          statutoryTitle: "Taux de cotisation et plafonds",
+          statutoryBody: "Les taux de cotisation CNPS, plafonds salariaux et montants de pénalités sont fixés par la réglementation camerounaise de sécurité sociale et les lois de finances. Confirmez toujours les taux et plafonds en vigueur pour l'exercice en cours auprès de la CNPS ou d'un conseil local qualifié avant toute déclaration.",
           employerRespTitle: "Responsabilités de l'employeur",
           employerRespIntro: "En tant qu'employeur au Cameroun, vous avez l'obligation légale de :",
           employerRespList1: "Immatriculer votre entreprise à la CNPS dès l'embauche de votre premier employé.",
@@ -1530,22 +1802,61 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         headlineLine1: "Forts de notre expérience,",
         headlineLine2: "Nous construisons",
         headlineLine2Emphasis: "l’avenir.",
-        body: "IWNT est la plateforme technologique créée par Intel HRC pour réunir des années d'expérience de terrain en ressources humaines et en gestion des effectifs au sein d'un système connecté unique. Fort de son expérience dans le recrutement, la rémunération et l'accompagnement d'équipes sur les marchés africains, Intel HRC apporte à IWNT cette expertise opérationnelle — permettant aux organisations de bénéficier de la même connaissance locale, soutenue par une technologie connectée, partout où elles souhaitent se développer.\n\nBasés à Dubaï et présents aujourd'hui sur huit marchés africains, nous réunissons des entités juridiques locales, des talents sur le terrain et des standards de conformité de niveau entreprise. La plateforme continue d'évoluer de manière collaborative — nos premiers partenaires contribuent activement à façonner son développement.",
-        status: "● PLATEFORME EN DÉVELOPPEMENT",
+        body: "Intel Workforce Network Technologies Ltd est l’entreprise technologique derrière IWNT. Fondée en 2026 au DIFC (Dubaï), nous construisons une plateforme d’opérations RH pour les marchés africains—pre-seed, partenaires invités.",
+        status: "● PRE-SEED · FONDÉE EN 2026 · DIFC, DUBAÏ",
+      },
+      identity: {
+        legalName: "Intel Workforce Network Technologies Ltd",
+        founded: "Fondée en 2026",
+        hq: "DIFC Innovation One, Dubaï, EAU",
+        stage: "Pre-seed · Partenaires invités",
       },
       founder: {
         label: "FONDATEUR & CEO",
-        name: "Derick Nzo Fonderson",
+        name: "Derick Fonderson",
         role: "Fondateur & Directeur Général",
-        body: "Il porte la vision d’IWNT : transformer des années d’expérience dans la gestion des effectifs en une technologie connectée pour l’avenir du travail.",
+        body: "Derick Fonderson porte la mission d’IWNT : transformer des années d’expérience opérationnelle RH en Afrique en un logiciel connecté pour les organisations qui recrutent et gèrent des équipes sur le continent.",
       },
       metrics: {
-        val1: "10+",
-        label1: "Années d’expérience du groupe",
+        val1: "2026",
+        label1: "Fondée au DIFC",
         val2: "8",
-        label2: "Marchés africains",
-        val3: "1",
-        label3: "Vision connectée",
+        label2: "Marchés du groupe (IntelHRC)",
+        val3: "Pre-seed",
+        label3: "Stade · partenaires invités",
+      },
+      traction: {
+        eyebrow: "PREUVES DE TRACTION",
+        headline: "Ce qui est en place aujourd’hui.",
+        items: [
+          {
+            title: "Produit en développement",
+            body: "Première version de la plateforme en cours pour les parcours recruter, intégrer, gérer et payer.",
+          },
+          {
+            title: "Empreinte opérationnelle africaine",
+            body: "Le groupe parent IntelHRC dispose d’une présence opérationnelle sur huit marchés africains ; IWNT construit la couche logicielle.",
+          },
+          {
+            title: "Connaissance des marchés",
+            body: "Ressources pays publiées, notamment un guide CNPS Cameroun pour les employeurs.",
+          },
+          {
+            title: "Partenaires invités",
+            body: "Les organisations à Dubaï et à l’international peuvent demander un pilote ou rejoindre la liste d’attente.",
+          },
+        ],
+      },
+      architecture: {
+        eyebrow: "CLOUD ET SÉCURITÉ",
+        headline: "Comment nous prévoyons de monter en charge.",
+        body: "À mesure que le produit mûrit, l’infrastructure cloud (dont AWS) soutiendra l’hébergement applicatif sécurisé, le stockage de données, l’automatisation des workflows, les API et le reporting multi-marchés. Nous n’exagérons pas des charges de production qui ne sont pas encore en service.",
+        points: [
+          "Gestion sécurisée des données RH multi-pays",
+          "API évolutives et automatisation des workflows",
+          "Stockage documentaire et accès par rôle",
+          "Analytique et reporting opérationnel",
+        ],
       },
       credibility: {
         eyebrow: "ENREGISTRÉ AU DIFC · TOURNÉ VERS L'AFRIQUE · PORTÉE MONDIALE",
@@ -1565,7 +1876,96 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         headlineLine2Emphasis: "évoluer.",
         body: "IWNT réunit l’expérience RH d’IntelHRC et d’Intel Outsourcing Services avec une nouvelle plateforme technologique conçue pour aider les organisations à opérer plus efficacement sur les marchés africains.",
       },
-      cta: "Explorer notre présence →",
+      cta: "Demander un pilote",
+    },
+    legal: {
+      privacy: {
+        title: "Politique de confidentialité",
+        updated: "Dernière mise à jour : 15 septembre 2026",
+        intro: "Cette Politique de confidentialité explique comment Intel Workforce Network Technologies Ltd (« IWNT », « nous ») collecte et utilise les informations lorsque vous visitez iwnt.ae ou nous contactez.",
+        sections: [
+          {
+            heading: "Qui nous sommes",
+            body: "Intel Workforce Network Technologies Ltd est une société enregistrée au DIFC, basée à Innovation One, DIFC, Dubaï, EAU. Contact : info@iwnt.ae.",
+          },
+          {
+            heading: "Informations collectées",
+            body: "Lorsque vous soumettez un formulaire de contact ou de liste d’attente, nous collectons les informations fournies (nom, e-mail professionnel, organisation, pays d’intérêt, message). Nous pouvons aussi collecter des données techniques de base (navigateur, pages consultées) pour la sécurité et la performance du site.",
+          },
+          {
+            heading: "Utilisation des informations",
+            body: "Nous utilisons les demandes pour y répondre, évaluer l’intérêt pour un partenariat ou un pilote, et améliorer le site et nos services. Nous ne vendons pas les données personnelles.",
+          },
+          {
+            heading: "Base légale et conservation",
+            body: "Nous traitons les demandes sur la base de votre consentement et de notre intérêt légitime à répondre aux communications professionnelles. Nous les conservons uniquement aussi longtemps que nécessaire ou comme l’exige la loi.",
+          },
+          {
+            heading: "Partage",
+            body: "Nous pouvons partager des informations avec des prestataires qui nous aident pour l’e-mail, l’hébergement ou le CRM, sous obligations de confidentialité appropriées. Nous pouvons divulguer des informations si la loi l’exige.",
+          },
+          {
+            heading: "Cookies",
+            body: "Nous utilisons des cookies essentiels au fonctionnement du site (préférence de langue et consentement cookies). Nous n’utilisons pas actuellement de cookies publicitaires tiers. Si nous ajoutons de l’analytique, nous mettrons à jour cette politique et l’avis cookies.",
+          },
+          {
+            heading: "Vos droits",
+            body: "Selon le droit applicable, vous pouvez demander l’accès, la correction ou la suppression de vos données personnelles en écrivant à info@iwnt.ae.",
+          },
+          {
+            heading: "Contact",
+            body: "Questions confidentialité : info@iwnt.ae. Intel Workforce Network Technologies Ltd, DIFC Innovation One, Dubaï, EAU.",
+          },
+        ],
+      },
+      terms: {
+        title: "Conditions d'utilisation",
+        updated: "Dernière mise à jour : 15 septembre 2026",
+        intro: "Ces Conditions d’utilisation régissent l’accès au site IWNT sur iwnt.ae, exploité par Intel Workforce Network Technologies Ltd.",
+        sections: [
+          {
+            heading: "Acceptation",
+            body: "En utilisant ce site, vous acceptez ces Conditions. Sinon, veuillez ne pas l’utiliser.",
+          },
+          {
+            heading: "À propos du site",
+            body: "Ce site décrit les produits et services IWNT en cours de développement. Le contenu est informatif et ne constitue pas une offre contraignante, un conseil juridique, ni une garantie de disponibilité des fonctionnalités.",
+          },
+          {
+            heading: "Pas de conseil professionnel",
+            body: "Les ressources telles que les guides pays sont des informations générales. Les règles d’emploi, de paie et de sécurité sociale évoluent. Vérifiez auprès de conseillers ou autorités compétents avant d’agir.",
+          },
+          {
+            heading: "Propriété intellectuelle",
+            body: "Le contenu, la marque et les éléments du site appartiennent à IWNT ou à ses concédants. Toute copie ou redistribution sans autorisation écrite préalable est interdite.",
+          },
+          {
+            heading: "Usage acceptable",
+            body: "Vous vous engagez à ne pas détourner le site, tenter d’y accéder sans autorisation, aspirer le contenu à grande échelle, ni soumettre des informations fausses ou nuisibles via les formulaires.",
+          },
+          {
+            heading: "Avertissement",
+            body: "Le site est fourni « en l’état ». Dans toute la mesure permise par la loi, IWNT décline les garanties relatives à la disponibilité ininterrompue, à l’exactitude des descriptions prospectives, ou à l’adéquation à un usage particulier.",
+          },
+          {
+            heading: "Limitation de responsabilité",
+            body: "Dans toute la mesure permise par la loi, IWNT n’est pas responsable des pertes indirectes ou consécutives résultant de l’usage du site ou de la confiance accordée à son contenu.",
+          },
+          {
+            heading: "Droit applicable",
+            body: "Ces Conditions sont régies par le droit du Dubai International Financial Centre (DIFC), sans préjudice des protections consommateurs obligatoires éventuellement applicables.",
+          },
+          {
+            heading: "Contact",
+            body: "Questions sur ces Conditions : info@iwnt.ae.",
+          },
+        ],
+      },
+    },
+    cookie: {
+      message: "Nous utilisons des cookies essentiels pour faire fonctionner iwnt.ae (langue et préférences de consentement). Voir notre Politique de confidentialité.",
+      accept: "Accepter",
+      learnMore: "Politique de confidentialité",
     },
     contactPage: {
       hero: {
@@ -1593,8 +1993,10 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
           body: "Notre équipe l’examinera et vous répondra.",
         },
         error: "Une erreur s’est produite. Veuillez réessayer ou nous écrire directement à info@iwnt.ae.",
-        consent: "J’accepte le traitement de mes informations conformément à la Politique de confidentialité.",
+        consent: "J’accepte le traitement de mes informations conformément à la",
         topics: {
+          pilot: "Demander un pilote",
+          waitlist: "Rejoindre la liste d'attente",
           workforce: "Effectifs et Expansion",
           hiring: "Recrutement",
           payroll: "Paie",

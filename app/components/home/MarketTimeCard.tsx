@@ -203,84 +203,89 @@ export default function MarketTimeCard({
   };
 
   if (isMobileOnly) {
-    return (
-      <div className="relative w-full px-2 py-2 flex flex-col items-center gap-2.5 pointer-events-none">
-        {/* INTERNATIONAL CARD */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`mob-orig-${activePair.id}`}
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.4 }}
-            className="w-auto flex items-center gap-2 rounded-xl border border-slate-700/60 bg-[#0B1528]/90 px-3 py-1.5 shadow-md backdrop-blur-md pointer-events-auto"
-          >
-            <div className="relative h-3.5 w-5 overflow-hidden rounded-[2px] border border-slate-600/80 shrink-0">
-              <Image
-                src={activePair.origin.flagSvg}
-                alt={`${activePair.origin.city} flag`}
-                fill
-                className="object-cover"
-                unoptimized
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[8px] font-bold tracking-wider text-slate-400 uppercase">
-                {labels.employer}
-              </span>
-              <span className="text-[11px] font-bold text-white leading-tight">
-                {activePair.origin.city}, {activePair.origin.country[language]}
-              </span>
-            </div>
-            <span suppressHydrationWarning className="ml-2 font-mono text-[10px] font-semibold text-[#38BDF8]">
-              {originTime}
-            </span>
-          </motion.div>
-        </AnimatePresence>
+    const cardClass =
+      "w-[clamp(9.5rem,42vw,12.5rem)] min-h-[clamp(2.75rem,8vw,3.25rem)] flex items-center gap-1.5 sm:gap-2 rounded-xl border bg-[#0B1528]/90 px-[clamp(0.4rem,1.5vw,0.65rem)] py-[clamp(0.3rem,1vw,0.45rem)] shadow-md backdrop-blur-md pointer-events-auto";
 
-        {/* CONNECTED BADGE */}
-        <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#0B1528]/95 border border-emerald-500/40 shadow-xs">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#22C55E] animate-pulse" />
-          <span className="text-[9px] font-extrabold tracking-wider text-emerald-400 uppercase">
-            IWNT NETWORK CONNECTED
-          </span>
+    return (
+      <div className="absolute inset-0 pointer-events-none z-30">
+        {/* WESTERN — toward man's shoulder */}
+        <div className="absolute left-[24%] sm:left-[26%] top-[46%] sm:top-[48%] z-40 -translate-x-1/2">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`mob-orig-${activePair.id}`}
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.4 }}
+              className={`${cardClass} border-slate-700/60`}
+            >
+              <div className="relative h-[clamp(0.7rem,2.2vw,0.9rem)] w-[clamp(1rem,3.2vw,1.25rem)] overflow-hidden rounded-[2px] border border-slate-600/80 shrink-0">
+                <Image
+                  src={activePair.origin.flagSvg}
+                  alt={`${activePair.origin.city} flag`}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              </div>
+              <div className="flex flex-col min-w-0 flex-1">
+                <span className="text-[clamp(0.4rem,1.6vw,0.48rem)] font-bold tracking-wider text-slate-400 uppercase truncate">
+                  {labels.employer}
+                </span>
+                <span className="text-[clamp(0.6rem,2.4vw,0.72rem)] font-bold text-white leading-tight truncate">
+                  {activePair.origin.city}
+                </span>
+              </div>
+              <span
+                suppressHydrationWarning
+                className="font-mono text-[clamp(0.55rem,2vw,0.65rem)] font-semibold text-[#38BDF8] shrink-0"
+              >
+                {originTime}
+              </span>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        {/* AFRICAN CARD */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`mob-dest-${activePair.id}`}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 6 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="w-auto flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-[#0B1528]/90 px-3 py-1.5 shadow-md backdrop-blur-md pointer-events-auto"
-          >
-            <div className="relative h-3.5 w-5 overflow-hidden rounded-[2px] border border-slate-600/80 shrink-0">
-              <Image
-                src={activePair.destination.flagSvg}
-                alt={`${activePair.destination.city} flag`}
-                fill
-                className="object-cover"
-                unoptimized
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[8px] font-bold tracking-wider text-emerald-400 uppercase">
-                {labels.workforce}
+        {/* AFRICAN — toward woman's shoulder; kept clear of status */}
+        <div className="absolute left-[82%] sm:left-[84%] top-[38%] sm:top-[40%] z-40 -translate-x-1/2">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`mob-dest-${activePair.id}`}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              className={`${cardClass} border-emerald-500/40`}
+            >
+              <div className="relative h-[clamp(0.7rem,2.2vw,0.9rem)] w-[clamp(1rem,3.2vw,1.25rem)] overflow-hidden rounded-[2px] border border-slate-600/80 shrink-0">
+                <Image
+                  src={activePair.destination.flagSvg}
+                  alt={`${activePair.destination.city} flag`}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              </div>
+              <div className="flex flex-col min-w-0 flex-1">
+                <span className="text-[clamp(0.4rem,1.6vw,0.48rem)] font-bold tracking-wider text-emerald-400 uppercase truncate">
+                  {labels.workforce}
+                </span>
+                <span className="text-[clamp(0.6rem,2.4vw,0.72rem)] font-bold text-white leading-tight truncate">
+                  {activePair.destination.city}
+                </span>
+              </div>
+              <span
+                suppressHydrationWarning
+                className="font-mono text-[clamp(0.55rem,2vw,0.65rem)] font-semibold text-[#22C55E] shrink-0"
+              >
+                {destTime}
               </span>
-              <span className="text-[11px] font-bold text-white leading-tight">
-                {activePair.destination.city}, {activePair.destination.country[language]}
-              </span>
-            </div>
-            <span suppressHydrationWarning className="ml-2 font-mono text-[10px] font-semibold text-[#22C55E]">
-              {destTime}
-            </span>
-          </motion.div>
-        </AnimatePresence>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-        {/* SINGLE CONTEXTUAL MICRO SIGNAL CARD */}
-        <div className="mt-1">
+        {/* STATUS — Africa map above SA; scales with viewport */}
+        <div className="absolute left-[52%] top-[34%] sm:top-[35%] z-30 -translate-x-1/2 scale-[clamp(0.72,2.8vw,1)] origin-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={`mob-sig-${activePair.id}-${signalToggle}`}
@@ -288,9 +293,17 @@ export default function MarketTimeCard({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.35 }}
-              className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-[#0B1528]/90 px-2.5 py-1 text-[10px] font-semibold text-emerald-400 shadow-sm backdrop-blur-md"
+              className="flex flex-col items-center gap-[clamp(0.2rem,0.8vw,0.35rem)]"
             >
-              <span>{signalToggle ? labels.sigPayroll : labels.sigOnboarding}</span>
+              <div className="flex items-center gap-1.5 px-[clamp(0.45rem,1.8vw,0.7rem)] py-[clamp(0.2rem,0.7vw,0.35rem)] rounded-full bg-[#0B1528]/95 border border-emerald-500/40 shadow-xs">
+                <span className="h-[clamp(0.3rem,1vw,0.4rem)] w-[clamp(0.3rem,1vw,0.4rem)] rounded-full bg-[#22C55E] animate-pulse" />
+                <span className="text-[clamp(0.45rem,1.7vw,0.55rem)] font-extrabold tracking-wider text-emerald-400 uppercase whitespace-nowrap">
+                  IWNT ● CONNECTED
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-[#0B1528]/90 px-[clamp(0.45rem,1.8vw,0.7rem)] py-[clamp(0.2rem,0.7vw,0.35rem)] text-[clamp(0.5rem,1.9vw,0.65rem)] font-semibold text-emerald-400 shadow-sm backdrop-blur-md whitespace-nowrap">
+                <span>{signalToggle ? labels.sigPayroll : labels.sigOnboarding}</span>
+              </div>
             </motion.div>
           </AnimatePresence>
         </div>
@@ -298,10 +311,13 @@ export default function MarketTimeCard({
     );
   }
 
+  const desktopCardClass =
+    "pointer-events-auto w-[clamp(10.5rem,14vw,13rem)] min-h-[clamp(2.85rem,3.8vw,3.35rem)] flex items-center gap-[clamp(0.35rem,0.6vw,0.55rem)] rounded-2xl border bg-[#0B1528]/85 px-[clamp(0.5rem,0.8vw,0.7rem)] py-[clamp(0.4rem,0.6vw,0.55rem)] shadow-[0_12px_32px_rgba(0,0,0,0.35)] backdrop-blur-md";
+
   return (
-    <div className="absolute inset-0 pointer-events-none z-30">
-      {/* CARD A — INTERNATIONAL EMPLOYER (UPPER-LEFT, BREATHING ROOM BELOW NAVBAR) */}
-      <div className="absolute left-[3%] xl:left-[5%] top-[12%] xl:top-[14%] z-40">
+    <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
+      {/* WESTERN — man's shoulder (image pane only) */}
+      <div className="absolute left-[30%] top-[48%] xl:top-[49%] z-30 -translate-x-1/2">
         <AnimatePresence mode="wait">
           <motion.div
             key={`card-origin-${activePair.id}`}
@@ -309,9 +325,9 @@ export default function MarketTimeCard({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.97 }}
             transition={{ duration: 0.45, ease: "easeOut" }}
-            className="pointer-events-auto flex items-center gap-3.5 rounded-2xl border border-slate-700/60 bg-[#0B1528]/85 px-4 py-3 shadow-[0_12px_32px_rgba(0,0,0,0.35)] backdrop-blur-md"
+            className={`${desktopCardClass} border-slate-700/60`}
           >
-            <div className="relative h-4.5 w-6.5 overflow-hidden rounded-[3px] border border-slate-600/80 shrink-0 shadow-xs">
+            <div className="relative h-[clamp(0.85rem,1.1vw,1rem)] w-[clamp(1.2rem,1.6vw,1.5rem)] overflow-hidden rounded-[3px] border border-slate-600/80 shrink-0 shadow-xs">
               <Image
                 src={activePair.origin.flagSvg}
                 alt={`${activePair.origin.city} flag`}
@@ -321,21 +337,26 @@ export default function MarketTimeCard({
               />
             </div>
 
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
-                <span className="text-[9px] font-extrabold tracking-widest text-slate-400 uppercase">
+                <span className="text-[clamp(0.45rem,0.65vw,0.5rem)] font-extrabold tracking-widest text-slate-400 uppercase truncate">
                   {labels.employer}
                 </span>
                 <span className="h-1.5 w-1.5 rounded-full bg-slate-500 shrink-0" />
               </div>
-              <span className="text-[13px] font-extrabold text-white leading-tight">
+              <span className="text-[clamp(0.65rem,0.95vw,0.75rem)] font-extrabold text-white leading-tight truncate">
                 {activePair.origin.city}, {activePair.origin.country[language]}
               </span>
             </div>
 
-            <div className="ml-2 pl-3.5 border-l border-slate-700/70 flex flex-col justify-center">
-              <span className="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">LOCAL TIME</span>
-              <span suppressHydrationWarning className="font-mono text-[11.5px] font-bold text-[#38BDF8]">
+            <div className="pl-2 border-l border-slate-700/70 flex flex-col justify-center shrink-0">
+              <span className="text-[clamp(0.4rem,0.55vw,0.48rem)] font-bold text-slate-400 uppercase tracking-wider">
+                LOCAL TIME
+              </span>
+              <span
+                suppressHydrationWarning
+                className="font-mono text-[clamp(0.6rem,0.85vw,0.7rem)] font-bold text-[#38BDF8]"
+              >
                 {originTime}
               </span>
             </div>
@@ -343,8 +364,8 @@ export default function MarketTimeCard({
         </AnimatePresence>
       </div>
 
-      {/* CARD B — AFRICAN WORKFORCE (UPPER-RIGHT, BREATHING ROOM BELOW NAVBAR) */}
-      <div className="absolute right-[3%] xl:right-[5%] top-[12%] xl:top-[14%] z-40">
+      {/* AFRICAN — raised above the woman */}
+      <div className="absolute left-[84%] top-[34%] xl:top-[35%] z-30 -translate-x-1/2">
         <AnimatePresence mode="wait">
           <motion.div
             key={`card-dest-${activePair.id}`}
@@ -352,9 +373,9 @@ export default function MarketTimeCard({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.97 }}
             transition={{ duration: 0.45, delay: 0.25, ease: "easeOut" }}
-            className="pointer-events-auto flex items-center gap-3.5 rounded-2xl border border-emerald-500/40 bg-[#0B1528]/85 px-4 py-3 shadow-[0_12px_32px_rgba(24,169,75,0.18)] backdrop-blur-md"
+            className={`${desktopCardClass} border-emerald-500/40 shadow-[0_12px_32px_rgba(24,169,75,0.18)]`}
           >
-            <div className="relative h-4.5 w-6.5 overflow-hidden rounded-[3px] border border-slate-600/80 shrink-0 shadow-xs">
+            <div className="relative h-[clamp(0.85rem,1.1vw,1rem)] w-[clamp(1.2rem,1.6vw,1.5rem)] overflow-hidden rounded-[3px] border border-slate-600/80 shrink-0 shadow-xs">
               <Image
                 src={activePair.destination.flagSvg}
                 alt={`${activePair.destination.city} flag`}
@@ -364,21 +385,27 @@ export default function MarketTimeCard({
               />
             </div>
 
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
-                <span className="text-[9px] font-extrabold tracking-widest text-emerald-400 uppercase">
+                <span className="text-[clamp(0.45rem,0.65vw,0.5rem)] font-extrabold tracking-widest text-emerald-400 uppercase truncate">
                   {labels.workforce}
                 </span>
                 <span className="h-1.5 w-1.5 rounded-full bg-[#22C55E] shrink-0 animate-pulse" />
               </div>
-              <span className="text-[13px] font-extrabold text-white leading-tight">
-                {activePair.destination.city}, {activePair.destination.country[language]}
+              <span className="text-[clamp(0.65rem,0.95vw,0.75rem)] font-extrabold text-white leading-tight truncate">
+                {activePair.destination.city},{" "}
+                {activePair.destination.country[language]}
               </span>
             </div>
 
-            <div className="ml-2 pl-3.5 border-l border-emerald-500/30 flex flex-col justify-center">
-              <span className="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">LOCAL TIME</span>
-              <span suppressHydrationWarning className="font-mono text-[11.5px] font-bold text-[#22C55E]">
+            <div className="pl-2 border-l border-emerald-500/30 flex flex-col justify-center shrink-0">
+              <span className="text-[clamp(0.4rem,0.55vw,0.48rem)] font-bold text-slate-400 uppercase tracking-wider">
+                LOCAL TIME
+              </span>
+              <span
+                suppressHydrationWarning
+                className="font-mono text-[clamp(0.6rem,0.85vw,0.7rem)] font-bold text-[#22C55E]"
+              >
                 {destTime}
               </span>
             </div>
@@ -386,31 +413,29 @@ export default function MarketTimeCard({
         </AnimatePresence>
       </div>
 
-      {/* CENTRAL IWNT NETWORK BADGE */}
-      <div className="absolute left-[58%] -translate-x-1/2 top-[7%] z-40">
-        <div className="flex items-center gap-2 rounded-full border border-slate-700/70 bg-[#0B1528]/90 px-4 py-1.5 shadow-md backdrop-blur-md">
-          <span className="h-2 w-2 rounded-full bg-[#22C55E] shadow-[0_0_10px_#22C55E]" />
-          <span className="text-[10px] font-extrabold tracking-wider text-white uppercase">
-            IWNT NETWORK <span className="text-[#22C55E]">● CONNECTED</span>
-          </span>
-        </div>
-      </div>
-
-      {/* SINGLE CONTEXTUAL MICRO-CARD (FLOATING NEAR AFRICAN DESTINATION SIDE) */}
-      <div className="absolute right-[4%] xl:right-[6%] top-[30%] xl:top-[32%] z-40">
+      {/* STATUS — mid Africa map, clear of country cards */}
+      <div className="absolute left-[58%] top-[30%] xl:top-[31%] z-20 -translate-x-1/2 scale-[clamp(0.75,1.05vw,0.95)] origin-center">
         <AnimatePresence mode="wait">
           <motion.div
             key={`sig-card-${activePair.id}-${signalToggle}`}
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
+            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.96 }}
             transition={{ duration: 0.4 }}
-            className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-[#0B1528]/85 px-3.5 py-1.5 text-[11.5px] font-semibold text-white shadow-md backdrop-blur-md"
+            className="flex flex-col items-center gap-[clamp(0.25rem,0.5vw,0.4rem)]"
           >
-            <span className="text-[#22C55E] font-bold">✓</span>
-            <span className="text-emerald-300 font-medium">
-              {signalToggle ? labels.sigPayroll : labels.sigOnboarding}
-            </span>
+            <div className="flex items-center gap-[clamp(0.35rem,0.55vw,0.5rem)] rounded-full border border-slate-700/70 bg-[#0B1528]/90 px-[clamp(0.65rem,1vw,0.9rem)] py-[clamp(0.25rem,0.4vw,0.4rem)] shadow-md backdrop-blur-md">
+              <span className="h-[clamp(0.4rem,0.55vw,0.5rem)] w-[clamp(0.4rem,0.55vw,0.5rem)] rounded-full bg-[#22C55E] shadow-[0_0_10px_#22C55E]" />
+              <span className="text-[clamp(0.5rem,0.7vw,0.6rem)] font-extrabold tracking-wider text-white uppercase whitespace-nowrap">
+                IWNT <span className="text-[#22C55E]">● CONNECTED</span>
+              </span>
+            </div>
+            <div className="flex items-center gap-[clamp(0.35rem,0.55vw,0.5rem)] rounded-xl border border-emerald-500/30 bg-[#0B1528]/85 px-[clamp(0.65rem,1vw,0.9rem)] py-[clamp(0.25rem,0.4vw,0.4rem)] text-[clamp(0.55rem,0.8vw,0.7rem)] font-semibold text-white shadow-md backdrop-blur-md">
+              <span className="text-[#22C55E] font-bold">✓</span>
+              <span className="text-emerald-300 font-medium whitespace-nowrap">
+                {signalToggle ? labels.sigPayroll : labels.sigOnboarding}
+              </span>
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>

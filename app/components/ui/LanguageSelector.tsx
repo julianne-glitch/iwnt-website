@@ -17,7 +17,11 @@ const LANGUAGES: LanguageOption[] = [
   { code: "fr", badge: "FR", nativeLabel: "Français" },
 ];
 
-export default function LanguageSelector() {
+export default function LanguageSelector({
+  tone = "light",
+}: {
+  tone?: "light" | "dark";
+}) {
   const { language, setLanguage, t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,23 +38,28 @@ export default function LanguageSelector() {
   }, []);
 
   const currentOption = LANGUAGES.find((l) => l.code === language) || LANGUAGES[0];
+  const isDark = tone === "dark";
 
   return (
     <div className="relative inline-block text-left" ref={containerRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white/90 hover:bg-slate-50 text-xs font-bold uppercase tracking-wider text-[#0E1B2E] transition-all hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#16A34A]/30 cursor-pointer"
+        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold uppercase tracking-wider transition-all focus:outline-none focus:ring-2 focus:ring-[#16A34A]/30 cursor-pointer ${
+          isDark
+            ? "border-white/20 bg-white/10 hover:bg-white/15 text-white"
+            : "border-slate-200 bg-white/90 hover:bg-slate-50 text-[#0E1B2E] hover:border-slate-300"
+        }`}
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label={t.nav.languageLabel}
       >
-        <Globe className="w-3.5 h-3.5 text-[#2563EB]" />
+        <Globe className={`w-3.5 h-3.5 ${isDark ? "text-[#93C5FD]" : "text-[#2563EB]"}`} />
         <span>{currentOption.badge}</span>
         <ChevronDown
-          className={`w-3 h-3 text-slate-400 transition-transform duration-200 ${
+          className={`w-3 h-3 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
-          }`}
+          } ${isDark ? "text-white/50" : "text-slate-400"}`}
         />
       </button>
 

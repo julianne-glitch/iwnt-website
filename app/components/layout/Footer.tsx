@@ -24,11 +24,11 @@ export default function Footer() {
           <div className="flex flex-col space-y-5 lg:w-4/12">
             <Link href="/" className="inline-block shrink-0">
               <Image
-                src="/images/logo.png"
-                alt="IntelWNT Logo"
-                width={150}
-                height={35}
-                className="h-8 w-auto object-contain transition-opacity hover:opacity-90"
+                src="/images/logo-reversed.png"
+                alt="IntelWNT — Workforce Network Technologies"
+                width={200}
+                height={36}
+                className="h-8 sm:h-9 w-auto object-contain transition-opacity hover:opacity-90"
               />
             </Link>
             
@@ -38,10 +38,6 @@ export default function Footer() {
             </p>
             
             <div className="flex flex-col space-y-1.5 lg:pt-2">
-              <a href="mailto:info@iwnt.ae" className="text-[13px] font-bold text-white hover:text-[#4ADE80] transition-colors w-fit">
-                info@iwnt.ae
-              </a>
-              
               {/* Hidden on mobile, visible on desktop */}
               <address className="hidden lg:block not-italic text-[11px] sm:text-xs leading-relaxed text-slate-500 mt-1.5">
                 Intel Workforce Network Technologies Ltd.<br />
@@ -95,6 +91,16 @@ export default function Footer() {
                     <span className="transform transition-transform group-hover:translate-x-1">{t.nav.contact}</span>
                   </Link>
                 </li>
+                <li>
+                  <Link href="/privacy" className="group flex items-center text-xs text-slate-400 hover:text-[#4ADE80] transition-colors">
+                    <span className="transform transition-transform group-hover:translate-x-1">{t.footer.privacyPolicy}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="group flex items-center text-xs text-slate-400 hover:text-[#4ADE80] transition-colors">
+                    <span className="transform transition-transform group-hover:translate-x-1">{t.footer.termsOfUse}</span>
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -114,8 +120,18 @@ export default function Footer() {
             &copy; {currentYear} {t.footer.rights}
           </div>
           
-          <div className="text-[10px] lg:text-[11px] font-medium text-slate-500 text-center sm:text-right">
-            {t.footer.tagline}
+          <div className="text-[10px] lg:text-[11px] font-medium text-slate-500 text-center sm:text-right flex items-center gap-3">
+            <Link href="/privacy" className="hover:text-[#4ADE80] transition-colors">
+              {t.footer.privacyPolicy}
+            </Link>
+            <span aria-hidden="true">·</span>
+            <Link href="/terms" className="hover:text-[#4ADE80] transition-colors">
+              {t.footer.termsOfUse}
+            </Link>
+            <span aria-hidden="true" className="hidden sm:inline">
+              ·
+            </span>
+            <span className="hidden sm:inline">{t.footer.tagline}</span>
           </div>
         </div>
 

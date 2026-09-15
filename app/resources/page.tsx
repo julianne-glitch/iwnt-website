@@ -1,23 +1,26 @@
-import prisma from "@/lib/prisma";
+import prisma, { isDatabaseConfigured } from "@/lib/prisma";
 import ResourcesClient from "./components/ResourcesClient";
+import type { Article } from "@prisma/client";
 
-export const revalidate = 60; // Use ISR to cache the page for 60 seconds
+export const dynamic = "force-dynamic";
 
 export default async function ResourcesPage() {
-  let articles: any[] = [];
-  
-  try {
-    articles = await prisma.article.findMany({
-      where: {
-        published: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-  } catch (error) {
-    console.error("Database connection error on resources page:", error);
-    // Fallback to empty array so the page still loads gracefully
+  let articles: Article[] = [];
+
+  if (isDatabaseConfigured()) {
+    try {
+      articles = await prisma.article.findMany({
+        where: {
+          published: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    } catch (error) {
+      console.error("Resources page: failed to load articles from database.", error);
+      articles = [];
+    }
   }
 
   return <ResourcesClient articles={articles} />;

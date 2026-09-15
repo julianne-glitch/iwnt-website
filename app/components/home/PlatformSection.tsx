@@ -754,7 +754,7 @@ export default function PlatformSection() {
               >
                 <Image
                   src="/images/african-workforce-operations-candid.webp"
-                  alt="IWNT Operations Specialist assisting client"
+                  alt="IWNT operations specialist assisting a client with workforce management"
                   fill
                   priority
                   className="object-cover object-center"
@@ -990,7 +990,7 @@ export default function PlatformSection() {
             >
               <Image
                 src="/images/african-workforce-operations-candid.webp"
-                alt="IWNT Operations Specialist assisting client"
+                alt="IWNT operations specialist assisting a client with workforce management"
                 fill
                 priority
                 className="object-cover object-center"
