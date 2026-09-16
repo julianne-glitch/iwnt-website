@@ -2,8 +2,12 @@
 
 import dynamic from "next/dynamic";
 import Hero from "@/app/components/home/Hero";
-import TrustedCarousel from "@/app/components/home/TrustedCarousel";
 import { useLanguage } from "@/app/context/LanguageContext";
+
+const TrustedCarousel = dynamic(
+  () => import("@/app/components/home/TrustedCarousel"),
+  { loading: () => <div className="min-h-[80px]" aria-hidden="true" /> }
+);
 
 const EmployeeJourney = dynamic(
   () => import("@/app/components/solutions/EmployeeJourney"),
@@ -16,6 +20,10 @@ const GlobalExpansionJourney = dynamic(
 const PlatformSection = dynamic(
   () => import("@/app/components/home/PlatformSection"),
   { loading: () => <div className="min-h-[480px]" aria-hidden="true" /> }
+);
+const ServicesSection = dynamic(
+  () => import("@/app/components/home/ServicesSection"),
+  { loading: () => <div className="min-h-[420px]" aria-hidden="true" /> }
 );
 const CoverageSection = dynamic(
   () => import("@/app/components/home/CoverageSection"),
@@ -87,6 +95,7 @@ export default function HomePage() {
           </div>
         </section>
 
+        <ServicesSection />
         <PlatformSection />
         <CoverageSection />
         <ResourcesSection />

@@ -494,11 +494,11 @@ export default function PlatformSection() {
               <div className="text-[10px] font-bold text-[#0D1B2E]">Recent Activity</div>
               <div className="flex items-center gap-1.5 text-[9.5px] text-slate-700">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
-                <span className="truncate font-medium">Payroll completed - Cameroon</span>
+                <span className="truncate font-medium">Payroll completed: Cameroon</span>
               </div>
               <div className="flex items-center gap-1.5 text-[9.5px] text-slate-700">
                 <span className="h-1.5 w-1.5 rounded-full bg-blue-500 shrink-0" />
-                <span className="truncate font-medium">New hire onboarded - Senegal</span>
+                <span className="truncate font-medium">New hire onboarded: Senegal</span>
               </div>
             </div>
 

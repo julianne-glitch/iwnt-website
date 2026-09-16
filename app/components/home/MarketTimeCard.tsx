@@ -225,7 +225,6 @@ export default function MarketTimeCard({
                   alt={`${activePair.origin.city} flag`}
                   fill
                   className="object-cover"
-                  unoptimized
                 />
               </div>
               <div className="flex flex-col min-w-0 flex-1">
@@ -263,7 +262,6 @@ export default function MarketTimeCard({
                   alt={`${activePair.destination.city} flag`}
                   fill
                   className="object-cover"
-                  unoptimized
                 />
               </div>
               <div className="flex flex-col min-w-0 flex-1">
@@ -333,7 +331,6 @@ export default function MarketTimeCard({
                 alt={`${activePair.origin.city} flag`}
                 fill
                 className="object-cover"
-                unoptimized
               />
             </div>
 
@@ -381,7 +378,6 @@ export default function MarketTimeCard({
                 alt={`${activePair.destination.city} flag`}
                 fill
                 className="object-cover"
-                unoptimized
               />
             </div>
 

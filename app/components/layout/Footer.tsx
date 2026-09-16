@@ -25,7 +25,7 @@ export default function Footer() {
             <Link href="/" className="inline-block shrink-0">
               <Image
                 src="/images/logo-reversed.png"
-                alt="IntelWNT — Workforce Network Technologies"
+                alt="IntelWNT Workforce Network Technologies"
                 width={200}
                 height={36}
                 className="h-8 sm:h-9 w-auto object-contain transition-opacity hover:opacity-90"
@@ -62,6 +62,11 @@ export default function Footer() {
                 <li>
                   <Link href="/solutions" className="group flex items-center text-xs text-slate-400 hover:text-[#4ADE80] transition-colors">
                     <span className="transform transition-transform group-hover:translate-x-1">{t.nav.solutions}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/#services" className="group flex items-center text-xs text-slate-400 hover:text-[#4ADE80] transition-colors">
+                    <span className="transform transition-transform group-hover:translate-x-1">{t.nav.services}</span>
                   </Link>
                 </li>
                 <li>

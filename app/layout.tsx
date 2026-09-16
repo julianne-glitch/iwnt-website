@@ -21,11 +21,15 @@ import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+  preload: false,
 });
 
 export const viewport: Viewport = {
@@ -70,7 +74,7 @@ export const metadata: Metadata = {
         url: absoluteUrl(OG_IMAGE_PATH),
         width: 1200,
         height: 630,
-        alt: "IWNT — workforce infrastructure for African markets",
+        alt: "IWNT workforce infrastructure for African markets",
       },
     ],
   },

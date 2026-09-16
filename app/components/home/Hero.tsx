@@ -9,7 +9,7 @@ import { useLanguage } from "@/app/context/LanguageContext";
 import MarketTimeCard, { CROSS_BORDER_PAIRS } from "./MarketTimeCard";
 import HeroCapabilities from "./HeroCapabilities";
 
-/** Entrance timeline (seconds) — image runs with typing, buttons after */
+/** Entrance timeline (seconds) — type H1 → H2 → sub → eyebrow last */
 const T = {
   brush: 0,
   frame: 0.55,
@@ -34,13 +34,9 @@ function useHeroTypewriter(
   reduceMotion: boolean | null,
   startDelaySec: number,
 ) {
+  // Type order: H1 → H2 → sub → eyebrow (Employer of Record) last
   const full = useMemo(
-    () => [
-      copy.eyebrow,
-      copy.line1,
-      copy.line2 + copy.emphasis,
-      copy.sub,
-    ],
+    () => [copy.line1, copy.line2 + copy.emphasis, copy.sub, copy.eyebrow],
     [copy],
   );
 
@@ -98,15 +94,15 @@ function useHeroTypewriter(
     return full[i].slice(0, charCount);
   };
 
-  const eyebrow = slice(0);
-  const line1 = slice(1);
-  const line2Full = slice(2);
+  const line1 = slice(0);
+  const line2Full = slice(1);
   const line2 = line2Full.slice(0, Math.min(line2Full.length, copy.line2.length));
   const emphasis =
     line2Full.length > copy.line2.length
       ? line2Full.slice(copy.line2.length)
       : "";
-  const sub = slice(3);
+  const sub = slice(2);
+  const eyebrow = slice(3);
   const activeLine = done ? -1 : lineIdx;
 
   return { eyebrow, line1, line2, emphasis, sub, activeLine, done, started };
@@ -201,43 +197,38 @@ export default function Hero() {
   }) => (
     <>
       <div className="flex min-h-[1.25rem] items-center gap-2.5 whitespace-nowrap">
-        {(typed.started || reduceMotion) && (
+        {(typed.eyebrow || reduceMotion) && (
           <span className="h-2 w-2 shrink-0 rounded-full bg-[#18A94B]" />
         )}
         <span className={opts.eyebrowClass}>
           {typed.eyebrow}
-          <TypingCaret show={typed.activeLine === 0} />
+          <TypingCaret show={typed.activeLine === 3} />
         </span>
       </div>
 
       <div className="min-w-0">
-        <p className={opts.line1Class}>
+        <h1 className={opts.line1Class}>
           {typed.line1}
-          <TypingCaret show={typed.activeLine === 1} />
-        </p>
+          <TypingCaret show={typed.activeLine === 0} />
+        </h1>
         <h2 className={opts.line2Class}>
           {typed.line2}
           {typed.emphasis ? (
             <span className="text-[#18A94B]">{typed.emphasis}</span>
           ) : null}
-          <TypingCaret show={typed.activeLine === 2} />
+          <TypingCaret show={typed.activeLine === 1} />
         </h2>
       </div>
 
       <p className={opts.subWrapClass ? `${opts.subClass} ${opts.subWrapClass}` : opts.subClass}>
         {typed.sub}
-        <TypingCaret show={typed.activeLine === 3} />
+        <TypingCaret show={typed.activeLine === 2} />
       </p>
     </>
   );
 
   return (
     <section className="relative overflow-hidden bg-white pt-20 sm:pt-[5.25rem] lg:pt-24 xl:pt-[6.25rem] pb-10 sm:pb-12 lg:pb-16">
-      <h1 className="sr-only">
-        {t.hero.headlineLine1} {t.hero.headlineLine2}
-        {t.hero.headlineLine2Emphasis}
-      </h1>
-
       {/* 1 — Brush */}
       <motion.div
         aria-hidden
@@ -302,7 +293,7 @@ export default function Hero() {
       </motion.div>
 
       <div className="relative z-10 mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-10 xl:px-12">
-        {/* Desktop */}
+        {/* Desktop — full-bleed photo flush to border; copy overlays left */}
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, scale: 0.985 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -311,9 +302,37 @@ export default function Hero() {
             delay: T.frame,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="relative hidden lg:flex h-[634px] items-stretch rounded-[18px] border-[3px] border-[#1F3A67] overflow-hidden bg-white origin-left"
+          className="relative hidden lg:block h-[634px] overflow-hidden rounded-[18px] border-[3px] border-[#1F3A67] bg-white origin-left"
         >
-          {/* Soft brush spots — pale blue / lavender; above image, below copy */}
+          {/* Photo — 80% width (less upscale/blur), full banner height, flush right border */}
+          <motion.div
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.65,
+              delay: mediaDelay,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="absolute inset-y-0 right-0 z-0 w-[80%]"
+          >
+            <Image
+              src="/images/iwnt-hero-banner.jpg"
+              alt="IWNT professionals connected across African workforce markets"
+              fill
+              priority
+              quality={80}
+              sizes="(min-width: 1280px) 1100px, 80vw"
+              className="select-none object-cover object-[58%_center]"
+            />
+          </motion.div>
+
+          {/* Left wash for readable overlay copy — does not shrink the photo */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 left-0 z-[5] w-[min(52%,560px)] bg-[linear-gradient(90deg,#ffffff_0%,rgba(255,255,255,0.94)_42%,rgba(255,255,255,0.55)_72%,transparent_100%)]"
+          />
+
+          {/* Soft brush spots — pale blue / lavender */}
           <div
             aria-hidden
             className="pointer-events-none absolute -left-4 top-2 z-[15] h-[180px] w-[200px] rounded-full bg-[radial-gradient(ellipse_at_35%_40%,rgba(99,140,200,0.38)_0%,rgba(147,197,253,0.22)_45%,transparent_72%)] blur-[26px]"
@@ -335,12 +354,13 @@ export default function Hero() {
             className="pointer-events-none absolute -left-2 bottom-2 z-[15] h-[170px] w-[190px] rounded-full bg-[radial-gradient(ellipse_at_40%_55%,rgba(125,211,252,0.34)_0%,rgba(191,219,254,0.2)_48%,transparent_72%)] blur-[26px]"
           />
 
-          <div className="relative z-40 flex w-[min(440px,34%)] min-w-[380px] shrink-0 flex-col justify-center gap-4 overflow-visible pl-8 pr-4 xl:pl-9 xl:pr-5">
+          {/* Copy — overlaid; does not reserve a white column that pushes the photo */}
+          <div className="absolute inset-y-0 left-0 z-40 flex w-[min(480px,46%)] flex-col justify-center gap-4 overflow-visible pl-8 pr-4 xl:pl-10 xl:pr-6">
             {copyBlock({
               eyebrowClass:
                 "relative z-50 whitespace-nowrap text-[10px] xl:text-[11px] font-extrabold uppercase tracking-[0.06em] text-[#18A94B]",
               line1Class:
-                "relative z-50 whitespace-nowrap text-[clamp(1.7rem,2.35vw,2.55rem)] font-black leading-[1.08] tracking-[-0.04em] text-[#0D1B2E]",
+                "relative z-50 m-0 whitespace-nowrap text-[clamp(1.7rem,2.35vw,2.55rem)] font-black leading-[1.08] tracking-[-0.04em] text-[#0D1B2E]",
               line2Class:
                 "relative z-50 mt-1 whitespace-nowrap text-[clamp(1.55rem,2.15vw,2.35rem)] font-black leading-[1.08] tracking-[-0.035em] text-[#0D1B2E]",
               subClass:
@@ -363,48 +383,19 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          <div className="relative z-10 min-w-0 flex-1 h-full">
-            <motion.div
-              initial={reduceMotion ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                duration: 0.65,
-                delay: mediaDelay,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="relative h-full w-full"
-            >
-              <Image
-                src="/images/iwnt-hero-banner.jpg"
-                alt="IWNT professionals connected across African workforce markets"
-                fill
-                priority
-                quality={100}
-                unoptimized
-                draggable={false}
-                sizes="(min-width: 1280px) 900px, 62vw"
-                className="select-none object-cover object-left"
-              />
-              {/* Soft fade so overlaying copy stays readable */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-y-0 left-0 z-[5] w-[28%] bg-[linear-gradient(90deg,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.45)_45%,transparent_100%)]"
-              />
-            </motion.div>
-
-            <motion.div
-              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.5,
-                delay: cardsDelay,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="absolute inset-0"
-            >
-              <MarketTimeCard currentPairIndex={currentPairIndex} />
-            </motion.div>
-          </div>
+          {/* Cards stay over the photo region (right ~70%) */}
+          <motion.div
+            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.5,
+              delay: cardsDelay,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="absolute inset-y-0 left-[28%] right-0 z-20"
+          >
+            <MarketTimeCard currentPairIndex={currentPairIndex} />
+          </motion.div>
         </motion.div>
 
         {/* Mobile / tablet */}
@@ -414,7 +405,7 @@ export default function Hero() {
               eyebrowClass:
                 "whitespace-nowrap text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.06em] text-[#18A94B]",
               line1Class:
-                "whitespace-nowrap text-[clamp(1.5rem,6.2vw,2.25rem)] font-black leading-[1.08] tracking-[-0.04em] text-[#0D1B2E]",
+                "m-0 whitespace-nowrap text-[clamp(1.5rem,6.2vw,2.25rem)] font-black leading-[1.08] tracking-[-0.04em] text-[#0D1B2E]",
               line2Class:
                 "mt-1 whitespace-nowrap text-[clamp(1.4rem,5.8vw,2.1rem)] font-black leading-[1.08] tracking-[-0.035em] text-[#0D1B2E]",
               subClass:
@@ -461,9 +452,7 @@ export default function Hero() {
                 width={1024}
                 height={579}
                 priority
-                quality={100}
-                unoptimized
-                draggable={false}
+                quality={80}
                 sizes="(max-width: 640px) 100vw, 560px"
                 className="h-full w-full select-none object-cover object-left"
               />

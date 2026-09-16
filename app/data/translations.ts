@@ -1,4 +1,4 @@
-export type Language = "en" | "fr";
+﻿export type Language = "en" | "fr";
 
 export interface TranslationSchema {
   nav: {
@@ -9,6 +9,7 @@ export interface TranslationSchema {
     resources: string;
     about: string;
     contact: string;
+    services: string;
     cta: string;
     languageLabel: string;
   };
@@ -30,6 +31,18 @@ export interface TranslationSchema {
     title: string;
     description: string;
   }>;
+  servicesSection: {
+    eyebrow: string;
+    headline: string;
+    subtitle: string;
+    cta: string;
+    items: Array<{
+      id: string;
+      title: string;
+      body: string;
+      tag: string;
+    }>;
+  };
   solutionsPage: {
     eyebrow: string;
     headline: string;
@@ -416,6 +429,18 @@ export interface TranslationSchema {
       headlineLine2Emphasis: string;
       body: string;
     };
+    heritage: {
+      eyebrow: string;
+      headline: string;
+      body: string;
+      yearsValue: string;
+      yearsLabel: string;
+      links: Array<{
+        name: string;
+        url: string;
+        blurb: string;
+      }>;
+    };
     cta: string;
   };
   legal: {
@@ -504,6 +529,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       resources: "Resources",
       about: "About Us",
       contact: "Contact Us",
+      services: "Services",
       cta: "Request a pilot",
       languageLabel: "Language",
     },
@@ -513,7 +539,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       headlineLine2: "anywhere in ",
       headlineLine2Emphasis: "Africa.",
       subheadline: "Without setting up a local entity.",
-      body: "IWNT is your Employer of Record and workforce platform — we hire, onboard, manage and pay your team across African markets, combining connected technology with deep local expertise.",
+      body: "IWNT is your Employer of Record and workforce platform. We hire, onboard, manage and pay your team across African markets, combining connected technology with deep local expertise.",
       tagline: "Connecting ambitions. Building what's next for Africa.",
       status: "PLATFORM IN DEVELOPMENT · EARLY PARTNERS WELCOME",
       primaryCta: "Request a pilot",
@@ -540,6 +566,51 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         description: "Enterprise security & governance",
       },
     ],
+    servicesSection: {
+      eyebrow: "SERVICES",
+      headline: "Operations you can plug into across Africa.",
+      subtitle:
+        "From project funds to payroll and back office, coordinated through IWNT and delivered with IntelHRC’s local footprint.",
+      cta: "Talk to us about a service",
+      items: [
+        {
+          id: "project-funds",
+          title: "Project fund management",
+          body: "Disburse, track, and control programme funds for NGOs and funded projects with clear audit trails.",
+          tag: "NGOs · Programmes",
+        },
+        {
+          id: "ai-recruitment",
+          title: "AI recruitment & talent pool",
+          body: "Source, rank, and build ready talent pools for roles across African markets: faster shortlists, clearer fit.",
+          tag: "Hiring · Talent",
+        },
+        {
+          id: "vendor",
+          title: "Vendor management",
+          body: "Onboard, monitor, and coordinate local vendors so delivery stays accountable across markets.",
+          tag: "Supply · Partners",
+        },
+        {
+          id: "payroll",
+          title: "Payroll services",
+          body: "Coordinate compliant payroll cycles across covered markets without standing up a local entity yourself.",
+          tag: "Pay · Compliance",
+        },
+        {
+          id: "accounting",
+          title: "Accounting services",
+          body: "Local books, statutory filings, and financial ops support connected to your workforce activity.",
+          tag: "Finance · Statutory",
+        },
+        {
+          id: "back-office",
+          title: "Operations & back office support",
+          body: "Day-to-day admin, HR ops, and back-office coverage so your teams stay focused on delivery.",
+          tag: "Ops · Admin",
+        },
+      ],
+    },
     solutionsPage: {
       eyebrow: "CONNECTED WORKFORCE SOLUTIONS",
       headline: "One employee. One journey.",
@@ -622,7 +693,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       architecture: {
         eyebrow: "TECHNICAL DIRECTION",
         headline: "Built for secure, multi-country workforce data.",
-        body: "AWS and modern cloud services will support the application layer as the product scales. The planned architecture focuses on secure storage, workflow automation, APIs, and reporting—not claims of finished production workloads.",
+        body: "AWS and modern cloud services will support the application layer as the product scales. The planned architecture focuses on secure storage, workflow automation, APIs, and reporting. Not claims of finished production workloads.",
         points: [
           "Secure multi-country workforce data management",
           "Scalable APIs and workflow automation",
@@ -691,7 +762,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       block1Headline1: "Less administration.",
       block1Headline2: "More control.",
       block1Body:
-        "IWNT provides Employer of Record (EOR), payroll, and workforce management services across eight African markets — covering hiring, onboarding, ongoing HR management, payroll, and compliance from one connected platform.",
+        "IWNT provides Employer of Record (EOR), payroll, and workforce management services across eight African markets. Covering hiring, onboarding, ongoing HR management, payroll, and compliance from one connected platform.",
       block1Status: "PLATFORM PREVIEW · IN DEVELOPMENT",
       block2Eyebrow: "POWERFUL TECHNOLOGY. HUMAN SUPPORT.",
       block2Headline: "Technology with people behind it.",
@@ -782,10 +853,10 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       mockupWorkforceByCountry: "Workforce by Country",
       mockupViewAll: "View all",
       mockupRecentActivity: "Recent Activity",
-      mockupActivity1: "Payroll completed - Cameroon",
-      mockupActivity2: "New hire onboarded - Senegal",
-      mockupActivity3: "Contract signed - Côte d'Ivoire",
-      mockupActivity4: "Compliance update - Mali",
+      mockupActivity1: "Payroll completed: Cameroon",
+      mockupActivity2: "New hire onboarded: Senegal",
+      mockupActivity3: "Contract signed: Côte d'Ivoire",
+      mockupActivity4: "Compliance update: Mali",
       mockupDoc1: "Payroll_Final_V7.xlsx",
       mockupDoc2: "Employee Contract.pdf",
       mockupDoc3: "Compliance Checklist.d...",
@@ -800,7 +871,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       headlinePart3: "",
       subtitle: "African expertise. Global foundation.",
       description:
-        "IWNT is registered in DIFC and connected to the Ignyte ecosystem—giving us a global innovation base for workforce solutions built for African and emerging-market teams.",
+        "IWNT is registered in DIFC and connected to the Ignyte ecosystem. Giving us a global innovation base for workforce solutions built for African and emerging-market teams.",
       card1Title: "DIFC",
       card1Sub: "Registration & innovation base",
       card2Title: "IGNYTE",
@@ -905,7 +976,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       heroEyebrow: "WORKFORCE KNOWLEDGE",
       heroHeadline: "Workforce knowledge, ",
       heroHeadlineHighlight: "market by market.",
-      heroBody: "Practical guidance for organisations hiring, paying and managing teams across African markets - from local employment requirements to payroll, social security and compliance.",
+      heroBody: "Practical guidance for organisations hiring, paying and managing teams across African markets, from local employment requirements to payroll, social security and compliance.",
       searchPlaceholder: "Search CNPS, payroll, hiring, compliance...",
       popularSearchesLabel: "Popular:",
       featuredGuide: "FEATURED GUIDE",
@@ -1034,7 +1105,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         headlineLine1: "Built from experience,",
         headlineLine2: "Building",
         headlineLine2Emphasis: "what's next.",
-        body: "Intel Workforce Network Technologies Ltd is the technology company behind IWNT. Founded in 2026 in DIFC, Dubai, we are building a workforce-operations platform for African markets—pre-seed, with partners invited.",
+        body: "Intel Workforce Network Technologies Ltd is the technology company behind IWNT. Founded in 2026 in DIFC, Dubai, we build on more than a decade of African workforce operations through IntelHRC and Intel Outsourcing Services. Pre-seed, with partners invited.",
         status: "● PRE-SEED · FOUNDED 2026 · DIFC, DUBAI",
       },
       identity: {
@@ -1067,7 +1138,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
           },
           {
             title: "African operating footprint",
-            body: "Parent group IntelHRC holds operating presence across eight African markets; IWNT builds the software layer.",
+            body: "Parent group IntelHRC and sister Intel Outsourcing Services bring 10+ years of operational presence across African markets; IWNT builds the software layer.",
           },
           {
             title: "Market knowledge",
@@ -1094,7 +1165,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         eyebrow: "DIFC REGISTERED · AFRICA-FOCUSED · GLOBAL BY DESIGN",
         headlineLine1: "Built in Dubai.",
         headlineLine2: "Connected to Africa.",
-        body: "IWNT is registered in DIFC and connected to the Ignyte ecosystem—giving us a global innovation base for workforce solutions built for African and emerging-market teams.",
+        body: "IWNT is registered in DIFC and connected to the Ignyte ecosystem. Giving us a global innovation base for workforce solutions built for African and emerging-market teams.",
         card1Title: "DIFC Registration",
         card1Body: "Dubai-based innovation and business foundation.",
         card2Title: "Ignyte Ecosystem",
@@ -1107,6 +1178,25 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         headlineLine2: "Designed to",
         headlineLine2Emphasis: "scale.",
         body: "IWNT brings together the workforce experience behind IntelHRC and Intel Outsourcing Services with a new technology platform designed to help organisations operate more effectively across African markets.",
+      },
+      heritage: {
+        eyebrow: "OPERATIONAL PRESENCE · 10+ YEARS",
+        headline: "Grounded in a decade of African workforce operations.",
+        body: "IWNT is the technology arm of a group with more than ten years of operational presence across African markets. Delivery heritage sits with our sister companies, IntelHRC and Intel Outsourcing Services, while IWNT builds the software layer.",
+        yearsValue: "10+",
+        yearsLabel: "Years ops heritage",
+        links: [
+          {
+            name: "IntelHRC",
+            url: "https://intelhrc.com",
+            blurb: "Parent group for operating entities and workforce delivery across African markets.",
+          },
+          {
+            name: "Intel Outsourcing Services",
+            url: "https://inteloutsourcingservices.com",
+            blurb: "Sister company for outsourcing and operational support for organisations scaling teams.",
+          },
+        ],
       },
       cta: "Request a pilot",
     },
@@ -1221,7 +1311,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
           topic: "Tell us how we can help.",
         },
         success: {
-          headline: "Thanks - your enquiry has been received.",
+          headline: "Thanks. Your enquiry has been received.",
           body: "Our team will review it and get back to you.",
         },
         error: "Something went wrong. Please try again or email us directly at info@iwnt.ae.",
@@ -1265,6 +1355,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       resources: "Ressources",
       about: "À propos",
       contact: "Contactez-nous",
+      services: "Services",
       cta: "Demander un pilote",
       languageLabel: "Langue",
     },
@@ -1274,7 +1365,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       headlineLine2: "partout ",
       headlineLine2Emphasis: "en Afrique.",
       subheadline: "Sans créer d'entité locale.",
-      body: "IWNT est votre partenaire Employer of Record (EOR) et votre plateforme de gestion des effectifs — nous recrutons, intégrons, gérons et rémunérons vos équipes sur les marchés africains, en combinant une technologie connectée à une expertise locale approfondie.",
+      body: "IWNT est votre partenaire Employer of Record (EOR) et votre plateforme de gestion des effectifs. Nous recrutons, intégrons, gérons et rémunérons vos équipes sur les marchés africains, en combinant une technologie connectée à une expertise locale approfondie.",
       tagline: "Connecter les ambitions. Construire l'avenir de l'Afrique.",
       status: "PLATEFORME EN DÉVELOPPEMENT · PARTENAIRES PIONNIERS BIENVENUS",
       primaryCta: "Demander un pilote",
@@ -1301,6 +1392,51 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         description: "Sécurité & gouvernance d'entreprise",
       },
     ],
+    servicesSection: {
+      eyebrow: "SERVICES",
+      headline: "Des opérations prêtes à brancher à travers l'Afrique.",
+      subtitle:
+        "Des fonds de projet à la paie et au back-office, coordonnés par IWNT et délivrés avec l'empreinte locale d'IntelHRC.",
+      cta: "Parler d'un service",
+      items: [
+        {
+          id: "project-funds",
+          title: "Gestion des fonds de projet",
+          body: "Décaisser, suivre et contrôler les fonds de programmes pour les ONG et projets financés, avec une piste d'audit claire.",
+          tag: "ONG · Programmes",
+        },
+        {
+          id: "ai-recruitment",
+          title: "Recrutement IA & vivier de talents",
+          body: "Sourcer, classer et constituer des viviers prêts pour les postes sur les marchés africains: shortlists plus rapides.",
+          tag: "Recrutement · Talents",
+        },
+        {
+          id: "vendor",
+          title: "Gestion des fournisseurs",
+          body: "Intégrer, suivre et coordonner les fournisseurs locaux pour une exécution responsable sur chaque marché.",
+          tag: "Fournisseurs · Partenaires",
+        },
+        {
+          id: "payroll",
+          title: "Services de paie",
+          body: "Coordonner des cycles de paie conformes sur les marchés couverts, sans créer d'entité locale vous-même.",
+          tag: "Paie · Conformité",
+        },
+        {
+          id: "accounting",
+          title: "Services comptables",
+          body: "Comptabilité locale, déclarations statutaires et support financier reliés à votre activité RH.",
+          tag: "Finance · Statutaire",
+        },
+        {
+          id: "back-office",
+          title: "Opérations & support back-office",
+          body: "Admin au quotidien, opérations RH et couverture back-office pour que vos équipes restent centrées sur la livraison.",
+          tag: "Ops · Admin",
+        },
+      ],
+    },
     solutionsPage: {
       eyebrow: "SOLUTIONS RH CONNECTÉES",
       headline: "Un collaborateur. Un parcours.",
@@ -1390,7 +1526,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       architecture: {
         eyebrow: "ORIENTATION TECHNIQUE",
         headline: "Conçue pour des données RH multi-pays sécurisées.",
-        body: "AWS et des services cloud modernes soutiendront la couche applicative à mesure que le produit grandit. L’architecture prévue met l’accent sur le stockage sécurisé, l’automatisation des workflows, les API et le reporting—sans prétendre à des charges de production déjà terminées.",
+        body: "AWS et des services cloud modernes soutiendront la couche applicative à mesure que le produit grandit. L’architecture prévue met l’accent sur le stockage sécurisé, l’automatisation des workflows, les API et le reporting. Sans prétendre à des charges de production déjà terminées.",
         points: [
           "Gestion sécurisée des données RH multi-pays",
           "API évolutives et automatisation des workflows",
@@ -1459,7 +1595,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       block1Headline1: "Moins d'administration.",
       block1Headline2: "Plus de contrôle.",
       block1Body:
-        "IWNT fournit des services d'Employer of Record (EOR), de paie et de gestion des effectifs sur huit marchés africains — couvrant le recrutement, l'intégration, la gestion RH continue, la paie et la conformité depuis une plateforme connectée unique.",
+        "IWNT fournit des services d'Employer of Record (EOR), de paie et de gestion des effectifs sur huit marchés africains. Couvrant le recrutement, l'intégration, la gestion RH continue, la paie et la conformité depuis une plateforme connectée unique.",
       block1Status: "APERÇU DE LA PLATEFORME · EN DÉVELOPPEMENT",
       block2Eyebrow: "UNE TECHNOLOGIE PUISSANTE. UN ACCOMPAGNEMENT HUMAIN.",
       block2Headline: "La technologie, avec l'humain derrière.",
@@ -1550,10 +1686,10 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       mockupWorkforceByCountry: "Effectif par Pays",
       mockupViewAll: "Voir tout",
       mockupRecentActivity: "Activité Récente",
-      mockupActivity1: "Paie terminée - Cameroun",
-      mockupActivity2: "Nouvel employé - Sénégal",
-      mockupActivity3: "Contrat signé - Côte d'Ivoire",
-      mockupActivity4: "Mise à jour conformité - Mali",
+      mockupActivity1: "Paie terminée : Cameroun",
+      mockupActivity2: "Nouvel employé : Sénégal",
+      mockupActivity3: "Contrat signé : Côte d'Ivoire",
+      mockupActivity4: "Mise à jour conformité : Mali",
       mockupDoc1: "Paie_Finale_V7.xlsx",
       mockupDoc2: "Contrat_Employe.pdf",
       mockupDoc3: "Liste_Conformite.d...",
@@ -1568,7 +1704,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       headlinePart3: "",
       subtitle: "Expertise africaine. Fondation mondiale.",
       description:
-        "IWNT est enregistrée au DIFC et connectée à l'écosystème Ignyte—nous offrant une base d'innovation mondiale pour des solutions RH conçues pour les équipes africaines et des marchés émergents.",
+        "IWNT est enregistrée au DIFC et connectée à l'écosystème Ignyte. Nous offrant une base d'innovation mondiale pour des solutions RH conçues pour les équipes africaines et des marchés émergents.",
       card1Title: "DIFC",
       card1Sub: "Enregistrement & base d'innovation",
       card2Title: "IGNYTE",
@@ -1673,7 +1809,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
       heroEyebrow: "RESSOURCES RH",
       heroHeadline: "Les connaissances RH, ",
       heroHeadlineHighlight: "marché par marché.",
-      heroBody: "Des conseils pratiques pour les organisations qui recrutent, paient et gèrent des équipes sur les marchés africains - des exigences locales en matière d'emploi à la paie, la sécurité sociale et la conformité.",
+      heroBody: "Des conseils pratiques pour les organisations qui recrutent, paient et gèrent des équipes sur les marchés africains, des exigences locales en matière d'emploi à la paie, la sécurité sociale et la conformité.",
       searchPlaceholder: "Rechercher CNPS, paie, recrutement, conformité...",
       popularSearchesLabel: "Populaire :",
       featuredGuide: "GUIDE EN VEDETTE",
@@ -1802,7 +1938,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         headlineLine1: "Forts de notre expérience,",
         headlineLine2: "Nous construisons",
         headlineLine2Emphasis: "l’avenir.",
-        body: "Intel Workforce Network Technologies Ltd est l’entreprise technologique derrière IWNT. Fondée en 2026 au DIFC (Dubaï), nous construisons une plateforme d’opérations RH pour les marchés africains—pre-seed, partenaires invités.",
+        body: "Intel Workforce Network Technologies Ltd est l’entreprise technologique derrière IWNT. Fondée en 2026 au DIFC (Dubaï), nous nous appuyons sur plus de dix ans d’opérations RH en Afrique via IntelHRC et Intel Outsourcing Services. Pré-amorçage, partenaires invités.",
         status: "● PRE-SEED · FONDÉE EN 2026 · DIFC, DUBAÏ",
       },
       identity: {
@@ -1835,7 +1971,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
           },
           {
             title: "Empreinte opérationnelle africaine",
-            body: "Le groupe parent IntelHRC dispose d’une présence opérationnelle sur huit marchés africains ; IWNT construit la couche logicielle.",
+            body: "Le groupe parent IntelHRC et la sœur Intel Outsourcing Services apportent plus de 10 ans de présence opérationnelle sur les marchés africains ; IWNT construit la couche logicielle.",
           },
           {
             title: "Connaissance des marchés",
@@ -1875,6 +2011,25 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
         headlineLine2: "Conçu pour",
         headlineLine2Emphasis: "évoluer.",
         body: "IWNT réunit l’expérience RH d’IntelHRC et d’Intel Outsourcing Services avec une nouvelle plateforme technologique conçue pour aider les organisations à opérer plus efficacement sur les marchés africains.",
+      },
+      heritage: {
+        eyebrow: "PRÉSENCE OPÉRATIONNELLE · 10+ ANS",
+        headline: "Ancré dans plus de dix ans d’opérations RH en Afrique.",
+        body: "IWNT est le bras technologique d’un groupe présent opérationnellement depuis plus de dix ans sur les marchés africains. L’héritage de livraison appartient à nos sociétés sœurs, IntelHRC et Intel Outsourcing Services, tandis qu’IWNT construit la couche logicielle.",
+        yearsValue: "10+",
+        yearsLabel: "Ans d’opérations",
+        links: [
+          {
+            name: "IntelHRC",
+            url: "https://intelhrc.com",
+            blurb: "Groupe parent pour les entités opérationnelles et la livraison RH à travers les marchés africains.",
+          },
+          {
+            name: "Intel Outsourcing Services",
+            url: "https://inteloutsourcingservices.com",
+            blurb: "Société sœur pour l’externalisation et le support opérationnel des organisations qui développent leurs équipes.",
+          },
+        ],
       },
       cta: "Demander un pilote",
     },
@@ -1989,7 +2144,7 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
           topic: "Dites-nous comment nous pouvons vous aider.",
         },
         success: {
-          headline: "Merci - votre demande a bien été reçue.",
+          headline: "Merci. Votre demande a bien été reçue.",
           body: "Notre équipe l’examinera et vous répondra.",
         },
         error: "Une erreur s’est produite. Veuillez réessayer ou nous écrire directement à info@iwnt.ae.",

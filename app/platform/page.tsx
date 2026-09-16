@@ -16,7 +16,7 @@ export default function PlatformPage() {
           />
         </div>
         <h1 className="sr-only">
-          IWNT Platform — less administration, more control across African workforce markets
+          IWNT Platform: less administration, more control across African workforce markets
         </h1>
         <PlatformSection />
       </main>

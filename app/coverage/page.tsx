@@ -17,7 +17,7 @@ export default function CoveragePage() {
           />
         </div>
         <h1 className="sr-only">
-          IWNT Coverage — built in Dubai, connected to Africa
+          IWNT Coverage: built in Dubai, connected to Africa
         </h1>
         <CoverageSection />
       </main>

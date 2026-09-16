@@ -61,7 +61,7 @@ export function buildMetadata({
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: `${SITE_NAME} — ${title}`,
+          alt: `${SITE_NAME}: ${title}`,
         },
       ],
     },
@@ -92,7 +92,7 @@ export const PAGE_SEO = {
   solutions: {
     title: "Workforce Solutions",
     description:
-      "Employer of record, payroll, and expansion support for teams operating across African markets — without setting up a local entity.",
+      "Employer of record, payroll, and expansion support for teams operating across African markets without setting up a local entity.",
     path: "/solutions",
   },
   platform: {

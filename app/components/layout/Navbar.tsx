@@ -27,6 +27,7 @@ export default function Navbar() {
     const sectionIds = [
       "home",
       "solutions",
+      "services",
       "platform",
       "coverage",
       "resources",
@@ -56,6 +57,7 @@ export default function Navbar() {
   const navLinks = [
     { name: t.nav.home, id: "home", href: "/" },
     { name: t.nav.solutions, id: "solutions", href: "/solutions" },
+    { name: t.nav.services, id: "services", href: "/#services" },
     { name: t.nav.platform, id: "platform", href: "/platform" },
     { name: t.nav.coverage, id: "coverage", href: "/coverage" },
     { name: t.nav.resources, id: "resources", href: "/resources" },
@@ -71,6 +73,13 @@ export default function Navbar() {
     if (targetId === "home" && pathname === "/") {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    if (targetId === "services" && pathname === "/") {
+      e.preventDefault();
+      document
+        .getElementById("services")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
@@ -93,7 +102,7 @@ export default function Navbar() {
           >
             <Image
               src="/images/logo-reversed.png"
-              alt="IntelWNT — Workforce Network Technologies"
+              alt="IntelWNT Workforce Network Technologies"
               width={220}
               height={40}
               className="h-8 sm:h-9 lg:h-10 w-auto object-contain transition-transform group-hover:scale-[1.01]"
